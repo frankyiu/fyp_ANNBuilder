@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
+<!-- eric6 tasks file for project Tutorials -->
+<!-- Saved: 2021-01-24, 22:02:52 -->
+<Tasks version="6.0">
+  <ProjectScanFilter></ProjectScanFilter>
+  <Task priority="1" completed="False" type="2" uid="{96a10bc0-8cad-40d5-a0eb-d4a56a88dbd9}">
+    <Summary>WARNING: Any manual changes made to this file will be lost when pyuic5 is</Summary>
+    <Description></Description>
+    <Created>2021-01-24, 21:35:33</Created>
+    <Resource>
+      <Filename>ui/Ui_mainWindow.py</Filename>
+      <Linenumber>7</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="2" uid="{fdb6f391-1877-4264-95b7-c85d249c8e24}">
+    <Summary>WARNING: Any manual changes made to this file will be lost when pyuic5 is</Summary>
+    <Description></Description>
+    <Created>2021-01-24, 21:35:39</Created>
+    <Resource>
+      <Filename>ui/Ui_tutorialsWindow.py</Filename>
+      <Linenumber>7</Linenumber>
+    </Resource>
+  </Task>
+</Tasks>

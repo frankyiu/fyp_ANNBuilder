@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
+<!-- eric6 tasks file for project regularization -->
+<!-- Saved: 2021-01-20, 04:14:30 -->
+<Tasks version="6.0">
+  <ProjectScanFilter></ProjectScanFilter>
+  <Task priority="1" completed="False" type="2" uid="{68df3bcb-a103-4b98-88d5-2f6d1715fa79}">
+    <Summary>WARNING: Any manual changes made to this file will be lost when pyuic5 is</Summary>
+    <Description></Description>
+    <Created>2021-01-20, 04:12:17</Created>
+    <Resource>
+      <Filename>ui/Ui_mainWindow.py</Filename>
+      <Linenumber>7</Linenumber>
+    </Resource>
+  </Task>
+  <Task priority="1" completed="False" type="2" uid="{7b4db19d-f4f2-4ee2-8e58-9ae10920bebe}">
+    <Summary>WARNING: Any manual changes made to this file will be lost when pyuic5 is</Summary>
+    <Description></Description>
+    <Created>2021-01-20, 04:12:17</Created>
+    <Resource>
+      <Filename>ui/Ui_tutorialsWindow.py</Filename>
+      <Linenumber>7</Linenumber>
+    </Resource>
+  </Task>
+</Tasks>
