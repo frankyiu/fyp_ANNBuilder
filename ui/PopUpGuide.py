@@ -1,16 +1,18 @@
 from PyQt5 import QtWidgets,  QtCore
 from PyQt5.QtWidgets import  QWidget
 from PyQt5.QtCore import QPoint, QRect
+from PyQt5.QtGui import QFont
 
 class PopUpGuide():
     
-    size = QPoint(250, 120)
+    size = QPoint(250, 150)
     
     def __init__(self, offset, text, targetWidget, backWidget,  factory):
-        self.pos = targetWidget.pos()+offset
-        self.factory = factory
         self.targetWidget = targetWidget
         self.backWidget = backWidget
+        self.pos = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
+        self.offset = offset
+        self.factory = factory
         self.setUpUI()
         self.setText(text)
         self.setUpButton()
@@ -24,10 +26,9 @@ class PopUpGuide():
         self.shadow.show()
         
     def transulateBack(self):
-        posOnBack = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
         self.shadow.setGeometry(QRect(0, 0, self.backWidget.width(), self.backWidget.height()))
         self.shadow.setStyleSheet("border-color: rgba(0, 0, 0,0.3);\n"
-        f"border-width: {posOnBack.y()}px {self.backWidget.width()-self.targetWidget.width()-posOnBack.x()}px {self.backWidget.height()-self.targetWidget.height()-posOnBack.y()}px {posOnBack.x()}px;\n"
+        f"border-width: {self.pos.y()}px {self.backWidget.width()-self.targetWidget.width()-self.pos.x()}px {self.backWidget.height()-self.targetWidget.height()-self.pos.y()}px {self.pos.x()}px;\n"
         "border-style: solid;\n")
 
         
@@ -39,9 +40,10 @@ class PopUpGuide():
         self.shadow = QtWidgets.QWidget(self.backWidget)
         self.transulateBack()
         #CreatePopUpGuide
-        
+        font = QFont()
+        font.setFamily(u"Segoe UI")
         self.guide= QtWidgets.QWidget(self.backWidget)
-        self.guide.setGeometry(QRect(self.pos.x(), self.pos.y(), PopUpGuide.size.x(), PopUpGuide.size.y()))
+        self.guide.setGeometry(QRect(self.pos.x()+self.offset.x(), self.pos.y()+self.offset.y(), PopUpGuide.size.x(), PopUpGuide.size.y()))
         self.guide.setStyleSheet("QWidget#widget{\n"
 "border: 1px solid;\n"
 "border-radius: 10px;\n"
@@ -53,6 +55,7 @@ class PopUpGuide():
         self.guide.verticalLayout.setObjectName("verticalLayout")
         self.guide.textBrowser = QtWidgets.QTextBrowser(self.guide)
         self.guide.textBrowser.setObjectName("textBrowser")
+        self.guide.textBrowser.setFont(font)
         self.guide.verticalLayout.addWidget(self.guide.textBrowser)
         self.guide.frame = QtWidgets.QFrame(self.guide)
         self.guide.frame.setMinimumSize(QtCore.QSize(0, 30))
@@ -72,12 +75,14 @@ class PopUpGuide():
         self.guide.btn_skip.setMaximumSize(QtCore.QSize(100, 16777215))
         self.guide.btn_skip.setObjectName("btn_skip")
         self.guide.btn_skip.setText('Skip')
+        self.guide.btn_skip.setFont(font)
         self.guide.horizontalLayout.addWidget(self.guide.btn_skip)
         
         self.guide.btn_next = QtWidgets.QPushButton(self.guide.frame)
         self.guide.btn_next.setMaximumSize(QtCore.QSize(100, 16777215))
         self.guide.btn_next.setObjectName("btn_next")
         self.guide.btn_next.setText('Next')
+        self.guide.btn_next.setFont(font)
 
         self.guide.horizontalLayout.addWidget(self.guide.btn_next)
         self.guide.verticalLayout.addWidget(self.guide.frame)

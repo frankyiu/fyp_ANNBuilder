@@ -31,6 +31,7 @@ class Ui_tutorialsWindow(QWidget):
         self.setWindowTitle('Tutorials')
 
         self.leftlist = QListWidget()
+        self.leftlist.setMinimumSize(QSize(200, 0))
         self.leftlist.insertItem(0,'Artificial Neuron')
         self.leftlist.insertItem(1,'Perceptron')
         self.leftlist.insertItem(2,'Adaline')

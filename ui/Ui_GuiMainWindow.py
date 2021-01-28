@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GuiMainWindowlvJTWT.ui'
+## Form generated from reading UI file 'GuiMainWindow.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -21,7 +21,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1268, 737)
+        MainWindow.resize(1309, 780)
         MainWindow.setMinimumSize(QSize(1024, 720))
         font = QFont()
         font.setFamily(u"Segoe UI")
@@ -441,7 +441,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setContentsMargins(0, 0, 10, 0)
         self.frame_dataset = QFrame(self.draw_left)
         self.frame_dataset.setObjectName(u"frame_dataset")
-        self.frame_dataset.setMaximumSize(QSize(200, 150))
+        self.frame_dataset.setMaximumSize(QSize(200, 320))
         self.frame_dataset.setFrameShape(QFrame.StyledPanel)
         self.frame_dataset.setFrameShadow(QFrame.Raised)
         self.verticalLayout_12 = QVBoxLayout(self.frame_dataset)
@@ -462,10 +462,94 @@ class Ui_MainWindow(object):
 
         self.frame_dataloader = QFrame(self.frame_dataset)
         self.frame_dataloader.setObjectName(u"frame_dataloader")
+        self.frame_dataloader.setMinimumSize(QSize(0, 100))
+        self.frame_dataloader.setMaximumSize(QSize(16777215, 16777215))
         self.frame_dataloader.setFrameShape(QFrame.StyledPanel)
         self.frame_dataloader.setFrameShadow(QFrame.Raised)
+        self.label_14 = QLabel(self.frame_dataloader)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setGeometry(QRect(10, 10, 40, 16))
+        self.label_14.setFont(font2)
 
         self.verticalLayout_12.addWidget(self.frame_dataloader)
+
+        self.frame_datapara = QFrame(self.frame_dataset)
+        self.frame_datapara.setObjectName(u"frame_datapara")
+        self.frame_datapara.setMaximumSize(QSize(16777215, 150))
+        self.frame_datapara.setStyleSheet(u"QSlider::groove:horizontal {\n"
+"    border-radius: 4px;\n"
+"    height: 8px;\n"
+"	margin: 0px;\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QSlider::groove:horizontal:hover {\n"
+"	background-color: rgb(55, 62, 76);\n"
+"}\n"
+"QSlider::handle:horizontal {\n"
+"    background-color: rgb(85, 170, 255);\n"
+"    border: none;\n"
+"    height: 8px;\n"
+"    width: 16px;\n"
+"    margin: -4px 0;\n"
+"	border-radius: 8px;\n"
+"}\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background-color: rgb(105, 180, 255);\n"
+"}\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background-color: rgb(65, 130, 195);\n"
+"}\n"
+"")
+        self.frame_datapara.setFrameShape(QFrame.StyledPanel)
+        self.frame_datapara.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_14 = QVBoxLayout(self.frame_datapara)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.label_ratio = QLabel(self.frame_datapara)
+        self.label_ratio.setObjectName(u"label_ratio")
+        self.label_ratio.setFont(font2)
+
+        self.verticalLayout_14.addWidget(self.label_ratio)
+
+        self.slider_ratio = QSlider(self.frame_datapara)
+        self.slider_ratio.setObjectName(u"slider_ratio")
+        self.slider_ratio.setCursor(QCursor(Qt.PointingHandCursor))
+        self.slider_ratio.setMinimum(1)
+        self.slider_ratio.setMaximum(100)
+        self.slider_ratio.setValue(80)
+        self.slider_ratio.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_14.addWidget(self.slider_ratio)
+
+        self.label_batch = QLabel(self.frame_datapara)
+        self.label_batch.setObjectName(u"label_batch")
+        self.label_batch.setFont(font2)
+
+        self.verticalLayout_14.addWidget(self.label_batch)
+
+        self.slider_batch = QSlider(self.frame_datapara)
+        self.slider_batch.setObjectName(u"slider_batch")
+        self.slider_batch.setCursor(QCursor(Qt.PointingHandCursor))
+        self.slider_batch.setMaximum(100)
+        self.slider_batch.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_14.addWidget(self.slider_batch)
+
+        self.label_noise = QLabel(self.frame_datapara)
+        self.label_noise.setObjectName(u"label_noise")
+        self.label_noise.setFont(font2)
+
+        self.verticalLayout_14.addWidget(self.label_noise)
+
+        self.slider_noise = QSlider(self.frame_datapara)
+        self.slider_noise.setObjectName(u"slider_noise")
+        self.slider_noise.setCursor(QCursor(Qt.PointingHandCursor))
+        self.slider_noise.setMaximum(100)
+        self.slider_noise.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_14.addWidget(self.slider_noise)
+
+
+        self.verticalLayout_12.addWidget(self.frame_datapara)
 
 
         self.verticalLayout_7.addWidget(self.frame_dataset)
@@ -496,7 +580,7 @@ class Ui_MainWindow(object):
         self.frame_9.setFrameShadow(QFrame.Raised)
         self.widget = QWidget(self.frame_9)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(80, 20, 81, 101))
+        self.widget.setGeometry(QRect(80, 0, 81, 101))
         self.verticalLayout_17 = QVBoxLayout(self.widget)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.label_neuron_2 = DraggableLabel(self.widget)
@@ -519,7 +603,7 @@ class Ui_MainWindow(object):
 
         self.widget_2 = QWidget(self.frame_9)
         self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setGeometry(QRect(0, 130, 81, 101))
+        self.widget_2.setGeometry(QRect(0, 100, 81, 101))
         self.verticalLayout_18 = QVBoxLayout(self.widget_2)
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.label_layer = DraggableLabel(self.widget_2)
@@ -541,7 +625,7 @@ class Ui_MainWindow(object):
 
         self.widget_3 = QWidget(self.frame_9)
         self.widget_3.setObjectName(u"widget_3")
-        self.widget_3.setGeometry(QRect(0, 20, 81, 101))
+        self.widget_3.setGeometry(QRect(0, 0, 81, 101))
         self.verticalLayout_19 = QVBoxLayout(self.widget_3)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.label_neuron_3 = DraggableLabel(self.widget_3)
@@ -564,7 +648,7 @@ class Ui_MainWindow(object):
 
         self.widget_4 = QWidget(self.frame_9)
         self.widget_4.setObjectName(u"widget_4")
-        self.widget_4.setGeometry(QRect(80, 130, 81, 101))
+        self.widget_4.setGeometry(QRect(80, 100, 81, 101))
         self.verticalLayout_20 = QVBoxLayout(self.widget_4)
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.label_layer_2 = DraggableLabel(self.widget_4)
@@ -586,7 +670,7 @@ class Ui_MainWindow(object):
 
         self.widget_5 = QWidget(self.frame_9)
         self.widget_5.setObjectName(u"widget_5")
-        self.widget_5.setGeometry(QRect(0, 240, 81, 101))
+        self.widget_5.setGeometry(QRect(0, 200, 81, 101))
         self.verticalLayout_21 = QVBoxLayout(self.widget_5)
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.label_layer_3 = DraggableLabel(self.widget_5)
@@ -608,7 +692,7 @@ class Ui_MainWindow(object):
 
         self.widget_6 = QWidget(self.frame_9)
         self.widget_6.setObjectName(u"widget_6")
-        self.widget_6.setGeometry(QRect(80, 240, 81, 101))
+        self.widget_6.setGeometry(QRect(80, 200, 81, 101))
         self.verticalLayout_22 = QVBoxLayout(self.widget_6)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.label_layer_4 = DraggableLabel(self.widget_6)
@@ -634,7 +718,137 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addWidget(self.frame_component)
 
-        self.frame_control = QFrame(self.draw_left)
+
+        self.horizontalLayout_6.addWidget(self.draw_left)
+
+        self.draw_main = QFrame(self.page_draw)
+        self.draw_main.setObjectName(u"draw_main")
+        self.draw_main.setFrameShape(QFrame.StyledPanel)
+        self.draw_main.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_8 = QVBoxLayout(self.draw_main)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_8.setContentsMargins(4, 0, 4, -1)
+        self.draw_content = QWidget(self.draw_main)
+        self.draw_content.setObjectName(u"draw_content")
+        self.horizontalLayout_13 = QHBoxLayout(self.draw_content)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(-1, 0, -1, -1)
+        self.draw_build = QWidget(self.draw_content)
+        self.draw_build.setObjectName(u"draw_build")
+        self.verticalLayout_16 = QVBoxLayout(self.draw_build)
+        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.verticalLayout_16.setContentsMargins(0, 0, -1, -1)
+        self.frame_2 = QFrame(self.draw_build)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMinimumSize(QSize(0, 30))
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_7 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.label_3 = QLabel(self.frame_2)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font2)
+
+        self.horizontalLayout_7.addWidget(self.label_3)
+
+        self.frame_3 = QFrame(self.frame_2)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setAutoFillBackground(False)
+        self.frame_3.setStyleSheet(u"background-color: rgb(255, 255, 255);")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_7.addWidget(self.frame_3)
+
+        self.btn_guide = QPushButton(self.frame_2)
+        self.btn_guide.setObjectName(u"btn_guide")
+        self.btn_guide.setMaximumSize(QSize(24, 16777215))
+        self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.horizontalLayout_7.addWidget(self.btn_guide)
+
+
+        self.verticalLayout_16.addWidget(self.frame_2)
+
+        self.graphicsView = QGraphicsView(self.draw_build)
+        self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.setStyleSheet(u"\n"
+"border: 2px solid;\n"
+"border-radius: 10px;\n"
+"border-color: rgba(84, 84, 84, 200);\n"
+"")
+
+        self.verticalLayout_16.addWidget(self.graphicsView)
+
+
+        self.horizontalLayout_13.addWidget(self.draw_build)
+
+        self.draw_right = QFrame(self.draw_content)
+        self.draw_right.setObjectName(u"draw_right")
+        self.draw_right.setMinimumSize(QSize(200, 0))
+        self.draw_right.setMaximumSize(QSize(0, 16777215))
+        self.draw_right.setFrameShape(QFrame.StyledPanel)
+        self.draw_right.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_12 = QHBoxLayout(self.draw_right)
+        self.horizontalLayout_12.setSpacing(0)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.horizontalLayout_12.setContentsMargins(0, 0, -1, 9)
+        self.btn_viewer = QPushButton(self.draw_right)
+        self.btn_viewer.setObjectName(u"btn_viewer")
+        self.btn_viewer.setMinimumSize(QSize(20, 100))
+        self.btn_viewer.setMaximumSize(QSize(20, 16777215))
+        self.btn_viewer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_viewer.setStyleSheet(u"background-color: rgb(27, 31, 38);\n"
+"border: none;\n"
+"\n"
+"")
+        self.btn_viewer.setIcon(icon3)
+
+        self.horizontalLayout_12.addWidget(self.btn_viewer)
+
+        self.tab_viewer = QTabWidget(self.draw_right)
+        self.tab_viewer.setObjectName(u"tab_viewer")
+        self.tab_viewer.setEnabled(True)
+        self.tab_viewer.setMaximumSize(QSize(16777215, 16777215))
+        self.tab_viewer.setAutoFillBackground(False)
+        self.tab_viewer.setStyleSheet(u"background-color: 0;")
+        self.tab_3 = QWidget()
+        self.tab_3.setObjectName(u"tab_3")
+        self.tab_viewer.addTab(self.tab_3, "")
+        self.tab_4 = QWidget()
+        self.tab_4.setObjectName(u"tab_4")
+        self.tab_viewer.addTab(self.tab_4, "")
+
+        self.horizontalLayout_12.addWidget(self.tab_viewer)
+
+
+        self.horizontalLayout_13.addWidget(self.draw_right)
+
+
+        self.verticalLayout_8.addWidget(self.draw_content)
+
+        self.draw_bottom = QWidget(self.draw_main)
+        self.draw_bottom.setObjectName(u"draw_bottom")
+        self.draw_bottom.setMinimumSize(QSize(0, 120))
+        self.draw_bottom.setMaximumSize(QSize(16777215, 120))
+        self.horizontalLayout_14 = QHBoxLayout(self.draw_bottom)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.tabWidget = QTabWidget(self.draw_bottom)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setMaximumSize(QSize(16777215, 120))
+        self.tabWidget.setAutoFillBackground(False)
+        self.tabWidget.setStyleSheet(u"background-color: 0;")
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
+
+        self.horizontalLayout_14.addWidget(self.tabWidget)
+
+        self.frame_control = QFrame(self.draw_bottom)
         self.frame_control.setObjectName(u"frame_control")
         self.frame_control.setMinimumSize(QSize(0, 120))
         self.frame_control.setMaximumSize(QSize(16777215, 120))
@@ -691,118 +905,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.addWidget(self.frame_8)
 
 
-        self.verticalLayout_7.addWidget(self.frame_control)
+        self.horizontalLayout_14.addWidget(self.frame_control)
 
 
-        self.horizontalLayout_6.addWidget(self.draw_left)
-
-        self.draw_main = QFrame(self.page_draw)
-        self.draw_main.setObjectName(u"draw_main")
-        self.draw_main.setFrameShape(QFrame.StyledPanel)
-        self.draw_main.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_8 = QVBoxLayout(self.draw_main)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.verticalLayout_8.setContentsMargins(4, 0, 4, -1)
-        self.frame_2 = QFrame(self.draw_main)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setMinimumSize(QSize(0, 30))
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_7 = QHBoxLayout(self.frame_2)
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_3 = QLabel(self.frame_2)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setFont(font2)
-
-        self.horizontalLayout_7.addWidget(self.label_3)
-
-        self.frame_3 = QFrame(self.frame_2)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setAutoFillBackground(False)
-        self.frame_3.setStyleSheet(u"background-color: rgb(255, 255, 255);")
-        self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
-
-        self.horizontalLayout_7.addWidget(self.frame_3)
-
-        self.btn_guide = QPushButton(self.frame_2)
-        self.btn_guide.setObjectName(u"btn_guide")
-        self.btn_guide.setMaximumSize(QSize(24, 16777215))
-        self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
-
-        self.horizontalLayout_7.addWidget(self.btn_guide)
-
-
-        self.verticalLayout_8.addWidget(self.frame_2)
-
-        self.graphicsView = QGraphicsView(self.draw_main)
-        self.graphicsView.setObjectName(u"graphicsView")
-        self.graphicsView.setStyleSheet(u"\n"
-"border: 2px solid;\n"
-"border-radius: 10px;\n"
-"border-color: rgba(84, 84, 84, 200);\n"
-"")
-
-        self.verticalLayout_8.addWidget(self.graphicsView)
-
-        self.tabWidget = QTabWidget(self.draw_main)
-        self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setMaximumSize(QSize(16777215, 120))
-        self.tabWidget.setAutoFillBackground(False)
-        self.tabWidget.setStyleSheet(u"background-color: 0;")
-        self.tab = QWidget()
-        self.tab.setObjectName(u"tab")
-        self.tabWidget.addTab(self.tab, "")
-        self.tab_2 = QWidget()
-        self.tab_2.setObjectName(u"tab_2")
-        self.tabWidget.addTab(self.tab_2, "")
-
-        self.verticalLayout_8.addWidget(self.tabWidget)
+        self.verticalLayout_8.addWidget(self.draw_bottom)
 
 
         self.horizontalLayout_6.addWidget(self.draw_main)
-
-        self.draw_right = QFrame(self.page_draw)
-        self.draw_right.setObjectName(u"draw_right")
-        self.draw_right.setMinimumSize(QSize(200, 0))
-        self.draw_right.setMaximumSize(QSize(0, 16777215))
-        self.draw_right.setFrameShape(QFrame.StyledPanel)
-        self.draw_right.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.draw_right)
-        self.horizontalLayout_12.setSpacing(0)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.horizontalLayout_12.setContentsMargins(0, 0, -1, 9)
-        self.btn_viewer = QPushButton(self.draw_right)
-        self.btn_viewer.setObjectName(u"btn_viewer")
-        self.btn_viewer.setMinimumSize(QSize(20, 100))
-        self.btn_viewer.setMaximumSize(QSize(20, 16777215))
-        self.btn_viewer.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_viewer.setStyleSheet(u"background-color: rgb(27, 31, 38);\n"
-"border: none;\n"
-"\n"
-"")
-        self.btn_viewer.setIcon(icon3)
-
-        self.horizontalLayout_12.addWidget(self.btn_viewer)
-
-        self.tab_viewer = QTabWidget(self.draw_right)
-        self.tab_viewer.setObjectName(u"tab_viewer")
-        self.tab_viewer.setEnabled(True)
-        self.tab_viewer.setMaximumSize(QSize(16777215, 16777215))
-        self.tab_viewer.setAutoFillBackground(False)
-        self.tab_viewer.setStyleSheet(u"background-color: 0;")
-        self.tab_3 = QWidget()
-        self.tab_3.setObjectName(u"tab_3")
-        self.tab_viewer.addTab(self.tab_3, "")
-        self.tab_4 = QWidget()
-        self.tab_4.setObjectName(u"tab_4")
-        self.tab_viewer.addTab(self.tab_4, "")
-
-        self.horizontalLayout_12.addWidget(self.tab_viewer)
-
-
-        self.horizontalLayout_6.addWidget(self.draw_right)
 
         self.stackedWidget.addWidget(self.page_draw)
 
@@ -826,9 +935,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(1)
-        self.tabWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         self.tab_viewer.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -856,7 +965,11 @@ class Ui_MainWindow(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Welcome to ANN Builder", None))
         self.label.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Tutorial", None))
-        self.label_dataset.setText(QCoreApplication.translate("MainWindow", u"Dataset", None))
+        self.label_dataset.setText(QCoreApplication.translate("MainWindow", u"Data", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"DataSet", None))
+        self.label_ratio.setText(QCoreApplication.translate("MainWindow", u"Ratio(Training:Testing):", None))
+        self.label_batch.setText(QCoreApplication.translate("MainWindow", u"Batch size:", None))
+        self.label_noise.setText(QCoreApplication.translate("MainWindow", u"Noise:", None))
         self.label_component.setText(QCoreApplication.translate("MainWindow", u"Component", None))
         self.label_neuron_2.setText("")
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"2D-Neuron", None))
@@ -870,15 +983,15 @@ class Ui_MainWindow(object):
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Regularizer", None))
         self.label_layer_4.setText("")
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"Cost Func", None))
-        self.pushButton_2.setText("")
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Feed-Forwrd", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Back-Pop", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Building Panel", None))
         self.btn_guide.setText(QCoreApplication.translate("MainWindow", u"?", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
         self.btn_viewer.setText("")
         self.tab_viewer.setTabText(self.tab_viewer.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"Tab 1", None))
         self.tab_viewer.setTabText(self.tab_viewer.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Tab 2", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
+        self.pushButton_2.setText("")
+        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Feed-Forwrd", None))
+        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Back-Pop", None))
     # retranslateUi
 

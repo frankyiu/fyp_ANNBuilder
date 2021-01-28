@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project fyp_ui -->
-<!-- Saved: 2021-01-22, 02:04:07 -->
+<!-- Saved: 2021-01-26, 03:09:09 -->
 <!-- Copyright (C) 2021 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -13,20 +13,36 @@
   <Email></Email>
   <Eol index="0"/>
   <Sources>
-    <Source>Ui_GUI_BASE.py</Source>
     <Source>__init__.py</Source>
+    <Source>builder.py</Source>
     <Source>files_rc.py</Source>
-    <Source>flowLayout.py</Source>
     <Source>main.py</Source>
-    <Source>uiController.py</Source>
     <Source>ui/DatasetIcon.py</Source>
     <Source>ui/DatasetLoader.py</Source>
     <Source>ui/DraggableLabel.py</Source>
+    <Source>ui/GuiMainWindow.py</Source>
+    <Source>ui/Guide.py</Source>
     <Source>ui/PopUpGuide.py</Source>
     <Source>ui/PopUpGuideFactory.py</Source>
     <Source>ui/SelectDatasetPopup.py</Source>
     <Source>ui/Ui_GuiMainWindow.py</Source>
+    <Source>ui/Ui_mainWindow.py</Source>
     <Source>ui/Ui_popUpGuide.py</Source>
+    <Source>ui/Ui_tutorialsWindow.py</Source>
+    <Source>ui/__init__.py</Source>
+    <Source>ui/activationFunctionsTabs.py</Source>
+    <Source>ui/adalineTabs.py</Source>
+    <Source>ui/artificialNeuronTabs.py</Source>
+    <Source>ui/convolutionalLayerTabs.py</Source>
+    <Source>ui/feedforwardAndBackpropagationTabs.py</Source>
+    <Source>ui/flatteningLayerTabs.py</Source>
+    <Source>ui/lossFunctionsTabs.py</Source>
+    <Source>ui/mainWindow.py</Source>
+    <Source>ui/mlpTabs.py</Source>
+    <Source>ui/perceptronTabs.py</Source>
+    <Source>ui/poolingLayerTabs.py</Source>
+    <Source>ui/regularizationTabs.py</Source>
+    <Source>ui/underfittingAndOverfittingTabs.py</Source>
   </Sources>
   <Forms>
     <Form>ui/GuiMainWindow.ui</Form>
@@ -36,7 +52,107 @@
     <Resource>files.qrc</Resource>
   </Resources>
   <Vcs>
-    <VcsType>None</VcsType>
+    <VcsType>Git</VcsType>
+    <VcsOptions>
+      <dict>
+        <key>
+          <string>add</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>checkout</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>commit</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>diff</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>export</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>global</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>history</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>log</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>remove</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>status</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>tag</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+        <key>
+          <string>update</string>
+        </key>
+        <value>
+          <list>
+            <string></string>
+          </list>
+        </value>
+      </dict>
+    </VcsOptions>
   </Vcs>
   <FiletypeAssociations>
     <FiletypeAssociation pattern="*.e4p" type="OTHERS"/>
