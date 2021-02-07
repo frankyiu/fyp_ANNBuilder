@@ -1,5 +1,6 @@
 from ui.PopUpGuideFactory import *
 from ui.DatasetLoader import *
+from ui.ToolBarWidget import *
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
 
@@ -15,7 +16,7 @@ class Builder():
         self.firstTimeGuide = True
         
     def setupData(self):
-        self.ui.dataloader = DatasetLoader(self.ui.frame_dataloader, self.ui.page_draw, QtCore.QRect(10, 40, 100, 100))
+        self.ui.dataloader = DatasetLoader(self.ui.frame_dataloader, self.ui.page_draw, QtCore.QRect(34, 15, 120, 120))
         self.dataText = {'ratio': self.ui.label_ratio.text(), 'noise': self.ui.label_noise.text(), 'batch': self.ui.label_batch.text()}
         self.ui.label_ratio.setText(f'{self.dataText["ratio"]}{self.ui.slider_ratio.value()}:{self.ui.slider_ratio.maximum()-self.ui.slider_ratio.value()}')
         self.ui.label_noise.setText(self.dataText['noise']+str(self.ui.slider_noise.value()))
@@ -23,7 +24,7 @@ class Builder():
         self.ui.slider_ratio.valueChanged.connect(lambda value: self.ui.label_ratio.setText(f'{self.dataText["ratio"]}{value}:{self.ui.slider_ratio.maximum()-value}'))
         self.ui.slider_noise.valueChanged.connect(lambda value: self.ui.label_noise.setText(self.dataText['noise']+str(value)))
         self.ui.slider_batch.valueChanged.connect(lambda value: self.ui.label_batch.setText(self.dataText['batch']+str(value)))
-
+        self.ui.frame_datapara.hide()
 
     def setupControl(self):
         return
