@@ -60,7 +60,6 @@ class DatasetLoader(DatasetIcon):
             self.readSettingFromDict(setting)
             print("Setting Loaded")
 
-
     #override the DatasetIcon
     #When user release the button, it show/hide the popup panel
     #followed by the release effect

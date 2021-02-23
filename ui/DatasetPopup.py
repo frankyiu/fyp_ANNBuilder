@@ -11,7 +11,7 @@ from ui.DatasetLoaderImage import *
 
 class DatasetPopup(QWidget):
     #List of prepared datasets
-    datasets = ['bi_linear', 'bi_moon', 'bi_circle', 'bi_xor', 'bi_spiral', 'multi_three', 'multi_four', 'multi_circles', 'reg_inform', 'reg_redun', 'cnn_mnist']
+    datasets = ['bi_linear', 'bi_moon', 'bi_circle', 'bi_xor', 'bi_spiral', 'multi_three', 'multi_four', 'multi_circles', 'reg_inform', 'reg_redun', 'cnn_mnist', 'cnn_cifar10']
 
     def __init__(self,parent, loader):
         super(QWidget,self).__init__(parent)
@@ -41,6 +41,12 @@ class DatasetPopup(QWidget):
         if dataset_name is "cnn_mnist":
             vary_statement = ["0, 1", "4, 7, 9", "2, 3, 5, 6, 8", "All"]
             self.NoiseName.setText("Digits: {vary}".format(vary=vary_statement[noise_val]))
+            self.Split.setEnabled(False)
+            if noise_val==0:
+                self.TaskType.setText("Task: {task}".format(task="Binary Classification"))
+        elif dataset_name is "cnn_cifar10":
+            vary_statement = ["Cat vs Dog", "Vehicles", "Animals", "All"]
+            self.NoiseName.setText("Classes: {vary}".format(vary=vary_statement[noise_val]))
             self.Split.setEnabled(False)
             if noise_val==0:
                 self.TaskType.setText("Task: {task}".format(task="Binary Classification"))
@@ -235,6 +241,14 @@ class DatasetPopup(QWidget):
         self.Dataset09.setMaximumSize(QtCore.QSize(100, 100))
         self.Dataset09.setObjectName("Dataset09")
         self.gridLayout_2.addWidget(self.Dataset09, 2, 0, 1, 1)
+        self.Dataset10 = DatasetIconCNN(self.horizontalLayoutWidget, DatasetPopup.datasets[11], self)
+        self.updateDatasetIconList(self.Dataset10)
+        i += 1
+        self.Dataset10.setEnabled(True)
+        self.Dataset10.setMinimumSize(QtCore.QSize(100, 100))
+        self.Dataset10.setMaximumSize(QtCore.QSize(100, 100))
+        self.Dataset10.setObjectName("Dataset10")
+        self.gridLayout_2.addWidget(self.Dataset10, 2, 1, 1, 1)
 
         self.gridLayout_3.addLayout(self.gridLayout_2, 2, 0, 1, 1)
         self.horizontalLayout_6.addLayout(self.gridLayout_3)

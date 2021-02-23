@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from dataset.CNNDataset import *
+#from CNNDataset import *
 
 class DatasetObject():
     def __init__(self):

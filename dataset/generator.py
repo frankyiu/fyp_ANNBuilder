@@ -176,6 +176,9 @@ def cnn_1():
     name = 'cnn_mnist'
     return {name:("MNIST Digit", "Multiclass Classification", [69.1,79.1,89.1,99.1])}
 
+def cnn_2():
+    name = 'cnn_cifar10'
+    return {name:("cifar-10", "Multiclass Classification", [69.1,79.1,89.1,99.1])}
 
 if __name__ == "__main__":
     import json
@@ -193,6 +196,7 @@ if __name__ == "__main__":
         metadict.update(multi_2())
         metadict.update(multi_3())
         metadict.update(cnn_1())
+        metadict.update(cnn_2())
         metadict.update(regression_1())
         metadict.update(regression_2())
         f.write(json.dumps(metadict))
