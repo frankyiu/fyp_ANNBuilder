@@ -2,21 +2,22 @@ import sys
 import numpy as np
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
-from PyQt5.QtCore import QMimeData, Qt, QPoint
+from PyQt5.QtCore import QMimeData, Qt, QPoint, QFile
 
 #This is the class for the icons used in popup widget
 class DatasetIcon(QLabel):
-    
+
     dataset_directory = 'dataset/'
-    
-    def __init__(self,parent, dataset, loader=None):
+
+    def __init__(self,parent, dataset, popup=None):
         super(QLabel,self).__init__(parent)
         self.dataset_name = dataset     #string name of the dataset, used for loading the image and csv
         self.dataset_piximg = None      #Pixmap of the dataset icon
-        self.loader = loader            #the dataloader
+        self.popup = popup              #the popup widget which owns this icon
+        self.icon_loaded = False
         self.setScaledContents(True)
         self.setStyleSheet("background:transparent;")
-        self.loadDataSetImg()
+        self.loadDatasetImg()
         self.show()
 
     #When user press the icon, the icon shows a pressing effect
@@ -31,57 +32,93 @@ class DatasetIcon(QLabel):
     #overrided by the DatasetLoader
     def mouseReleaseEvent(self, event):
         self.showImage(hover=True)
-        if self.loader is not None:
-            self.loader.loadDataSet(self)
-            self.loader.popup.toggle(False)
+        self.getPopupWidget().getDataLoader().loadDataset(self)
 
     #When user hover the icon, it changes the icon of dataloader temporarily
     def enterEvent(self, event):
         self.setCursor(Qt.PointingHandCursor)
         self.showImage(hover=True)
-        if self.loader is not None:
-            self.loader.setDataSetImg(self)
-            self.loader.showImage(hover=True)
+        if self.isDatasetIcon():
+            self.getPopupWidget().getDataLoader().changeIconImg(self, hover=True)
+            self.getPopupWidget().showDatasetInfo(self.getDatasetName())
+            if not self.isIconLoaded():
+                self.loadDatasetImg()
+
 
     #When user leave the icon after hovering, it change back the icon of dataloader
     def leaveEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
-        self.showImage(hover=False)
-        if self.loader is not None:
-            self.loader.setDataSetImg(self.loader)
-            self.loader.showImage(hover=True)
+        if not self.isDataLoader():
+            if not self.isSelectedByDataLoader():
+                self.showImage(hover=False)
+                self.getPopupWidget().getDataLoader().changeIconImg(self.getPopupWidget().getDataLoader(), hover=True)
+                self.getPopupWidget().showDatasetInfo()
+            else:
+                self.showImage(press=True)
+                self.getPopupWidget().getDataLoader().changeIconImg(self.getPopupWidget().getDataLoader(), hover=True)
+                self.getPopupWidget().showDatasetInfo()
+        else:
+            self.showImage(hover=False)
+
 
     #This function handles the hovering and pressing effect of the icon
     def showImage(self, hover=False, press=False):
-        tmp = QPixmap(self.dataset_piximg.size())
+        tmp = QPixmap(self.getDatasetPixmap().size())
         tmp.fill(Qt.transparent)
         painter = QPainter(tmp)
-        painter.setBrush(QBrush(self.dataset_piximg))
+        painter.setBrush(QBrush(self.getDatasetPixmap()))
         painter.setPen(Qt.NoPen)
         painter.setRenderHint(QPainter.Antialiasing)
         radius = 50
-        painter.drawRoundedRect(self.dataset_piximg.rect(), radius, radius)
+        painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
         if hover:
             painter.setBrush(QColor(255,255,255,128))
-            painter.drawRoundedRect(self.dataset_piximg.rect(), radius, radius)
-            pass
+            painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
         elif press:
-            painter.setBrush(QColor(0,0,0,64))
-            painter.drawRoundedRect(self.dataset_piximg.rect(), radius, radius)
-            pass
+            painter.setBrush(QColor(0,0,0,128))
+            painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
         self.setPixmap(tmp)
         painter.end()
 
     #load the image file using the dataset name from the system
-    def loadDataSetImg(self):
-        self.dataset_piximg = QPixmap(DatasetIcon.dataset_directory+'img/'+self.dataset_name+'.png')
-        self.last_loaded_piximg = self.dataset_piximg
+    def loadDatasetImg(self, filename=None):
+        if filename is None:
+            filename = self.getDatasetName()
+        path = DatasetIcon.dataset_directory+'img/'+filename+('.png' if not self.isCNNIcon() else '_0.png')
+        if QFile.exists(path):
+            self.setDatasetPixmap(QPixmap(path))
+            self.icon_loaded = True
+        else:
+            print("Image Source File not Found:", path)
+            self.setDatasetPixmap(QPixmap(600,600))
+            self.icon_loaded = False
+        if self.isDataLoader():
+            self.setLastLoadedDatasetPixmap(self.getDatasetPixmap())
         self.showImage()
 
-    #Set the icon image using the icon image in datasetIcon object
-    def setDataSetImg(self, datasetIcon):
-        if self != datasetIcon:
-            self.dataset_piximg = datasetIcon.dataset_piximg
-        else:
-            self.dataset_piximg = self.last_loaded_piximg
-        self.showImage()
+    def isCNNIcon(self):
+        return False
+
+    def isDataLoader(self):
+        return False
+
+    def isDatasetIcon(self):
+        return True
+
+    def isIconLoaded(self):
+        return self.icon_loaded
+
+    def isSelectedByDataLoader(self):
+        return self == self.getPopupWidget().getDataLoader().getSelectedDatasetWidget()
+
+    def getPopupWidget(self):
+        return self.popup
+
+    def getDatasetName(self):
+        return self.dataset_name
+
+    def getDatasetPixmap(self):
+        return self.dataset_piximg
+
+    def setDatasetPixmap(self, pixmap):
+        self.dataset_piximg = pixmap
