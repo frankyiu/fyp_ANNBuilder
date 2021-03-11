@@ -32,7 +32,11 @@ class PopUpGuide():
                                   "border-style: solid;\n")
 
     def refresh(self):
+        self.pos = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
         self.transulateBack()
+        self.guide.setGeometry(
+            QRect(self.pos.x() + self.offset.x(), self.pos.y() + self.offset.y(), PopUpGuide.size.x(),
+                  PopUpGuide.size.y()))
 
     def setUpUI(self):
         # transulateBackground

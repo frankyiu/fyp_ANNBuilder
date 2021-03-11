@@ -1,12 +1,10 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QButtonGroup, QDialog
-from PyQt5.QtCore import Qt, QPropertyAnimation, QSize
-from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtWidgets import QMainWindow, QButtonGroup
+from PyQt5.QtCore import QPropertyAnimation, QSize
+from PyQt5.QtGui import QIcon
 from ui.Ui_GuiMainWindow import *
 from ui.DatasetLoader import *
-from ui.Guide import *
 from ui.PopUpGuideFactory import *
-from builder import *
+from builder import Builder
 
 
 class MainWindow(QMainWindow):
@@ -46,7 +44,6 @@ class MainWindow(QMainWindow):
         self.ui.btn_gotoBuilder.clicked.connect(self.ui.btn_draw.animateClick)
 
     def resizeEvent(self, event):
-        self.ui.btn_viewer.setMinimumHeight(self.ui.tab_viewer.height())
         self.builder.resizeEvent(event)
 
     def setupTitleBar(self):
@@ -128,43 +125,47 @@ class MainWindow(QMainWindow):
                 nGeo.setbottomLeft(event.globalPos())
             elif self.borderHit == 'bottom-right':
                 nGeo.setBottomRight(event.globalPos())
-            if nGeo.width() <= self.minimumWidth() and nGeo.height() <= self.minimumWidth():
-                return
-            self.setGeometry(nGeo)
-            return
-        # only move
-        margin = 10
-        width, height = self.ui.centralwidget.width(), self.ui.centralwidget.height()
-        x, y = event.pos().x(), event.pos().y()
-        if x <= margin and y <= margin:
-            self.setCursor(Qt.SizeFDiagCursor)
-            self.borderHit = 'top-left'
-        elif x <= margin and y >= height - margin:
-            self.setCursor(Qt.SizeBDiagCursor)
-            self.borderHit = 'bottom-left'
-        elif x >= width - margin and y <= margin:
-            self.setCursor(Qt.SizeBDiagCursor)
-            self.borderHit = 'top-right'
-        elif x >= width - margin and y >= height - margin:
-            self.setCursor(Qt.SizeFDiagCursor)
-            self.borderHit = 'bottom-right'
-        elif x <= margin:
-            self.setCursor(Qt.SizeHorCursor)
-            self.borderHit = 'left'
-        elif y <= margin:
-            self.setCursor(Qt.SizeVerCursor)
-            self.borderHit = 'top'
-        elif x >= width - margin:
-            self.setCursor(Qt.SizeHorCursor)
-            self.borderHit = 'right'
-        elif y >= height - margin:
-            self.setCursor(Qt.SizeVerCursor)
-            self.borderHit = 'bottom'
+
+            if nGeo.width() >= self.minimumWidth() and nGeo.height() >= self.minimumHeight():
+                self.setGeometry(nGeo)
+        else:
+            # only move
+            margin = 10
+            width, height = self.ui.centralwidget.width(), self.ui.centralwidget.height()
+            x, y = event.pos().x(), event.pos().y()
+            if x <= margin and y <= margin:
+                self.setCursor(Qt.SizeFDiagCursor)
+                self.borderHit = 'top-left'
+            elif x <= margin and y >= height - margin:
+                self.setCursor(Qt.SizeBDiagCursor)
+                self.borderHit = 'bottom-left'
+            elif x >= width - margin and y <= margin:
+                self.setCursor(Qt.SizeBDiagCursor)
+                self.borderHit = 'top-right'
+            elif x >= width - margin and y >= height - margin:
+                self.setCursor(Qt.SizeFDiagCursor)
+                self.borderHit = 'bottom-right'
+            elif x <= margin:
+                self.setCursor(Qt.SizeHorCursor)
+                self.borderHit = 'left'
+            elif y <= margin:
+                self.setCursor(Qt.SizeVerCursor)
+                self.borderHit = 'top'
+            elif x >= width - margin:
+                self.setCursor(Qt.SizeHorCursor)
+                self.borderHit = 'right'
+            elif y >= height - margin:
+                self.setCursor(Qt.SizeVerCursor)
+                self.borderHit = 'bottom'
 
     def mousePressEvent(self,event):
         self.dragPos = event.globalPos()
 
+    def mouseReleaseEvent(self, event):
+        self.borderHit = None
+
     def moveWindowEvent(self,event):
+        print('Moving')
         if self.isMaxWindow:
             return
             self.maxOrRestore()

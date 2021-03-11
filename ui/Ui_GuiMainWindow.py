@@ -12,9 +12,19 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from ui.DraggableLabel import DraggableLabel
-from ui.Ui_tutorialsWindow import Ui_tutorialsWindow
-from ui.ToolBarWidget import ToolBarWidget
+from .Ui_tutorialsWindow import Ui_tutorialsWindow
+from .ToolBarWidget import ToolBarWidget
+from .DraggableLabel import NNB1DNeuronIcon
+from .DraggableLabel import NNB1DBiasNeuronIcon
+from .DraggableLabel import NNB2DNeuronIcon
+from .DraggableLabel import NNB2DBiasNeuronIcon
+from .DraggableLabel import NNBAffineLayerIcon
+from .DraggableLabel import NNBConvLayerIcon
+from .DraggableLabel import NNBLostFuncBlock
+from .DraggableLabel import NNBRegularizerIcon
+from .DraggableLabel import NNBStacked1DAffLayerIcon
+from .DraggableLabel import NNBPoolingLayerIcon
+from .DraggableLabel import NNBFlattenLayerIcon
 
 import files_rc
 
@@ -53,6 +63,136 @@ class Ui_MainWindow(object):
         self.frame_main = QFrame(self.centralwidget)
         self.frame_main.setObjectName(u"frame_main")
         self.frame_main.setCursor(QCursor(Qt.ArrowCursor))
+        self.frame_main.setStyleSheet(u"QScrollBar:horizontal\n"
+"{\n"
+"    border: 1px solid #222222;\n"
+"    background-color: #3d3d3d;\n"
+"    height: 15px;\n"
+"    margin: 16px 0px 16px 0px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::handle:horizontal\n"
+"{\n"
+"    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(150, 150, 150, 255),stop:1 rgba(107, 107, 107, 255));\n"
+"	border-radius: 6px;\n"
+"    min-height: 20px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::add-line:horizontal\n"
+"{\n"
+"    background-color: #3d3d3d;\n"
+"    width: 17px;\n"
+"    subcontrol-position: right;\n"
+"    subcontrol-origin: margin;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::sub-line:horizontal\n"
+"{\n"
+"    border: 1px solid #3d3d3d;\n"
+"    background-color: #3d3d3d;\n"
+"    width: 17px;\n"
+"    subcontrol-position: left;\n"
+"    subcontrol-origin: margin;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::right-arrow:horizontal\n"
+"{\n"
+"    image: url(\":/basic/icons/basic/right-arrow.png\");\n"
+"    width: 6px;\n"
+"    height: 6px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScr"
+                        "ollBar::left-arrow:horizontal\n"
+"{\n"
+"    image: url(\":/basic/icons/basic/left-arrow.png\");\n"
+"    width: 6px;\n"
+"    height: 6px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal\n"
+"{\n"
+"    background: none;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar:vertical\n"
+"{\n"
+"    background-color: #3d3d3d;\n"
+"    width: 15px;\n"
+"    border: 1px solid #222222;\n"
+"    margin: 16px 0px 16px 0px;\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::handle:vertical\n"
+"{\n"
+"    background-color: qlineargradient(spread:repeat, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(150, 150, 150, 255),stop:1 rgba(107, 107, 107, 255));\n"
+"	border-radius: 3px;\n"
+"    min-height: 20px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::add-line:vertical\n"
+"{\n"
+"    border: 1px solid #3d3d3d;\n"
+"    background-color: #3d3d3d;\n"
+"    height: 15px;\n"
+"    subcontrol-position: bottom;\n"
+"    subcontrol-origin: margin;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::sub-line:vertical\n"
+"{\n"
+"    border: 1px solid #3d3d3d;\n"
+"    backgrou"
+                        "nd-color: #3d3d3d;\n"
+"    height: 15px;\n"
+"    subcontrol-position: top;\n"
+"    subcontrol-origin: margin;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::up-arrow:vertical\n"
+"{\n"
+"    image: url(\":/basic/icons/basic/up-arrow.png\");\n"
+"    width: 6px;\n"
+"    height: 6px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::down-arrow:vertical\n"
+"{\n"
+"    image: url(\":/basic/icons/basic/down-arrow.png\");\n"
+"    width: 6px;\n"
+"    height: 6px;\n"
+"\n"
+"}\n"
+"\n"
+"\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical\n"
+"{\n"
+"    background: none;\n"
+"\n"
+"}")
         self.frame_main.setFrameShape(QFrame.NoFrame)
         self.frame_main.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.frame_main)
@@ -494,84 +634,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addWidget(self.frame_dataloader)
 
-        self.frame_datapara = QFrame(self.frame_dataset)
-        self.frame_datapara.setObjectName(u"frame_datapara")
-        self.frame_datapara.setMaximumSize(QSize(16777215, 150))
-        self.frame_datapara.setStyleSheet(u"QSlider::groove:horizontal {\n"
-"    border-radius: 4px;\n"
-"    height: 8px;\n"
-"	margin: 0px;\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"QSlider::groove:horizontal:hover {\n"
-"	background-color: rgb(55, 62, 76);\n"
-"}\n"
-"QSlider::handle:horizontal {\n"
-"    background-color: rgb(85, 170, 255);\n"
-"    border: none;\n"
-"    height: 8px;\n"
-"    width: 16px;\n"
-"    margin: -4px 0;\n"
-"	border-radius: 8px;\n"
-"}\n"
-"QSlider::handle:horizontal:hover {\n"
-"    background-color: rgb(105, 180, 255);\n"
-"}\n"
-"QSlider::handle:horizontal:pressed {\n"
-"    background-color: rgb(65, 130, 195);\n"
-"}\n"
-"")
-        self.frame_datapara.setFrameShape(QFrame.StyledPanel)
-        self.frame_datapara.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_14 = QVBoxLayout(self.frame_datapara)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.label_ratio = QLabel(self.frame_datapara)
-        self.label_ratio.setObjectName(u"label_ratio")
-        self.label_ratio.setFont(font1)
-
-        self.verticalLayout_14.addWidget(self.label_ratio)
-
-        self.slider_ratio = QSlider(self.frame_datapara)
-        self.slider_ratio.setObjectName(u"slider_ratio")
-        self.slider_ratio.setCursor(QCursor(Qt.PointingHandCursor))
-        self.slider_ratio.setMinimum(1)
-        self.slider_ratio.setMaximum(100)
-        self.slider_ratio.setValue(80)
-        self.slider_ratio.setOrientation(Qt.Horizontal)
-
-        self.verticalLayout_14.addWidget(self.slider_ratio)
-
-        self.label_batch = QLabel(self.frame_datapara)
-        self.label_batch.setObjectName(u"label_batch")
-        self.label_batch.setFont(font1)
-
-        self.verticalLayout_14.addWidget(self.label_batch)
-
-        self.slider_batch = QSlider(self.frame_datapara)
-        self.slider_batch.setObjectName(u"slider_batch")
-        self.slider_batch.setCursor(QCursor(Qt.PointingHandCursor))
-        self.slider_batch.setMaximum(100)
-        self.slider_batch.setOrientation(Qt.Horizontal)
-
-        self.verticalLayout_14.addWidget(self.slider_batch)
-
-        self.label_noise = QLabel(self.frame_datapara)
-        self.label_noise.setObjectName(u"label_noise")
-        self.label_noise.setFont(font1)
-
-        self.verticalLayout_14.addWidget(self.label_noise)
-
-        self.slider_noise = QSlider(self.frame_datapara)
-        self.slider_noise.setObjectName(u"slider_noise")
-        self.slider_noise.setCursor(QCursor(Qt.PointingHandCursor))
-        self.slider_noise.setMaximum(100)
-        self.slider_noise.setOrientation(Qt.Horizontal)
-
-        self.verticalLayout_14.addWidget(self.slider_noise)
-
-
-        self.verticalLayout_12.addWidget(self.frame_datapara)
-
 
         self.verticalLayout_7.addWidget(self.frame_dataset)
 
@@ -599,139 +661,391 @@ class Ui_MainWindow(object):
         self.frame_9.setObjectName(u"frame_9")
         self.frame_9.setFrameShape(QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Raised)
-        self.widget = QWidget(self.frame_9)
+        self.verticalLayout_14 = QVBoxLayout(self.frame_9)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.scrollArea = QScrollArea(self.frame_9)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setStyleSheet(u"QScrollArea{\n"
+"border:None;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical{\n"
+"border:None;\n"
+"}\n"
+"\n"
+"")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 169, 718))
+        self.scrollAreaWidgetContents.setMaximumSize(QSize(169, 16777215))
+        self.horizontalLayout_12 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.widget_7 = QWidget(self.scrollAreaWidgetContents)
+        self.widget_7.setObjectName(u"widget_7")
+        sizePolicy.setHeightForWidth(self.widget_7.sizePolicy().hasHeightForWidth())
+        self.widget_7.setSizePolicy(sizePolicy)
+        self.widget_7.setMinimumSize(QSize(0, 700))
+        self.label_14 = QLabel(self.widget_7)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setGeometry(QRect(0, 9, 41, 16))
+        sizePolicy.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
+        self.label_14.setSizePolicy(sizePolicy)
+        self.label_14.setFont(font1)
+        self.widget = QWidget(self.widget_7)
         self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(90, 0, 81, 101))
-        self.verticalLayout_17 = QVBoxLayout(self.widget)
-        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
-        self.label_neuron_2 = DraggableLabel(self.widget)
-        self.label_neuron_2.setObjectName(u"label_neuron_2")
-        self.label_neuron_2.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_neuron_2.setStyleSheet(u"")
-        self.label_neuron_2.setPixmap(QPixmap(u":/basic/icons/basic/004-circle.png"))
-        self.label_neuron_2.setScaledContents(True)
-        self.label_neuron_2.setAlignment(Qt.AlignCenter)
-        self.label_neuron_2.setMargin(5)
-
-        self.verticalLayout_17.addWidget(self.label_neuron_2)
-
-        self.label_7 = QLabel(self.widget)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setFont(font1)
-        self.label_7.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_17.addWidget(self.label_7)
-
-        self.widget_2 = QWidget(self.frame_9)
-        self.widget_2.setObjectName(u"widget_2")
-        self.widget_2.setGeometry(QRect(0, 100, 81, 101))
-        self.verticalLayout_18 = QVBoxLayout(self.widget_2)
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.label_layer = DraggableLabel(self.widget_2)
-        self.label_layer.setObjectName(u"label_layer")
-        self.label_layer.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_layer.setPixmap(QPixmap(u":/basic/icons/basic/003-layers.png"))
-        self.label_layer.setScaledContents(True)
-        self.label_layer.setAlignment(Qt.AlignCenter)
-        self.label_layer.setMargin(5)
-
-        self.verticalLayout_18.addWidget(self.label_layer)
-
-        self.label_5 = QLabel(self.widget_2)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setFont(font1)
-        self.label_5.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_18.addWidget(self.label_5)
-
-        self.widget_3 = QWidget(self.frame_9)
-        self.widget_3.setObjectName(u"widget_3")
-        self.widget_3.setGeometry(QRect(0, 0, 81, 101))
-        self.verticalLayout_19 = QVBoxLayout(self.widget_3)
-        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.label_neuron_3 = DraggableLabel(self.widget_3)
-        self.label_neuron_3.setObjectName(u"label_neuron_3")
-        self.label_neuron_3.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_neuron_3.setStyleSheet(u"")
-        self.label_neuron_3.setPixmap(QPixmap(u":/basic/icons/basic/004-circle.png"))
-        self.label_neuron_3.setScaledContents(True)
-        self.label_neuron_3.setAlignment(Qt.AlignCenter)
-        self.label_neuron_3.setMargin(5)
-
-        self.verticalLayout_19.addWidget(self.label_neuron_3)
-
-        self.label_8 = QLabel(self.widget_3)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setFont(font1)
-        self.label_8.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_19.addWidget(self.label_8)
-
-        self.widget_4 = QWidget(self.frame_9)
+        self.widget.setGeometry(QRect(-5, 30, 161, 199))
+        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy5)
+        self.gridLayout_2 = QGridLayout(self.widget)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.widget_4 = QWidget(self.widget)
         self.widget_4.setObjectName(u"widget_4")
-        self.widget_4.setGeometry(QRect(90, 100, 81, 101))
         self.verticalLayout_20 = QVBoxLayout(self.widget_4)
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
-        self.label_layer_2 = DraggableLabel(self.widget_4)
-        self.label_layer_2.setObjectName(u"label_layer_2")
-        self.label_layer_2.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_layer_2.setPixmap(QPixmap(u":/basic/icons/basic/003-layers.png"))
-        self.label_layer_2.setScaledContents(True)
-        self.label_layer_2.setAlignment(Qt.AlignCenter)
-        self.label_layer_2.setMargin(5)
+        self.verticalLayout_20.setContentsMargins(4, 4, 4, 4)
+        self.neuron_2D = NNB2DNeuronIcon(self.widget_4)
+        self.neuron_2D.setObjectName(u"neuron_2D")
+        self.neuron_2D.setCursor(QCursor(Qt.PointingHandCursor))
+        self.neuron_2D.setStyleSheet(u"")
+        self.neuron_2D.setPixmap(QPixmap(u":/basic/icons/basic/004-circle.png"))
+        self.neuron_2D.setScaledContents(True)
+        self.neuron_2D.setAlignment(Qt.AlignCenter)
+        self.neuron_2D.setMargin(7)
 
-        self.verticalLayout_20.addWidget(self.label_layer_2)
+        self.verticalLayout_20.addWidget(self.neuron_2D)
 
         self.label_9 = QLabel(self.widget_4)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font1)
+        font7 = QFont()
+        font7.setFamily(u"Segoe UI")
+        font7.setPointSize(8)
+        self.label_9.setFont(font7)
+        self.label_9.setTextFormat(Qt.AutoText)
         self.label_9.setAlignment(Qt.AlignCenter)
+        self.label_9.setWordWrap(False)
 
         self.verticalLayout_20.addWidget(self.label_9)
 
-        self.widget_5 = QWidget(self.frame_9)
+
+        self.gridLayout_2.addWidget(self.widget_4, 1, 0, 1, 1)
+
+        self.widget_5 = QWidget(self.widget)
         self.widget_5.setObjectName(u"widget_5")
-        self.widget_5.setGeometry(QRect(0, 200, 81, 101))
         self.verticalLayout_21 = QVBoxLayout(self.widget_5)
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.label_layer_3 = DraggableLabel(self.widget_5)
-        self.label_layer_3.setObjectName(u"label_layer_3")
-        self.label_layer_3.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_layer_3.setPixmap(QPixmap(u":/basic/icons/basic/010-rhombus.png"))
-        self.label_layer_3.setScaledContents(True)
-        self.label_layer_3.setAlignment(Qt.AlignCenter)
-        self.label_layer_3.setMargin(5)
+        self.verticalLayout_21.setContentsMargins(4, 4, 4, 4)
+        self.neuron_bias_1D = NNB1DBiasNeuronIcon(self.widget_5)
+        self.neuron_bias_1D.setObjectName(u"neuron_bias_1D")
+        self.neuron_bias_1D.setCursor(QCursor(Qt.PointingHandCursor))
+        self.neuron_bias_1D.setStyleSheet(u"")
+        self.neuron_bias_1D.setPixmap(QPixmap(u":/component/icons/component/1D_Bias.png"))
+        self.neuron_bias_1D.setScaledContents(True)
+        self.neuron_bias_1D.setAlignment(Qt.AlignCenter)
+        self.neuron_bias_1D.setMargin(7)
 
-        self.verticalLayout_21.addWidget(self.label_layer_3)
+        self.verticalLayout_21.addWidget(self.neuron_bias_1D)
 
         self.label_10 = QLabel(self.widget_5)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font1)
+        self.label_10.setFont(font7)
+        self.label_10.setTextFormat(Qt.AutoText)
         self.label_10.setAlignment(Qt.AlignCenter)
+        self.label_10.setWordWrap(False)
 
         self.verticalLayout_21.addWidget(self.label_10)
 
-        self.widget_6 = QWidget(self.frame_9)
+
+        self.gridLayout_2.addWidget(self.widget_5, 0, 1, 1, 1)
+
+        self.widget_6 = QWidget(self.widget)
         self.widget_6.setObjectName(u"widget_6")
-        self.widget_6.setGeometry(QRect(90, 200, 81, 101))
         self.verticalLayout_22 = QVBoxLayout(self.widget_6)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.label_layer_4 = DraggableLabel(self.widget_6)
-        self.label_layer_4.setObjectName(u"label_layer_4")
-        self.label_layer_4.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label_layer_4.setPixmap(QPixmap(u":/basic/icons/basic/009-costfunc.png"))
-        self.label_layer_4.setScaledContents(True)
-        self.label_layer_4.setAlignment(Qt.AlignCenter)
-        self.label_layer_4.setMargin(5)
+        self.verticalLayout_22.setContentsMargins(4, 4, 4, 4)
+        self.neuron_1D = NNB1DNeuronIcon(self.widget_6)
+        self.neuron_1D.setObjectName(u"neuron_1D")
+        self.neuron_1D.setCursor(QCursor(Qt.PointingHandCursor))
+        self.neuron_1D.setStyleSheet(u"")
+        self.neuron_1D.setPixmap(QPixmap(u":/component/icons/component/1D_Neuron.png"))
+        self.neuron_1D.setScaledContents(True)
+        self.neuron_1D.setAlignment(Qt.AlignCenter)
+        self.neuron_1D.setMargin(7)
 
-        self.verticalLayout_22.addWidget(self.label_layer_4)
+        self.verticalLayout_22.addWidget(self.neuron_1D)
 
         self.label_11 = QLabel(self.widget_6)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font1)
+        self.label_11.setFont(font7)
+        self.label_11.setTextFormat(Qt.AutoText)
         self.label_11.setAlignment(Qt.AlignCenter)
+        self.label_11.setWordWrap(False)
 
         self.verticalLayout_22.addWidget(self.label_11)
+
+
+        self.gridLayout_2.addWidget(self.widget_6, 0, 0, 1, 1)
+
+        self.widget_8 = QWidget(self.widget)
+        self.widget_8.setObjectName(u"widget_8")
+        self.verticalLayout_23 = QVBoxLayout(self.widget_8)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.verticalLayout_23.setContentsMargins(4, 4, 4, 4)
+        self.neuron_bias_2D = NNB2DBiasNeuronIcon(self.widget_8)
+        self.neuron_bias_2D.setObjectName(u"neuron_bias_2D")
+        self.neuron_bias_2D.setCursor(QCursor(Qt.PointingHandCursor))
+        self.neuron_bias_2D.setStyleSheet(u"")
+        self.neuron_bias_2D.setPixmap(QPixmap(u":/component/icons/component/1D_Bias.png"))
+        self.neuron_bias_2D.setScaledContents(True)
+        self.neuron_bias_2D.setAlignment(Qt.AlignCenter)
+        self.neuron_bias_2D.setMargin(7)
+
+        self.verticalLayout_23.addWidget(self.neuron_bias_2D)
+
+        self.label_15 = QLabel(self.widget_8)
+        self.label_15.setObjectName(u"label_15")
+        self.label_15.setFont(font7)
+        self.label_15.setTextFormat(Qt.AutoText)
+        self.label_15.setAlignment(Qt.AlignCenter)
+        self.label_15.setWordWrap(False)
+
+        self.verticalLayout_23.addWidget(self.label_15)
+
+
+        self.gridLayout_2.addWidget(self.widget_8, 1, 1, 1, 1)
+
+        self.label_20 = QLabel(self.widget_7)
+        self.label_20.setObjectName(u"label_20")
+        self.label_20.setGeometry(QRect(0, 235, 35, 16))
+        sizePolicy.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
+        self.label_20.setSizePolicy(sizePolicy)
+        self.label_20.setFont(font1)
+        self.widget_2 = QWidget(self.widget_7)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setGeometry(QRect(-5, 250, 161, 291))
+        sizePolicy5.setHeightForWidth(self.widget_2.sizePolicy().hasHeightForWidth())
+        self.widget_2.setSizePolicy(sizePolicy5)
+        self.gridLayout_3 = QGridLayout(self.widget_2)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.widget_9 = QWidget(self.widget_2)
+        self.widget_9.setObjectName(u"widget_9")
+        self.verticalLayout_24 = QVBoxLayout(self.widget_9)
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
+        self.verticalLayout_24.setContentsMargins(4, 4, 4, 4)
+        self.conv_layer = NNBConvLayerIcon(self.widget_9)
+        self.conv_layer.setObjectName(u"conv_layer")
+        self.conv_layer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.conv_layer.setStyleSheet(u"")
+        self.conv_layer.setPixmap(QPixmap(u":/component/icons/component/Conv_Layer.png"))
+        self.conv_layer.setScaledContents(True)
+        self.conv_layer.setAlignment(Qt.AlignCenter)
+        self.conv_layer.setMargin(0)
+
+        self.verticalLayout_24.addWidget(self.conv_layer)
+
+        self.label_16 = QLabel(self.widget_9)
+        self.label_16.setObjectName(u"label_16")
+        self.label_16.setFont(font7)
+        self.label_16.setTextFormat(Qt.AutoText)
+        self.label_16.setAlignment(Qt.AlignCenter)
+        self.label_16.setWordWrap(False)
+
+        self.verticalLayout_24.addWidget(self.label_16)
+
+
+        self.gridLayout_3.addWidget(self.widget_9, 1, 0, 1, 1)
+
+        self.widget_10 = QWidget(self.widget_2)
+        self.widget_10.setObjectName(u"widget_10")
+        self.verticalLayout_25 = QVBoxLayout(self.widget_10)
+        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
+        self.verticalLayout_25.setContentsMargins(4, 4, 4, 4)
+        self.stacked_affine_layer = NNBStacked1DAffLayerIcon(self.widget_10)
+        self.stacked_affine_layer.setObjectName(u"stacked_affine_layer")
+        self.stacked_affine_layer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.stacked_affine_layer.setStyleSheet(u"")
+        self.stacked_affine_layer.setPixmap(QPixmap(u":/component/icons/component/StackAffine_Layer.png"))
+        self.stacked_affine_layer.setScaledContents(True)
+        self.stacked_affine_layer.setAlignment(Qt.AlignCenter)
+        self.stacked_affine_layer.setMargin(0)
+
+        self.verticalLayout_25.addWidget(self.stacked_affine_layer)
+
+        self.label_17 = QLabel(self.widget_10)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setFont(font7)
+        self.label_17.setTextFormat(Qt.AutoText)
+        self.label_17.setAlignment(Qt.AlignCenter)
+        self.label_17.setWordWrap(False)
+
+        self.verticalLayout_25.addWidget(self.label_17)
+
+
+        self.gridLayout_3.addWidget(self.widget_10, 0, 1, 1, 1)
+
+        self.widget_12 = QWidget(self.widget_2)
+        self.widget_12.setObjectName(u"widget_12")
+        self.verticalLayout_27 = QVBoxLayout(self.widget_12)
+        self.verticalLayout_27.setObjectName(u"verticalLayout_27")
+        self.verticalLayout_27.setContentsMargins(4, 4, 4, 4)
+        self.pooling_layer = NNBPoolingLayerIcon(self.widget_12)
+        self.pooling_layer.setObjectName(u"pooling_layer")
+        self.pooling_layer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.pooling_layer.setStyleSheet(u"")
+        self.pooling_layer.setPixmap(QPixmap(u":/component/icons/component/Pooling_Layer.png"))
+        self.pooling_layer.setScaledContents(True)
+        self.pooling_layer.setAlignment(Qt.AlignCenter)
+        self.pooling_layer.setMargin(0)
+
+        self.verticalLayout_27.addWidget(self.pooling_layer)
+
+        self.label_19 = QLabel(self.widget_12)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setFont(font7)
+        self.label_19.setTextFormat(Qt.AutoText)
+        self.label_19.setAlignment(Qt.AlignCenter)
+        self.label_19.setWordWrap(False)
+
+        self.verticalLayout_27.addWidget(self.label_19)
+
+
+        self.gridLayout_3.addWidget(self.widget_12, 1, 1, 1, 1)
+
+        self.widget_11 = QWidget(self.widget_2)
+        self.widget_11.setObjectName(u"widget_11")
+        self.verticalLayout_26 = QVBoxLayout(self.widget_11)
+        self.verticalLayout_26.setObjectName(u"verticalLayout_26")
+        self.verticalLayout_26.setContentsMargins(4, 4, 4, 4)
+        self.affine_layer = NNBAffineLayerIcon(self.widget_11)
+        self.affine_layer.setObjectName(u"affine_layer")
+        self.affine_layer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.affine_layer.setStyleSheet(u"")
+        self.affine_layer.setPixmap(QPixmap(u":/component/icons/component/Affine_Layer.png"))
+        self.affine_layer.setScaledContents(True)
+        self.affine_layer.setAlignment(Qt.AlignCenter)
+        self.affine_layer.setMargin(0)
+
+        self.verticalLayout_26.addWidget(self.affine_layer)
+
+        self.label_18 = QLabel(self.widget_11)
+        self.label_18.setObjectName(u"label_18")
+        self.label_18.setFont(font7)
+        self.label_18.setTextFormat(Qt.AutoText)
+        self.label_18.setAlignment(Qt.AlignCenter)
+        self.label_18.setWordWrap(False)
+
+        self.verticalLayout_26.addWidget(self.label_18)
+
+
+        self.gridLayout_3.addWidget(self.widget_11, 0, 0, 1, 1)
+
+        self.widget_13 = QWidget(self.widget_2)
+        self.widget_13.setObjectName(u"widget_13")
+        self.verticalLayout_28 = QVBoxLayout(self.widget_13)
+        self.verticalLayout_28.setObjectName(u"verticalLayout_28")
+        self.verticalLayout_28.setContentsMargins(4, 4, 4, 4)
+        self.flatten_layer = NNBFlattenLayerIcon(self.widget_13)
+        self.flatten_layer.setObjectName(u"flatten_layer")
+        self.flatten_layer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.flatten_layer.setStyleSheet(u"")
+        self.flatten_layer.setPixmap(QPixmap(u":/component/icons/component/Flatten_Layer.png"))
+        self.flatten_layer.setScaledContents(True)
+        self.flatten_layer.setAlignment(Qt.AlignCenter)
+        self.flatten_layer.setMargin(0)
+
+        self.verticalLayout_28.addWidget(self.flatten_layer)
+
+        self.label_21 = QLabel(self.widget_13)
+        self.label_21.setObjectName(u"label_21")
+        self.label_21.setFont(font7)
+        self.label_21.setTextFormat(Qt.AutoText)
+        self.label_21.setAlignment(Qt.AlignCenter)
+        self.label_21.setWordWrap(False)
+
+        self.verticalLayout_28.addWidget(self.label_21)
+
+
+        self.gridLayout_3.addWidget(self.widget_13, 2, 0, 1, 1)
+
+        self.label_22 = QLabel(self.widget_7)
+        self.label_22.setObjectName(u"label_22")
+        self.label_22.setGeometry(QRect(0, 569, 61, 21))
+        sizePolicy.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
+        self.label_22.setSizePolicy(sizePolicy)
+        self.label_22.setFont(font1)
+        self.widget_3 = QWidget(self.widget_7)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setGeometry(QRect(-5, 580, 161, 106))
+        sizePolicy5.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
+        self.widget_3.setSizePolicy(sizePolicy5)
+        self.gridLayout_4 = QGridLayout(self.widget_3)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.widget_16 = QWidget(self.widget_3)
+        self.widget_16.setObjectName(u"widget_16")
+        self.verticalLayout_31 = QVBoxLayout(self.widget_16)
+        self.verticalLayout_31.setObjectName(u"verticalLayout_31")
+        self.verticalLayout_31.setContentsMargins(4, 4, 4, 4)
+        self.loss_func_block = NNBLostFuncBlock(self.widget_16)
+        self.loss_func_block.setObjectName(u"loss_func_block")
+        self.loss_func_block.setCursor(QCursor(Qt.PointingHandCursor))
+        self.loss_func_block.setStyleSheet(u"")
+        self.loss_func_block.setPixmap(QPixmap(u":/component/icons/component/LossFuction.png"))
+        self.loss_func_block.setScaledContents(True)
+        self.loss_func_block.setAlignment(Qt.AlignCenter)
+        self.loss_func_block.setMargin(7)
+
+        self.verticalLayout_31.addWidget(self.loss_func_block)
+
+        self.label_25 = QLabel(self.widget_16)
+        self.label_25.setObjectName(u"label_25")
+        self.label_25.setFont(font7)
+        self.label_25.setTextFormat(Qt.AutoText)
+        self.label_25.setAlignment(Qt.AlignCenter)
+        self.label_25.setWordWrap(False)
+
+        self.verticalLayout_31.addWidget(self.label_25)
+
+
+        self.gridLayout_4.addWidget(self.widget_16, 0, 1, 1, 1)
+
+        self.widget_18 = QWidget(self.widget_3)
+        self.widget_18.setObjectName(u"widget_18")
+        self.verticalLayout_33 = QVBoxLayout(self.widget_18)
+        self.verticalLayout_33.setObjectName(u"verticalLayout_33")
+        self.verticalLayout_33.setContentsMargins(4, 4, 4, 4)
+        self.regularizer = NNBRegularizerIcon(self.widget_18)
+        self.regularizer.setObjectName(u"regularizer")
+        self.regularizer.setCursor(QCursor(Qt.PointingHandCursor))
+        self.regularizer.setStyleSheet(u"")
+        self.regularizer.setPixmap(QPixmap(u":/component/icons/component/Regularizer.png"))
+        self.regularizer.setScaledContents(True)
+        self.regularizer.setAlignment(Qt.AlignCenter)
+        self.regularizer.setMargin(7)
+
+        self.verticalLayout_33.addWidget(self.regularizer)
+
+        self.label_27 = QLabel(self.widget_18)
+        self.label_27.setObjectName(u"label_27")
+        self.label_27.setFont(font7)
+        self.label_27.setTextFormat(Qt.AutoText)
+        self.label_27.setAlignment(Qt.AlignCenter)
+        self.label_27.setWordWrap(False)
+
+        self.verticalLayout_33.addWidget(self.label_27)
+
+
+        self.gridLayout_4.addWidget(self.widget_18, 0, 0, 1, 1)
+
+
+        self.horizontalLayout_12.addWidget(self.widget_7)
+
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_14.addWidget(self.scrollArea)
 
 
         self.verticalLayout_13.addWidget(self.frame_9)
@@ -776,6 +1090,17 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.label_3)
 
+        self.btn_message = QPushButton(self.frame_2)
+        self.btn_message.setObjectName(u"btn_message")
+        self.btn_message.setFont(font1)
+        self.btn_message.setCursor(QCursor(Qt.PointingHandCursor))
+        icon7 = QIcon()
+        icon7.addFile(u":/basic/icons/basic/warning.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_message.setIcon(icon7)
+        self.btn_message.setCheckable(True)
+
+        self.horizontalLayout_7.addWidget(self.btn_message)
+
         self.widget_toolbar = ToolBarWidget(self.frame_2)
         self.widget_toolbar.setObjectName(u"widget_toolbar")
         sizePolicy.setHeightForWidth(self.widget_toolbar.sizePolicy().hasHeightForWidth())
@@ -784,13 +1109,6 @@ class Ui_MainWindow(object):
         self.widget_toolbar.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_7.addWidget(self.widget_toolbar)
-
-        self.btn_guide = QPushButton(self.frame_2)
-        self.btn_guide.setObjectName(u"btn_guide")
-        self.btn_guide.setMaximumSize(QSize(24, 16777215))
-        self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
-
-        self.horizontalLayout_7.addWidget(self.btn_guide)
 
 
         self.verticalLayout_16.addWidget(self.frame_2)
@@ -811,41 +1129,54 @@ class Ui_MainWindow(object):
 
         self.draw_right = QFrame(self.draw_content)
         self.draw_right.setObjectName(u"draw_right")
-        self.draw_right.setMinimumSize(QSize(200, 0))
-        self.draw_right.setMaximumSize(QSize(0, 16777215))
+        sizePolicy.setHeightForWidth(self.draw_right.sizePolicy().hasHeightForWidth())
+        self.draw_right.setSizePolicy(sizePolicy)
+        self.draw_right.setMinimumSize(QSize(0, 0))
+        self.draw_right.setMaximumSize(QSize(20, 16777215))
         self.draw_right.setFrameShape(QFrame.StyledPanel)
         self.draw_right.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.draw_right)
-        self.horizontalLayout_12.setSpacing(0)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.horizontalLayout_12.setContentsMargins(0, 0, -1, 9)
-        self.btn_viewer = QPushButton(self.draw_right)
-        self.btn_viewer.setObjectName(u"btn_viewer")
-        self.btn_viewer.setMinimumSize(QSize(20, 100))
-        self.btn_viewer.setMaximumSize(QSize(20, 16777215))
-        self.btn_viewer.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_viewer.setStyleSheet(u"background-color: rgb(27, 31, 38);\n"
+        self.verticalLayout_15 = QVBoxLayout(self.draw_right)
+        self.verticalLayout_15.setSpacing(3)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.verticalLayout_15.setContentsMargins(0, 0, 0, 9)
+        self.btn_guide = QPushButton(self.draw_right)
+        self.btn_guide.setObjectName(u"btn_guide")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.btn_guide.sizePolicy().hasHeightForWidth())
+        self.btn_guide.setSizePolicy(sizePolicy6)
+        self.btn_guide.setMinimumSize(QSize(0, 32))
+        self.btn_guide.setMaximumSize(QSize(24, 16777215))
+        self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
+        icon8 = QIcon()
+        icon8.addFile(u":/basic/icons/basic/suggestion.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_guide.setIcon(icon8)
+        self.btn_guide.setIconSize(QSize(20, 20))
+
+        self.verticalLayout_15.addWidget(self.btn_guide)
+
+        self.btn_inspector = QPushButton(self.draw_right)
+        self.btn_inspector.setObjectName(u"btn_inspector")
+        sizePolicy4.setHeightForWidth(self.btn_inspector.sizePolicy().hasHeightForWidth())
+        self.btn_inspector.setSizePolicy(sizePolicy4)
+        self.btn_inspector.setMinimumSize(QSize(20, 120))
+        self.btn_inspector.setMaximumSize(QSize(16777215, 16777215))
+        self.btn_inspector.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_inspector.setStyleSheet(u"background-color: rgb(27, 31, 38);\n"
 "border: none;\n"
 "\n"
 "")
-        self.btn_viewer.setIcon(icon3)
+        self.btn_inspector.setCheckable(True)
 
-        self.horizontalLayout_12.addWidget(self.btn_viewer)
+        self.verticalLayout_15.addWidget(self.btn_inspector)
 
-        self.tab_viewer = QTabWidget(self.draw_right)
-        self.tab_viewer.setObjectName(u"tab_viewer")
-        self.tab_viewer.setEnabled(True)
-        self.tab_viewer.setMaximumSize(QSize(16777215, 16777215))
-        self.tab_viewer.setAutoFillBackground(False)
-        self.tab_viewer.setStyleSheet(u"background-color: 0;")
-        self.tab_3 = QWidget()
-        self.tab_3.setObjectName(u"tab_3")
-        self.tab_viewer.addTab(self.tab_3, "")
-        self.tab_4 = QWidget()
-        self.tab_4.setObjectName(u"tab_4")
-        self.tab_viewer.addTab(self.tab_4, "")
+        self.frame_3 = QFrame(self.draw_right)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
 
-        self.horizontalLayout_12.addWidget(self.tab_viewer)
+        self.verticalLayout_15.addWidget(self.frame_3)
 
 
         self.horizontalLayout_13.addWidget(self.draw_right)
@@ -890,53 +1221,53 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(10)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.radioButton_5 = QRadioButton(self.frame_12)
-        self.radioButton_5.setObjectName(u"radioButton_5")
-        self.radioButton_5.setFont(font1)
+        self.radio_adaDelta = QRadioButton(self.frame_12)
+        self.radio_adaDelta.setObjectName(u"radio_adaDelta")
+        self.radio_adaDelta.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_5, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.radio_adaDelta, 2, 0, 1, 1)
 
-        self.radioButton_6 = QRadioButton(self.frame_12)
-        self.radioButton_6.setObjectName(u"radioButton_6")
-        self.radioButton_6.setFont(font1)
+        self.radio_adaGrad = QRadioButton(self.frame_12)
+        self.radio_adaGrad.setObjectName(u"radio_adaGrad")
+        self.radio_adaGrad.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_6, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_adaGrad, 2, 1, 1, 1)
 
-        self.radioButton_2 = QRadioButton(self.frame_12)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-        self.radioButton_2.setFont(font1)
+        self.radio_sgd = QRadioButton(self.frame_12)
+        self.radio_sgd.setObjectName(u"radio_sgd")
+        self.radio_sgd.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_2, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.radio_sgd, 1, 0, 1, 1)
 
-        self.radioButton = QRadioButton(self.frame_12)
-        self.radioButton.setObjectName(u"radioButton")
-        self.radioButton.setFont(font1)
+        self.radio_fullbatch = QRadioButton(self.frame_12)
+        self.radio_fullbatch.setObjectName(u"radio_fullbatch")
+        self.radio_fullbatch.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.radio_fullbatch, 0, 0, 1, 1)
 
-        self.radioButton_4 = QRadioButton(self.frame_12)
-        self.radioButton_4.setObjectName(u"radioButton_4")
-        self.radioButton_4.setFont(font1)
+        self.radio_momentum = QRadioButton(self.frame_12)
+        self.radio_momentum.setObjectName(u"radio_momentum")
+        self.radio_momentum.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_4, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_momentum, 1, 1, 1, 1)
 
-        self.radioButton_3 = QRadioButton(self.frame_12)
-        self.radioButton_3.setObjectName(u"radioButton_3")
-        self.radioButton_3.setFont(font1)
+        self.radio_minibatch = QRadioButton(self.frame_12)
+        self.radio_minibatch.setObjectName(u"radio_minibatch")
+        self.radio_minibatch.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_3, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_minibatch, 0, 1, 1, 1)
 
-        self.radioButton_7 = QRadioButton(self.frame_12)
-        self.radioButton_7.setObjectName(u"radioButton_7")
-        self.radioButton_7.setFont(font1)
+        self.radio_rmsProp = QRadioButton(self.frame_12)
+        self.radio_rmsProp.setObjectName(u"radio_rmsProp")
+        self.radio_rmsProp.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_7, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.radio_rmsProp, 3, 0, 1, 1)
 
-        self.radioButton_8 = QRadioButton(self.frame_12)
-        self.radioButton_8.setObjectName(u"radioButton_8")
-        self.radioButton_8.setFont(font1)
+        self.radio_adam = QRadioButton(self.frame_12)
+        self.radio_adam.setObjectName(u"radio_adam")
+        self.radio_adam.setFont(font1)
 
-        self.gridLayout.addWidget(self.radioButton_8, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_adam, 3, 1, 1, 1)
 
 
         self.horizontalLayout_19.addWidget(self.frame_12)
@@ -1032,10 +1363,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.label_13 = QLabel(self.frame_13)
         self.label_13.setObjectName(u"label_13")
-        font7 = QFont()
-        font7.setFamily(u"Segoe UI")
-        font7.setPointSize(13)
-        self.label_13.setFont(font7)
+        font8 = QFont()
+        font8.setFamily(u"Segoe UI")
+        font8.setPointSize(13)
+        self.label_13.setFont(font8)
 
         self.verticalLayout_11.addWidget(self.label_13)
 
@@ -1053,9 +1384,9 @@ class Ui_MainWindow(object):
         self.btn_restart.setMinimumSize(QSize(32, 32))
         self.btn_restart.setMaximumSize(QSize(40, 40))
         self.btn_restart.setCursor(QCursor(Qt.PointingHandCursor))
-        icon7 = QIcon()
-        icon7.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_restart.setIcon(icon7)
+        icon9 = QIcon()
+        icon9.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_restart.setIcon(icon9)
         self.btn_restart.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_11.addWidget(self.btn_restart)
@@ -1076,10 +1407,11 @@ class Ui_MainWindow(object):
         self.btn_train.setMaximumSize(QSize(70, 16777215))
         self.btn_train.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_train.setMouseTracking(False)
-        icon8 = QIcon()
-        icon8.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_train.setIcon(icon8)
+        icon10 = QIcon()
+        icon10.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_train.setIcon(icon10)
         self.btn_train.setIconSize(QSize(60, 60))
+        self.btn_train.setCheckable(True)
 
         self.horizontalLayout_9.addWidget(self.btn_train)
 
@@ -1096,9 +1428,9 @@ class Ui_MainWindow(object):
         self.btn_feedfor.setObjectName(u"btn_feedfor")
         self.btn_feedfor.setMaximumSize(QSize(40, 40))
         self.btn_feedfor.setCursor(QCursor(Qt.PointingHandCursor))
-        icon9 = QIcon()
-        icon9.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_feedfor.setIcon(icon9)
+        icon11 = QIcon()
+        icon11.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_feedfor.setIcon(icon11)
         self.btn_feedfor.setIconSize(QSize(20, 20))
 
         self.verticalLayout_3.addWidget(self.btn_feedfor)
@@ -1107,9 +1439,9 @@ class Ui_MainWindow(object):
         self.btn_backprop.setObjectName(u"btn_backprop")
         self.btn_backprop.setMaximumSize(QSize(40, 40))
         self.btn_backprop.setCursor(QCursor(Qt.PointingHandCursor))
-        icon10 = QIcon()
-        icon10.addFile(u":/basic/icons/basic/007-backward-arrows-couple.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_backprop.setIcon(icon10)
+        icon12 = QIcon()
+        icon12.addFile(u":/basic/icons/basic/007-backward-arrows-couple.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_backprop.setIcon(icon12)
         self.btn_backprop.setIconSize(QSize(24, 24))
 
         self.verticalLayout_3.addWidget(self.btn_backprop)
@@ -1149,7 +1481,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.stackedWidget.setCurrentIndex(2)
-        self.tab_viewer.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1171,46 +1502,64 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btn_close.setText("")
         self.btn_expand.setText("")
+#if QT_CONFIG(tooltip)
+        self.btn_home.setToolTip(QCoreApplication.translate("MainWindow", u"Home", None))
+#endif // QT_CONFIG(tooltip)
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"     Home", None))
+#if QT_CONFIG(tooltip)
+        self.btn_tutorial.setToolTip(QCoreApplication.translate("MainWindow", u"Tutorial", None))
+#endif // QT_CONFIG(tooltip)
         self.btn_tutorial.setText(QCoreApplication.translate("MainWindow", u"     Tutorial", None))
+#if QT_CONFIG(tooltip)
+        self.btn_draw.setToolTip(QCoreApplication.translate("MainWindow", u"Builder", None))
+#endif // QT_CONFIG(tooltip)
         self.btn_draw.setText(QCoreApplication.translate("MainWindow", u"     Builder", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Welcome to ANN Builder", None))
-        self.btn_gotoTutorial.setText(QCoreApplication.translate("MainWindow", u"If you are new to Machine Learning,\n"
+        self.btn_gotoTutorial.setText(QCoreApplication.translate("MainWindow", u"If you are new to neural network,\n"
 "we suggest you to read tutorial here first", None))
         self.btn_gotoBuilder.setText(QCoreApplication.translate("MainWindow", u"Click Here to start building your own \n"
-"Machine Learning Model", None))
+"Neural Network Model", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Tutorial", None))
         self.label_dataset.setText(QCoreApplication.translate("MainWindow", u"Data", None))
-        self.label_ratio.setText(QCoreApplication.translate("MainWindow", u"Ratio(Training:Testing):", None))
-        self.label_batch.setText(QCoreApplication.translate("MainWindow", u"Batch size:", None))
-        self.label_noise.setText(QCoreApplication.translate("MainWindow", u"Noise:", None))
         self.label_component.setText(QCoreApplication.translate("MainWindow", u"Component", None))
-        self.label_neuron_2.setText("")
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"2D-Neuron", None))
-        self.label_layer.setText("")
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Layer", None))
-        self.label_neuron_3.setText("")
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Neuron", None))
-        self.label_layer_2.setText("")
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"2D-Layer", None))
-        self.label_layer_3.setText("")
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Regularizer", None))
-        self.label_layer_4.setText("")
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Cost Func", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Neuron", None))
+        self.neuron_2D.setText("")
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"2D_Neuron", None))
+        self.neuron_bias_1D.setText("")
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"1D_Bias", None))
+        self.neuron_1D.setText("")
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"1D_Neuron", None))
+        self.neuron_bias_2D.setText("")
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"2D_Bias", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Layer", None))
+        self.conv_layer.setText("")
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u"Conv", None))
+        self.stacked_affine_layer.setText("")
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"StackAffine", None))
+        self.pooling_layer.setText("")
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Pooling", None))
+        self.affine_layer.setText("")
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Affine", None))
+        self.flatten_layer.setText("")
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"Flatten", None))
+        self.label_22.setText(QCoreApplication.translate("MainWindow", u"Other", None))
+        self.loss_func_block.setText("")
+        self.label_25.setText(QCoreApplication.translate("MainWindow", u"LossFunc", None))
+        self.regularizer.setText("")
+        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Regularizer", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Building Panel", None))
-        self.btn_guide.setText(QCoreApplication.translate("MainWindow", u"?", None))
-        self.btn_viewer.setText("")
-        self.tab_viewer.setTabText(self.tab_viewer.indexOf(self.tab_3), QCoreApplication.translate("MainWindow", u"Tab 1", None))
-        self.tab_viewer.setTabText(self.tab_viewer.indexOf(self.tab_4), QCoreApplication.translate("MainWindow", u"Tab 2", None))
+        self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Warning: 0", None))
+        self.btn_guide.setText("")
+        self.btn_inspector.setText("")
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Optrimazation", None))
-        self.radioButton_5.setText(QCoreApplication.translate("MainWindow", u"AdaDelta", None))
-        self.radioButton_6.setText(QCoreApplication.translate("MainWindow", u"AdaGrad", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"SGD", None))
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"Full-Batch", None))
-        self.radioButton_4.setText(QCoreApplication.translate("MainWindow", u"Momentum", None))
-        self.radioButton_3.setText(QCoreApplication.translate("MainWindow", u"Mini-Batch", None))
-        self.radioButton_7.setText(QCoreApplication.translate("MainWindow", u"RMSProp", None))
-        self.radioButton_8.setText(QCoreApplication.translate("MainWindow", u"Adam", None))
+        self.radio_adaDelta.setText(QCoreApplication.translate("MainWindow", u"AdaDelta", None))
+        self.radio_adaGrad.setText(QCoreApplication.translate("MainWindow", u"AdaGrad", None))
+        self.radio_sgd.setText(QCoreApplication.translate("MainWindow", u"SGD", None))
+        self.radio_fullbatch.setText(QCoreApplication.translate("MainWindow", u"Full-Batch", None))
+        self.radio_momentum.setText(QCoreApplication.translate("MainWindow", u"Momentum", None))
+        self.radio_minibatch.setText(QCoreApplication.translate("MainWindow", u"Mini-Batch", None))
+        self.radio_rmsProp.setText(QCoreApplication.translate("MainWindow", u"RMSProp", None))
+        self.radio_adam.setText(QCoreApplication.translate("MainWindow", u"Adam", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Learning Rate", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Decay Rate", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Epoch: 99999", None))
