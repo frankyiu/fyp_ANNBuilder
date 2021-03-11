@@ -34,7 +34,7 @@ class ConvolutionalLayerTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout() 
         
-        layout.addWidget(QLabel('Convolution layer is one of the critical components of convolutional neural networks, which are mostly used to process images.'))
+        layout.addWidget(QLabel('Convolution layer is one of the critical components of convolutional neural networks, which are mostly used for feature extraction from images.'))
         layout.addWidget(QLabel('It uses and learns a set of kernels, also known as filters, to extract features from input images and generates a self-defined number of corresponding feature maps.'))
         layout.addWidget(QLabel('The mathematical operation, namely convolution, taking place in a convolutional layer can either be 1D, 2D or 3D.'))
         layout.addWidget(QLabel('As 2D convolution is the most common form, the following discussion will focus on it.'))
@@ -46,9 +46,11 @@ class ConvolutionalLayerTabs(QTabWidget):
         
         layout.addWidget(QLabel('With a 3x4 input matrix, a 2x2 kernel, and stride = 1, 2D convolution will generate a 2x3 feature map as illustrated below:'))
         
-        convolution2D_graph = QLabel()
-        convolution2D_graph.setPixmap(QPixmap('./png/ConvolutionalLayer/2DConvolution/conv2d.png'))
-        layout.addWidget(convolution2D_graph)
+        conv_gif = QLabel()
+        conv_movie = QMovie('./gifs/ConvolutionalLayer/2DConvolution/convolution.gif')
+        conv_gif.setMovie(conv_movie)
+        conv_movie.start()
+        layout.addWidget(conv_gif)
         
         self.tab2.setLayout(layout)
         

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project fyp_ui -->
-<!-- Saved: 2021-01-26, 03:09:09 -->
+<!-- Saved: 2021-02-10, 18:33:14 -->
 <!-- Copyright (C) 2021 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -20,7 +20,6 @@
     <Source>ui/DatasetIcon.py</Source>
     <Source>ui/DatasetLoader.py</Source>
     <Source>ui/DraggableLabel.py</Source>
-    <Source>ui/GuiMainWindow.py</Source>
     <Source>ui/Guide.py</Source>
     <Source>ui/PopUpGuide.py</Source>
     <Source>ui/PopUpGuideFactory.py</Source>
@@ -33,12 +32,24 @@
     <Source>ui/activationFunctionsTabs.py</Source>
     <Source>ui/adalineTabs.py</Source>
     <Source>ui/artificialNeuronTabs.py</Source>
+    <Source>ui/basicConceptsTab.py</Source>
+    <Source>ui/cnnApplicationTab.py</Source>
+    <Source>ui/cnnArchitectureTab.py</Source>
+    <Source>ui/cnnClassificationTab.py</Source>
+    <Source>ui/cnnRegressionTab.py</Source>
+    <Source>ui/cnnTabs.py</Source>
     <Source>ui/convolutionalLayerTabs.py</Source>
     <Source>ui/feedforwardAndBackpropagationTabs.py</Source>
     <Source>ui/flatteningLayerTabs.py</Source>
+    <Source>ui/fullyconnectedLayerTabs.py</Source>
     <Source>ui/lossFunctionsTabs.py</Source>
     <Source>ui/mainWindow.py</Source>
+    <Source>ui/mlpApplicationTab.py</Source>
+    <Source>ui/mlpArchitectureTab.py</Source>
+    <Source>ui/mlpClassificationTab.py</Source>
+    <Source>ui/mlpRegressionTab.py</Source>
     <Source>ui/mlpTabs.py</Source>
+    <Source>ui/optimizersTabs.py</Source>
     <Source>ui/perceptronTabs.py</Source>
     <Source>ui/poolingLayerTabs.py</Source>
     <Source>ui/regularizationTabs.py</Source>

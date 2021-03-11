@@ -15,8 +15,8 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
 
         self.addTab(self.tab1, 'Overview')
         self.addTab(self.tab2, 'Chain Rule In Backpropagation')
-        self.addTab(self.tab3, 'Demonstration of Backpropagation 1')
-        self.addTab(self.tab4, 'Demonstration of Backpropagation 2')
+        self.addTab(self.tab3, 'Illustration of Backpropagation 1')
+        self.addTab(self.tab4, 'Illustration of Backpropagation 2')
         self.addTab(self.tab5, 'Exercise')
 
         self.tab1UI()
@@ -28,31 +28,31 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Feedforward is the process of feeding in items of a preprocessed dataset into an artificial neural network one by one to obtain the predicted outcomes.'))
-        layout.addWidget(QLabel('In supervised learning, a loss function is defined to compute the accuracy of each predicted outcome against the gruth truth of the fed-in labeled trainging example.'))
-        layout.addWidget(QLabel('Backpropagation is the process of updating the weight of each line connecting the nodes in a neural network.\nThe weight updates in the process are guided by the application of chain rule of differentiation on the output of the loss function and it traverses the network in a reverse order, i.e. from the output layer back to the input layer.\nThe mechanism will be illustrated in the following tabs.'))
-        layout.addWidget(QLabel('Stochastic Gradient descent - Weight updates are carried out for each training example'))
-        layout.addWidget(QLabel('Batch Gradient descent - Weight updates are carried out for each batch of training examples, the adjustment to each weight is generally the accumulated value of the required change to the respective weight in each iteration of training among the bacth'))
+        layout.addWidget(QLabel('Feedforward is the process of feeding in an item to an artificial neural network, in order to obtain a predicition.'))
+        layout.addWidget(QLabel('In supervised learning, a loss function is defined to compute the accuracy of each prediction based on the corresponding gruth truth.'))
+        layout.addWidget(QLabel('Backpropagation is the process of adjusting the weights of a neural network according to the loss given by the loss function.\nThe weight updates in the process are guided by the application of the chain rule of differentiation, starting from the loss given by the loss function and traversing the network in a reverse orde back to the input layer.'))
         
         self.tab1.setLayout(layout)
 
     def tab2UI(self):
         layout = QVBoxLayout()
         
+        layout.addWidget(QLabel('The application of the chain rule of differentiation on an arbitrary node of a neural network is illustrated as below:'))
+
         chainRuleInBackpropagation_gif = QLabel()
         chainRuleInBackpropagation_movie = QMovie('./gifs/FeedforwardAndBackpropagation/ChainRuleInBackpropagation/chainRuleInBackpropagation.gif')
         chainRuleInBackpropagation_gif.setMovie(chainRuleInBackpropagation_movie)
         chainRuleInBackpropagation_movie.start()
         layout.addWidget(chainRuleInBackpropagation_gif)
         
-        layout.addWidget(QLabel('The application of the chain rule of differentiation on an arbitrary node in a neural network.\nNote that, as to enable backpropagation, all the activation functions of nodes in a nerual network must be differentiable.'))
+        layout.addWidget(QLabel('Note that, all the activation functions in a nerual network must be differentiable; otherwise, backpropagation does not work.'))
 
         self.tab2.setLayout(layout)
 
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('A simple demonstration:'))
+        layout.addWidget(QLabel('A simple illustration of backpropagation:'))
 
         demonstrationOfBackpropagation1_gif = QLabel()
         demonstrationOfBackpropagation1_movie = QMovie('./gifs/FeedforwardAndBackpropagation/DemonstrationOfBackpropagation1/demonstrationOfBackpropagation1.gif')
@@ -65,7 +65,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
     def tab4UI(self):
         layout = QVBoxLayout()
                 
-        layout.addWidget(QLabel('A more complicated demonstration:'))
+        layout.addWidget(QLabel('A more complicated illustration of backpropagation:'))
 
         demonstrationOfBackpropagation2_gif = QLabel()
         demonstrationOfBackpropagation2_movie = QMovie('./gifs/FeedforwardAndBackpropagation/DemonstrationOfBackpropagation2/demonstrationOfBackpropagation2.gif')
@@ -73,7 +73,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         demonstrationOfBackpropagation2_movie.start()
         layout.addWidget(demonstrationOfBackpropagation2_gif)
         
-        layout.addWidget(QLabel('Pay attention to how the backpropagation goes through the sigmoid function at the end of the illustration'))
+        layout.addWidget(QLabel('Pay attention to the end of the illustration, of how backpropagation goes through the sigmoid function!'))
 
         self.tab4.setLayout(layout)
 
@@ -85,7 +85,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         layout.addWidget(exercise_graph)
         
         qna_layout1 = QHBoxLayout()
-        qna_layout1.addWidget(QLabel('Please Input The Value Of X:'))
+        qna_layout1.addWidget(QLabel('Please Input the Value of X:'))
         qna_case1_lineedit = QLineEdit()
         qna_case1_lineedit.setObjectName('Line1')
         qna_layout1.addWidget(qna_case1_lineedit)
@@ -94,7 +94,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         layout.addWidget(qna_layout1_widget)
         
         qna_layout2 = QHBoxLayout()
-        qna_layout2.addWidget(QLabel('Please Input The Value Of Y:'))
+        qna_layout2.addWidget(QLabel('Please Input the Value of Y:'))
         qna_case2_lineedit = QLineEdit()
         qna_case2_lineedit.setObjectName('Line2')
         qna_layout2.addWidget(qna_case2_lineedit)

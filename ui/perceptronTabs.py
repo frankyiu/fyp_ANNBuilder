@@ -25,23 +25,26 @@ class PerceptronTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Perceptron is a binary classifer that consists of a single layer of adjustable weights connecting the input nodes and the processing unit adopting a step function.'))
-        layout.addWidget(QLabel('Here is the setup of a typical perceptron with a self-defined threshold.'))
+        layout.addWidget(QLabel('Perceptron is a binary classifer, of which the processing unit adopts a step function with a given threshold.'))
+        layout.addWidget(QLabel('Here is the typical setup of a simple perceptron:'))
         
         introduction_graph = QLabel()
-        introduction_graph.setPixmap(QPixmap('./png/Perceptron/Introduction/introduction.png'))
+        introduction_graph.setPixmap(QPixmap('./png/Perceptron/Introduction/perceptron.png'))
         layout.addWidget(introduction_graph)
         
+        layout.addWidget(QLabel('It can be constructed to deal with many basic logical operations, like "AND" and "OR".'))
+
         self.tab1.setLayout(layout)
 
     def tab2UI(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel('In this demonstration, a perceptron would be built to handle the logic "AND" between 2 inputs, each is either 0 or 1, which "1" represents "True" and "0" represents "False".'))
-        
+        layout.addWidget(QLabel('In this demonstration, a perceptron would be built to handle the logical operation "AND" between 2 inputs, each is either 0 or 1, with "1" representing "True" and "0" representing"False".'))
+        layout.addWidget(QLabel('The threshold and the bias are both set to be 0.'))
+
         lb_gif = QLabel()
         lb_gif.setObjectName('lb_gif')
-        movie_initialFrame = QMovie('./gifs/Perceptron/Demonstration/initialFrame.gif')
+        movie_initialFrame = QMovie('./gifs/Perceptron/Demonstration/initialFrame.png')
         lb_gif.setMovie(movie_initialFrame)
         movie_initialFrame.start()
         layout.addWidget(lb_gif)
@@ -51,19 +54,19 @@ class PerceptronTabs(QTabWidget):
         
         btn_layout = QHBoxLayout()
         
-        btn_case1 = QPushButton('Case 1: X1 = 1, X2 = 1')
+        btn_case1 = QPushButton('Case 1: X1 = 1, X2 = 1, bias = 0')
         btn_layout.addWidget(btn_case1)
         btn_case1.clicked.connect(self.switch_to_case1_gif)
         
-        btn_case2 = QPushButton('Case 2: X1 = 1, X2 = 0')
+        btn_case2 = QPushButton('Case 2: X1 = 1, X2 = 0, bias = 0')
         btn_layout.addWidget(btn_case2)
         btn_case2.clicked.connect(self.switch_to_case2_gif)
         
-        btn_case3 = QPushButton('Case 3: X1 = 0, X2 = 1')
+        btn_case3 = QPushButton('Case 3: X1 = 0, X2 = 1, bias = 0')
         btn_layout.addWidget(btn_case3)
         btn_case3.clicked.connect(self.switch_to_case3_gif)
         
-        btn_case4 = QPushButton('Case 4: X1 = 0, X2 = 0')
+        btn_case4 = QPushButton('Case 4: X1 = 0, X2 = 0, bias = 0')
         btn_layout.addWidget(btn_case4)
         btn_case4.clicked.connect(self.switch_to_case4_gif)
         
@@ -97,16 +100,14 @@ class PerceptronTabs(QTabWidget):
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Take a look at the perceptron below and state the output in each of the 4 given cases.'))
-        
-        lb_exerciseSetup = QLabel()
-        movie_exerciseSetup = QMovie('./gifs/Perceptron/Exercise/exerciseSetup.gif')
-        lb_exerciseSetup.setMovie(movie_exerciseSetup)
-        movie_exerciseSetup.start()
-        layout.addWidget(lb_exerciseSetup)
+        layout.addWidget(QLabel('Take a look at the perceptron below and state the output in each of the 4 cases.'))
+              
+        exerciseSetup_graph = QLabel()
+        exerciseSetup_graph.setPixmap(QPixmap('./png/Perceptron/Exercise/exerciseSetup.png'))
+        layout.addWidget(exerciseSetup_graph)
         
         qna_layout1 = QHBoxLayout()
-        qna_layout1.addWidget(QLabel('Case 1: X1 = 1, X2 = 2'))
+        qna_layout1.addWidget(QLabel('Case 1: X1 = 1, X2 = 1'))
         qna_case1_lineedit = QLineEdit()
         qna_case1_lineedit.setObjectName('Line1')
         qna_layout1.addWidget(qna_case1_lineedit)
@@ -160,10 +161,13 @@ class PerceptronTabs(QTabWidget):
     def tab4UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Multiple perceptrons can be grouped together to form a perceptron network, which could be an integral part of some more complicated neural networks introduced later.'))
+        layout.addWidget(QLabel('Multiple perceptrons can be grouped together to form a perceptron network.'))
 
         perceptronNetwork_graph = QLabel()
         perceptronNetwork_graph.setPixmap(QPixmap('./png/Perceptron/PerceptronNetwork/perceptronNetwork.png'))
         layout.addWidget(perceptronNetwork_graph)
         
+        layout.addWidget(QLabel('The single layer perceptron network above can be generalized to a multi-layer structure, which is capable of handling more complicated tasks.'))
+        layout.addWidget(QLabel('Details can be found in "Multi-layer Perceptron".'))
+
         self.tab4.setLayout(layout)

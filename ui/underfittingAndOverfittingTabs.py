@@ -30,11 +30,11 @@ class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.
         
         layout.addWidget(QLabel('Underfitting: The training accuracy is poor, i.e. the model has not learnt much meaningful information from the training dataset.'))
         layout.addWidget(QLabel('Overfitting: The trained model has a low accuracy, in comparison to the training result, when it is generalized to the test set.'))
-        layout.addWidget(QLabel('Here is a simple illustration of which a model aims to classify the points into 2 distinct groups by drawing a line of separation and by considering just 2 features:'))
+        layout.addWidget(QLabel('Here is an example illustrating different scenarios of which a model learns a decision boundary to classify points in a training dataset into 2 groups using 2 features.'))
 
-        underfittingAndOverfitting_graph = QLabel()
-        underfittingAndOverfitting_graph.setPixmap(QPixmap('./png/UnderfittingAndOverfitting/Overview/underfittingAndOverfitting.png'))
-        layout.addWidget(underfittingAndOverfitting_graph)
+        underfitting_and_overfitting_graph = QLabel()
+        underfitting_and_overfitting_graph.setPixmap(QPixmap('./png/UnderfittingAndOverfitting/Overview/underfitting_and_overfitting.png'))
+        layout.addWidget(underfitting_and_overfitting_graph)
         
         self.tab1.setLayout(layout)
 
@@ -67,7 +67,7 @@ class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.
         layout.addWidget(QLabel('The reasons of overfitting could be:'))
         layout.addWidget(QLabel('1. the training time is too long with a relatively small dataset'))
         layout.addWidget(QLabel('2. the model is too complicated to deal with the simple hypothesis'))
-        layout.addWidget(QLabel('3. the number of features involved in consideration is too large'))
+        layout.addWidget(QLabel('3. the number of features involved in consideration is too big'))
         
         self.tab4.setLayout(layout)
     
@@ -79,6 +79,6 @@ class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.
         layout.addWidget(QLabel('2. Expand the dataset by data collection or data augmentation'))
         layout.addWidget(QLabel('3. Use a simpler model'))
         layout.addWidget(QLabel('4. Adopt regularization'))
-        layout.addWidget(QLabel('5. Dropout out certain units in a neural network'))
+        layout.addWidget(QLabel('5. Dropout out certain units in the neural network'))
 
         self.tab5.setLayout(layout)

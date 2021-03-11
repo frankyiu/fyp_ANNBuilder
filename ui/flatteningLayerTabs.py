@@ -19,7 +19,7 @@ class FlatteningLayerTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Flattening layer transforms multi-dimensional feature maps into one-dimensional feature vectors, for the purpose of facilitating the classification taking place in the fully-connected layers afterwards.'))
+        layout.addWidget(QLabel('Flattening layer transforms multi-dimensional feature maps into one-dimensional feature vectors, for the purpose of facilitating the operation later taking place in the fully-connected layers.'))
         layout.addWidget(QLabel('In a convolutional neural network, flattening layer usually comes after a convolutional layer or a pooling layer, and before a fully-connected layer.'))
 
         self.tab1.setLayout(layout)
@@ -31,6 +31,7 @@ class FlatteningLayerTabs(QTabWidget):
         
         flattening_graph = QLabel()
         flattening_graph.setPixmap(QPixmap('./png/FlatteningLayer/Demonstration/flattening.png'))
+        #flattening_graph.setPixmap(QPixmap('./png/FlatteningLayer/Demonstration/flattening.png').scaled(flattening_graph.size(), aspectRatioMode = Qt.KeepAspectRatio))
         layout.addWidget(flattening_graph)
 
         self.tab2.setLayout(layout)

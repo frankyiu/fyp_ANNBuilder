@@ -47,7 +47,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
         
         layout.addWidget(QLabel('Activation function is the mathematical function adopted by the processing unit of an artificial neuron.'))
-        layout.addWidget(QLabel('It dictates how the incoming data from the previous layer of nodes would be handled by the processing unit mathematically.'))
+        layout.addWidget(QLabel('It dictates how the incoming data from the previous layer of nodes would be handled by the processing unit.'))
         layout.addWidget(QLabel('The input to the processing unit is generally the weighted sum of the input values to the previous layer of nodes.'))
         layout.addWidget(QLabel('Several common activation functions will be introduced in the following tabs.'))
         
@@ -56,7 +56,7 @@ class ActivationFunctionsTabs(QTabWidget):
     def tab2UI(self):
         layout = QVBoxLayout()
     
-        layout.addWidget(QLabel('Step function only gives discrete ouputs and needs a pre-defined threshold.\nIt is usually adopted to build perceptrons as illustrated previously.'))
+        layout.addWidget(QLabel('Step function only gives discrete outputs and needs a pre-defined threshold.\nIt is usually adopted to build perceptrons as illustrated previously.'))
         layout.addWidget(QLabel('Here is the typical setup of a step function with threshold = 2:'))
 
         stepFunction_graph = QLabel()
@@ -76,7 +76,11 @@ class ActivationFunctionsTabs(QTabWidget):
         layout.addWidget(QLabel('Here is the typical setup of a linear function with slope = 1.'))
 
         linearFunction_graph = QLabel()
-        linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction.png'))
+        linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction1.png'))
+        layout.addWidget(linearFunction_graph)
+        
+        linearFunction_graph = QLabel()
+        linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction2.png'))
         layout.addWidget(linearFunction_graph)
         
         layout.addWidget(QLabel('x: (-∞, ∞)'))

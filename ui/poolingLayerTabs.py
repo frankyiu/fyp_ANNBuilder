@@ -31,7 +31,7 @@ class PoolingLayerTabs(QTabWidget):
     def tab2UI(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel('Max-pooling is the scheme of generating a refined matrix from an input feature map by taking the maximum of the values in each application of a kernel with a certain size as a cell of the refined matrix over the course of sweeping through the input feature map from the top-left corner to the bottom-right corner.'))        
+        layout.addWidget(QLabel('Max-pooling is the scheme of generating a refined matrix from an input feature map, by taking the maximum of the values in each application of a filter/kernel on the input feature map as one of the cells of the output refined matrix, along the course of sweeping through the input feature map from the top-left corner to the bottom-right corner.'))        
         
         layout.addWidget(QLabel('Here is a 4x4 input feature map:'))        
         
@@ -52,7 +52,7 @@ class PoolingLayerTabs(QTabWidget):
     def tab3UI(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel('Average-pooling is the scheme of generating a refined matrix from an input feature map by taking the average of the values in each application of a kernel with a certain size as a cell of the refined matrix over the course of sweeping through the input feature map from the top-left corner to the bottom-right corner.'))        
+        layout.addWidget(QLabel('Average-pooling is the scheme of generating a refined matrix from an input feature map, by taking the average of the values in each application of a filter/kernel on the input feature map as one of the cells of the output refined matrix, along the course of sweeping through the input feature map from the top-left corner to the bottom-right corner.'))        
         
         layout.addWidget(QLabel('Here is a 4x4 input feature map:'))        
 

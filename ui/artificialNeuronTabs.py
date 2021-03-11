@@ -28,47 +28,52 @@ class ArtificialNeuronTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        lb = QLabel()
-        movie = QMovie('./gifs/ArtificialNeuron/Introduction/introduction.gif')
-        lb.setMovie(movie)
-        movie.start()
-        layout.addWidget(lb)
+        layout.addWidget(QLabel('Artficial neuron is the basic building block of many advanced artificial neural networks.'))
+        layout.addWidget(QLabel('It mimics a biological neuron by a general architecture as below:'))
+
+        artificialNeuronArchitecture_graph = QLabel()
+        artificialNeuronArchitecture_graph.setPixmap(QPixmap('./png/ArtificialNeuron/Introduction/artificialNeuronArchitecture.png'))
+        layout.addWidget(artificialNeuronArchitecture_graph)
         
-        layout.addWidget(QLabel('Artficial neuron is one of the basic building blocks of nearly all of the complicated artificial neural networks.'))
-        layout.addWidget(QLabel('It mimics a biological neuron by the 3 critical components listed below:\n1. The weight of each line\n2. The mathematical function adopted by the processing unit\n3. The bias node'))
+        layout.addWidget(QLabel('An artificial neuron is characterized by 3 critical components:\n1. The weight of each line connecting the input nodes and the processing unit\n2. The activation function adopted by the processing unit\n3. The bias node'))
         
         self.tab1.setLayout(layout)
 
     def tab2UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('1. The weight of each line connecting the input nodes and the processing unit serves the purpose to scale the respective input.'))
+        layout.addWidget(QLabel('The weight of each line connecting the input nodes and the processing unit serves the purpose to scale the respective input.'))
  
         lb = QLabel()
-        movie = QMovie('./gifs/ArtificialNeuron/TheWeightOfEachLine/theWeightOfEachLine.gif')
+        movie = QMovie('./gifs/ArtificialNeuron/TheWeightOfEachLine/theWeights.gif')
         lb.setMovie(movie)
         movie.start()
         layout.addWidget(lb)
+        
+        layout.addWidget(QLabel('The weights are usually adjustable to enable the neuron to learn to make more precise predictions.'))
         
         self.tab2.setLayout(layout)
 
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('2. The activation funtion, i.e. the mathematical function adopted by the processing unit, determines how the processing unit would handle the input data.'))
+        layout.addWidget(QLabel('The activation funtion, i.e. the mathematical function adopted by the processing unit, determines how the processing unit handles the input data.'))
 
         lb = QLabel()
-        movie = QMovie('./gifs/ArtificialNeuron/TheProcessingUnit/theProcessingUnit.gif')
+        movie = QMovie('./gifs/ArtificialNeuron/TheProcessingUnit/theActivationFunction.gif')
         lb.setMovie(movie)
         movie.start()
         layout.addWidget(lb)
-                
+        
+        activationFunction_graph = QLabel()
+        activationFunction_graph.setPixmap(QPixmap('./png/ArtificialNeuron/TheProcessingUnit/theActivationFunction.png'))
+        layout.addWidget(activationFunction_graph)        
         self.tab3.setLayout(layout)
 
     def tab4UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('3. A bias node, a node apart from the input nodes, that would influence the input to the processing unit.'))
+        layout.addWidget(QLabel('A bias node, a node apart from the input nodes, that adjusts the input value to the processing unit.'))
      
         lb = QLabel()
         movie = QMovie('./gifs/ArtificialNeuron/TheBias/theBias.gif')
@@ -81,11 +86,15 @@ class ArtificialNeuronTabs(QTabWidget):
     def tab5UI(self):
         layout = QVBoxLayout()
         
-        conclusion_graph = QLabel()
-        conclusion_graph.setPixmap(QPixmap('./png/ArtificialNeuron/Conclusion/conclusion.png'))
-        layout.addWidget(conclusion_graph)
+        layout.addWidget(QLabel('Putting all the pieces together, an artificial neuron generally operates as below:'))
+
+        artificialNeuronDemo_gif = QLabel()
+        artificialNeuronDemo_movie = QMovie('./gifs/ArtificialNeuron/Conclusion/artificialNeuronDemo.gif')
+        artificialNeuronDemo_gif.setMovie(artificialNeuronDemo_movie)
+        artificialNeuronDemo_movie.start()
+        layout.addWidget(artificialNeuronDemo_gif)
         
-        layout.addWidget(QLabel('Therefore, artificial neurons for various purposes can be constructed easily by altering\n1. the weights\n2. the activation function\n3. the bias value'))
+        layout.addWidget(QLabel('Different types of artificial neurons hence can be constructed easily by altering\n1. the weights\n2. the activation function\n3. the bias value'))
 
         self.tab5.setLayout(layout)
             
