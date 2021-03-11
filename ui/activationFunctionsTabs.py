@@ -56,14 +56,14 @@ class ActivationFunctionsTabs(QTabWidget):
     def tab2UI(self):
         layout = QVBoxLayout()
     
-        layout.addWidget(QLabel('Step function only gives discrete outputs and needs a pre-defined threshold.\nIt is usually adopted to build perceptrons as illustrated previously.'))
-        layout.addWidget(QLabel('Here is the typical setup of a step function with threshold = 2:'))
+        layout.addWidget(QLabel('Step function gives discrete outputs.'))
+        layout.addWidget(QLabel('The threshold of a step function defines most of its properties.'))
+        layout.addWidget(QLabel('Here is the typical setup of a step function:'))
 
         stepFunction_graph = QLabel()
         stepFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/StepFunction/stepFunction.png'))
         layout.addWidget(stepFunction_graph)
         
-        layout.addWidget(QLabel('The output is 1 if the input is equal to or larger than 2.\nOtherwise, the output is 0.'))
         layout.addWidget(QLabel('Pros: efficient computation'))
         layout.addWidget(QLabel('Cons: not compatible with backpropagation'))
         
@@ -71,9 +71,6 @@ class ActivationFunctionsTabs(QTabWidget):
 
     def tab3UI(self): 
         layout = QVBoxLayout()
-        
-        layout.addWidget(QLabel('Linear function gives output proportional to the input.'))
-        layout.addWidget(QLabel('Here is the typical setup of a linear function with slope = 1.'))
 
         linearFunction_graph = QLabel()
         linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction1.png'))
@@ -175,7 +172,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout.addWidget(softmax_gif)
         
         layout.addWidget(QLabel('Softmax function is generally applied on the last layer of nodes of a neural network, indicated by the "Z"s above.'))
-        layout.addWidget(QLabel('Each of the eventual outputs, indicated by the "O"s above, would be normalized to [0, 1] and the "O"s sum up to 1.'))
+        layout.addWidget(QLabel('Each of the eventual outputs, indicated by the "O"s above, would be normalized to [0, 1] and the values sum up to 1.'))
         
         self.tab9.setLayout(layout) 
         
