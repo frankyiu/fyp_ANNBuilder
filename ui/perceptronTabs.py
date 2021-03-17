@@ -16,6 +16,27 @@ class PerceptronTabs(QTabWidget):
         self.addTab(self.tab2, 'Demonstration')
         self.addTab(self.tab3, 'Exercise')
         self.addTab(self.tab4, 'Perceptron Network')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 16pt;
+        }
+        QPushButton{
+              border: 2px solid black;
+              background-color: green;
+              color: black;
+              padding: 2px 4px 2px 4px;
+              font-size: 13px;
+            }
+        QPushButton::hover
+        {
+            background-color : lightgreen;
+        }
+        """
+        self.setStyleSheet(style)
 
         self.tab1UI()
         self.tab2UI()
@@ -25,22 +46,34 @@ class PerceptronTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Perceptron is a binary classifer, of which the processing unit adopts a step function with a given threshold.'))
-        layout.addWidget(QLabel('Here is the typical setup of a simple perceptron:'))
+        label1 = QLabel('Perceptron is a binary classifer, of which the processing unit adopts a step function with a given threshold.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('Here is the typical setup of a simple perceptron:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
         
         introduction_graph = QLabel()
         introduction_graph.setPixmap(QPixmap('./png/Perceptron/Introduction/perceptron.png'))
         layout.addWidget(introduction_graph)
         
-        layout.addWidget(QLabel('It can be constructed to deal with many basic logical operations, like "AND" and "OR".'))
+        label3 = QLabel('It can be constructed to deal with many basic logical operations, like "AND" and "OR".')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
 
         self.tab1.setLayout(layout)
 
     def tab2UI(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel('In this demonstration, a perceptron would be built to handle the logical operation "AND" between 2 inputs, each is either 0 or 1, with "1" representing "True" and "0" representing"False".'))
-        layout.addWidget(QLabel('The threshold and the bias are both set to be 0.'))
+        label1 = QLabel('In this demonstration, a perceptron would be built to handle the logical operation "AND" between 2 inputs, each is either 0 or 1, with "1" representing "True" and "0" representing"False".')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('The threshold and the bias are both set to be 0.')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
 
         lb_gif = QLabel()
         lb_gif.setObjectName('lb_gif')
@@ -100,7 +133,9 @@ class PerceptronTabs(QTabWidget):
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Take a look at the perceptron below and state the output in each of the 4 cases.'))
+        label1 = QLabel('Take a look at the perceptron below and state the output in each of the 4 cases.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
               
         exerciseSetup_graph = QLabel()
         exerciseSetup_graph.setPixmap(QPixmap('./png/Perceptron/Exercise/exerciseSetup.png'))
@@ -142,13 +177,20 @@ class PerceptronTabs(QTabWidget):
         qna_layout4_widget.setLayout(qna_layout4)
         layout.addWidget(qna_layout4_widget)
         
+        snr_layout = QHBoxLayout()
+        
         btn_sub = QPushButton('Submit')
         btn_sub.clicked.connect(self.submission)
-        layout.addWidget(btn_sub)
+        snr_layout.addWidget(btn_sub)
         
-        lb_result = QLabel('Result')
+        lb_result = QLabel('')
         lb_result.setObjectName('lb_result')
-        layout.addWidget(lb_result)
+        lb_result.setAlignment(Qt.AlignCenter)
+        snr_layout.addWidget(lb_result)
+        
+        snr_layout_widget = QWidget()
+        snr_layout_widget.setLayout(snr_layout)
+        layout.addWidget(snr_layout_widget)
         
         self.tab3.setLayout(layout)
     
@@ -156,18 +198,25 @@ class PerceptronTabs(QTabWidget):
         if self.tab3.findChild(QLineEdit, 'Line1').text() == self.tab3.findChild(QLineEdit, 'Line2').text() == self.tab3.findChild(QLineEdit, 'Line3').text() == '1' and self.tab3.findChild(QLineEdit, 'Line4').text() == '0':
             self.tab3.findChild(QLabel, 'lb_result').setText('True!\nIn fact, this perceptron is implemented to hanlde the "OR" logic.')
         else:
-            self.tab3.findChild(QLabel, 'lb_result').setText('False')
+            self.tab3.findChild(QLabel, 'lb_result').setText('False! Please try again!')
             
     def tab4UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Multiple perceptrons can be grouped together to form a perceptron network.'))
+        label1 = QLabel('Multiple perceptrons can be grouped together to form a perceptron network.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
 
         perceptronNetwork_graph = QLabel()
-        perceptronNetwork_graph.setPixmap(QPixmap('./png/Perceptron/PerceptronNetwork/perceptronNetwork.png'))
+        perceptronNetwork_graph.setPixmap(QPixmap('./png/Perceptron/PerceptronNetwork/perceptronNetwork.png').scaled(perceptronNetwork_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(perceptronNetwork_graph)
         
-        layout.addWidget(QLabel('The single layer perceptron network above can be generalized to a multi-layer structure, which is capable of handling more complicated tasks.'))
-        layout.addWidget(QLabel('Details can be found in "Multi-layer Perceptron".'))
+        label2 = QLabel('The single layer perceptron network above can be generalized to a multi-layer structure, which is capable of handling more complicated tasks.')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
+        
+        label3 = QLabel('Details can be found in "Multi-layer Perceptron".')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
 
         self.tab4.setLayout(layout)
