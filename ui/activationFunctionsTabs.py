@@ -200,7 +200,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         sine_graph = QLabel()
-        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sineGraph.png'))
+        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sinGraph.png'))
         layout.addWidget(sine_graph)
         
         layout.addWidget(QLabel('Sine function is a periodic function with a period = 2π, ie. sin(x) = sin(2nπ + x) where n is an integer.'))
