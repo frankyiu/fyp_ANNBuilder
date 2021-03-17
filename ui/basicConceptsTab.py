@@ -10,12 +10,18 @@ class BasicConceptsTab(QTabWidget):
         self.tab1 = QWidget()
 
         self.addTab(self.tab1, 'Basic Concepts')
+        self.setStyleSheet("background-color: rgb(40, 44, 52);")
 
         self.tab1UI()
 
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Basic Concepts'))
+        label = QLabel('Basic Concepts')
+        label.setAlignment(Qt.AlignCenter)
+        label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        label.setStyleSheet("QLabel{font-size: 40pt;}")
+
+        layout.addWidget(label)
 
         self.tab1.setLayout(layout)

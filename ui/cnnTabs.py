@@ -10,13 +10,18 @@ class CNNTabs(QTabWidget):
         self.tab1 = QWidget()
 
         self.addTab(self.tab1, 'Convolutional Neural Network')
+        self.setStyleSheet("background-color: rgb(40, 44, 52);")
 
         self.tab1UI()
 
     def tab1UI(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel('CNN'))
+        label = QLabel('Convolutional Neural Network - CNN')
+        label.setAlignment(Qt.AlignCenter)
+        label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        label.setStyleSheet("QLabel{font-size: 40pt;}")
+        layout.addWidget(label)
 
         self.tab1.setLayout(layout)
         
