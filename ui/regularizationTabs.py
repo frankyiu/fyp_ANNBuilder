@@ -22,6 +22,16 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         self.addTab(self.tab5, 'L0.5 Regularization')
         self.addTab(self.tab6, 'Lp Regularization')
         self.addTab(self.tab7, 'Elastic Net Regularization')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 16pt;
+        }
+        """
+        self.setStyleSheet(style)
 
         self.tab1UI()
         self.tab2UI()
@@ -34,15 +44,20 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Regularization is a common strategy used to mitigate overfitting.'))
-        layout.addWidget(QLabel('Say, we have a simple linear regression model as below:'))
+        label1 = QLabel('Regularization is a common strategy used to mitigate overfitting.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('Say, we have a simple linear regression model as below:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
         
         linear_regression_model_graph = QLabel()
-        linear_regression_model_graph.setPixmap(QPixmap('./png/Regularization/Introduction/linear_regression_model.png'))
+        linear_regression_model_graph.setPixmap(QPixmap('./png/Regularization/Introduction/linear_regression_model.png').scaled(linear_regression_model_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(linear_regression_model_graph)
         
         linear_regression_model__notations_graph = QLabel()
-        linear_regression_model__notations_graph.setPixmap(QPixmap('./png/Regularization/Introduction/linear_regression_model_notations.png'))
+        linear_regression_model__notations_graph.setPixmap(QPixmap('./png/Regularization/Introduction/linear_regression_model_notations.png').scaled(linear_regression_model__notations_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(linear_regression_model__notations_graph)
         
         self.tab1.setLayout(layout)
@@ -50,7 +65,9 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab2UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('L1 Regularization, namely Lasso Regression, puts a constraint on the summation of the absolute values of the weights by adding the penalty term below to Error(y, ŷ):'))
+        label1 = QLabel('L1 Regularization, namely Lasso Regression, puts a constraint on the summation of the absolute values of the weights by adding the penalty term below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
         
         l1PenaltyTerm_graph = QLabel()
         l1PenaltyTerm_graph.setPixmap(QPixmap('./png/Regularization/L1Regularization/l1penaltyterm.png'))
@@ -60,7 +77,9 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         l1PenaltyTermNotation_graph.setPixmap(QPixmap('./png/Regularization/L1Regularization/l1penaltyterm_notation.png'))
         layout.addWidget(l1PenaltyTermNotation_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
         
         l1LossFunction_graph = QLabel()
         l1LossFunction_graph.setPixmap(QPixmap('./png/Regularization/L1Regularization/l1LossFunction.png'))
@@ -75,8 +94,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('L2 Regularization,  namely Ridge Regression, puts a constraint on the summation of the square of the weights by adding the penalty term below to Error(y, ŷ):'))
-                
+        label1 = QLabel('L2 Regularization,  namely Ridge Regression, puts a constraint on the summation of the square of the weights by adding the penalty term below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+                        
         l2PenaltyTerm_graph = QLabel()
         l2PenaltyTerm_graph.setPixmap(QPixmap('./png/Regularization/L2Regularization/l2penaltyterm.png'))
         layout.addWidget(l2PenaltyTerm_graph)
@@ -85,8 +106,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         l2PenaltyTermNotation_graph.setPixmap(QPixmap('./png/Regularization/L2Regularization/l2penaltyterm_notation.png'))
         layout.addWidget(l2PenaltyTermNotation_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
-
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2) 
+        
         l2LossFunction_graph = QLabel()
         l2LossFunction_graph.setPixmap(QPixmap('./png/Regularization/L2Regularization/l2LossFunction.png'))
         layout.addWidget(l2LossFunction_graph)
@@ -100,8 +123,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab4UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('L3 Regularization puts a constraint on the summation of the cube of the weights by adding the penalty term below to Error(y, ŷ):'))
-                
+        label1 = QLabel('L3 Regularization puts a constraint on the summation of the cube of the weights by adding the penalty term below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+                        
         l3PenaltyTerm_graph = QLabel()
         l3PenaltyTerm_graph.setPixmap(QPixmap('./png/Regularization/L3Regularization/l3penaltyterm.png'))
         layout.addWidget(l3PenaltyTerm_graph)
@@ -110,8 +135,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         l3PenaltyTermNotation_graph.setPixmap(QPixmap('./png/Regularization/L3Regularization/l3penaltyterm_notation.png'))
         layout.addWidget(l3PenaltyTermNotation_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
-
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2) 
+        
         l3LossFunction_graph = QLabel()
         l3LossFunction_graph.setPixmap(QPixmap('./png/Regularization/L3Regularization/l3lossfunction.png'))
         layout.addWidget(l3LossFunction_graph)
@@ -125,8 +152,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab5UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('L0.5 Regularization puts a constraint on the summation of the square root of the weights by adding the penalty term below to Error(y, ŷ):'))
-        
+        label1 = QLabel('L0.5 Regularization puts a constraint on the summation of the square root of the weights by adding the penalty term below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+                
         l0_5PenaltyTerm_graph = QLabel()
         l0_5PenaltyTerm_graph.setPixmap(QPixmap('./png/Regularization/L0_5Regularization/l0_5penaltyterm.png'))
         layout.addWidget(l0_5PenaltyTerm_graph)
@@ -135,7 +164,9 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         l0_5PenaltyTermNotation_graph.setPixmap(QPixmap('./png/Regularization/L0_5Regularization/l0_5penaltyterm_notation.png'))
         layout.addWidget(l0_5PenaltyTermNotation_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2) 
 
         l0_5LossFunction_graph = QLabel()
         l0_5LossFunction_graph.setPixmap(QPixmap('./png/Regularization/L0_5Regularization/l0_5lossfunction.png'))
@@ -150,7 +181,9 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab6UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Lp Regularization puts a constraint on the summation of the weights to the power p by adding the penalty term below to Error(y, ŷ):'))
+        label1 = QLabel('Lp Regularization puts a constraint on the summation of the weights to the power p by adding the penalty term below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
         
         lpPenaltyTerm_graph = QLabel()
         lpPenaltyTerm_graph.setPixmap(QPixmap('./png/Regularization/LpRegularization/lppenaltyterm.png'))
@@ -160,7 +193,9 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         lpPenaltyTermNotation_graph.setPixmap(QPixmap('./png/Regularization/LpRegularization/lppenaltyterm_notation.png'))
         layout.addWidget(lpPenaltyTermNotation_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2) 
 
         lpLossFunction_graph = QLabel()
         lpLossFunction_graph.setPixmap(QPixmap('./png/Regularization/LpRegularization/lplossfunction.png'))
@@ -175,8 +210,10 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
     def tab7UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Elastic Net Regularization is a combination of L1 and L2 regularization by adding the 2 penalty terms below to Error(y, ŷ):'))
-        
+        label1 = QLabel('Elastic Net Regularization is a combination of L1 and L2 regularization by adding the 2 penalty terms below to Error(y, ŷ):')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+                
         elasticNetPenaltyTerms_graph = QLabel()
         elasticNetPenaltyTerms_graph.setPixmap(QPixmap('./png/Regularization/ElasticNetRegularization/elasticnetpenaltyterms.png'))
         layout.addWidget(elasticNetPenaltyTerms_graph)
@@ -185,10 +222,12 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         elasticNetPenaltyTermsNotations_graph.setPixmap(QPixmap('./png/Regularization/ElasticNetRegularization/elasticnetpenaltyterms_notations.png'))
         layout.addWidget(elasticNetPenaltyTermsNotations_graph)
         
-        layout.addWidget(QLabel('The objective of training becomes minimizing the loss function:'))
-
+        label2 = QLabel('The objective of training becomes minimizing the loss function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2) 
+        
         elasticNetLossFunction_graph = QLabel()
-        elasticNetLossFunction_graph.setPixmap(QPixmap('./png/Regularization/ElasticNetRegularization/elasticnetlossfunction.png'))
+        elasticNetLossFunction_graph.setPixmap(QPixmap('./png/Regularization/ElasticNetRegularization/elasticnetlossfunction.png').scaled(elasticNetLossFunction_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(elasticNetLossFunction_graph) 
         
         elasticNetLossFunctionNotation_graph = QLabel()

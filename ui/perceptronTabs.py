@@ -25,15 +25,17 @@ class PerceptronTabs(QTabWidget):
             font-size: 16pt;
         }
         QPushButton{
-              border: 2px solid black;
-              background-color: green;
-              color: black;
-              padding: 2px 4px 2px 4px;
-              font-size: 13px;
-            }
+            border: 2px solid black;
+            background-color: #F9F7ED;
+            color: black;
+            border-radius : 12px;
+            padding: 2px 4px 2px 4px;
+            font-size: 13pt;
+        }
         QPushButton::hover
         {
-            background-color : lightgreen;
+            background-color : #24a0ed;
+            color: white;
         }
         """
         self.setStyleSheet(style)
