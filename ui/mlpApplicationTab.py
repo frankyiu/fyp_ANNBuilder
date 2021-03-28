@@ -10,14 +10,32 @@ class MLPApplicationTab(QTabWidget):
         self.tab1 = QWidget()
 
         self.addTab(self.tab1, 'Application of MLP')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 16pt;
+        }
+        """
+        self.setStyleSheet(style)
 
         self.tab1UI()
 
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Multi-layer perceptron (MLP) is widely used to deal with classification problems and regression problems.'))
-        layout.addWidget(QLabel('Common applications of MLP include speech recognition, customers\' behaviours prediction and many more.'))        
-        layout.addWidget(QLabel('MLP can also be incorporated into a more complex neural network architecture as one of its key components.'))
+        label1 = QLabel("Multi-layer perceptron (MLP) is widely used to deal with classification problems and regression problems.")
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('Common applications of MLP include speech recognition, customers\' behaviours prediction and many more.')
+        label2.setWordWrap(True)    
+        layout.addWidget(label2)
+        
+        label3 = QLabel('MLP can also be incorporated into a more complex neural network architecture as one of its key components.')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
 
         self.tab1.setLayout(layout)
