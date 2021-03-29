@@ -62,9 +62,7 @@ class CNNArchitectureTab(QTabWidget):
         layout.addWidget(label1)
     
         cnnFeedforward_gif = QLabel()
-        cnnFeedforward_gif.setScaledContents(True)
         cnnFeedforward_movie = QMovie('./gifs/CNN/ArchitectureOfCNN/cnnFeedforward.gif')
-        cnnFeedforward_movie.setScaledSize(cnnFeedforward_gif.size())
         cnnFeedforward_gif.setMovie(cnnFeedforward_movie)
         cnnFeedforward_movie.start()
         layout.addWidget(cnnFeedforward_gif)

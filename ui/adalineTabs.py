@@ -47,6 +47,7 @@ class AdalineTabs(QTabWidget):
         layout.addWidget(label1)
 
         adaline_gif = QLabel()
+        adaline_gif.setAlignment(Qt.AlignCenter)
         movie_adaline = QMovie('./gifs/Adaline/Illustration/illustration.gif')
         adaline_gif.setMovie(movie_adaline)
         movie_adaline.start()

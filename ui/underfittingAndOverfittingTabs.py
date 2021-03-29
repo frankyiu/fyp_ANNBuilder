@@ -51,6 +51,7 @@ class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.
         layout.addWidget(label3)
 
         underfitting_and_overfitting_graph = QLabel()
+        underfitting_and_overfitting_graph.setAlignment(Qt.AlignCenter)
         underfitting_and_overfitting_graph.setPixmap(QPixmap('./png/UnderfittingAndOverfitting/Overview/underfitting_and_overfitting.png').scaled(underfitting_and_overfitting_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(underfitting_and_overfitting_graph)
         

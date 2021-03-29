@@ -57,6 +57,7 @@ class PerceptronTabs(QTabWidget):
         layout.addWidget(label2)
         
         introduction_graph = QLabel()
+        introduction_graph.setAlignment(Qt.AlignCenter)
         introduction_graph.setPixmap(QPixmap('./png/Perceptron/Introduction/perceptron.png'))
         layout.addWidget(introduction_graph)
         
@@ -78,6 +79,7 @@ class PerceptronTabs(QTabWidget):
         layout.addWidget(label2)
 
         lb_gif = QLabel()
+        lb_gif.setAlignment(Qt.AlignCenter)
         lb_gif.setObjectName('lb_gif')
         movie_initialFrame = QMovie('./gifs/Perceptron/Demonstration/initialFrame.png')
         lb_gif.setMovie(movie_initialFrame)
@@ -140,6 +142,7 @@ class PerceptronTabs(QTabWidget):
         layout.addWidget(label1)
               
         exerciseSetup_graph = QLabel()
+        exerciseSetup_graph.setAlignment(Qt.AlignCenter)
         exerciseSetup_graph.setPixmap(QPixmap('./png/Perceptron/Exercise/exerciseSetup.png'))
         layout.addWidget(exerciseSetup_graph)
         
@@ -210,6 +213,7 @@ class PerceptronTabs(QTabWidget):
         layout.addWidget(label1)
 
         perceptronNetwork_graph = QLabel()
+        perceptronNetwork_graph.setAlignment(Qt.AlignCenter)
         perceptronNetwork_graph.setPixmap(QPixmap('./png/Perceptron/PerceptronNetwork/perceptronNetwork.png').scaled(perceptronNetwork_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(perceptronNetwork_graph)
         

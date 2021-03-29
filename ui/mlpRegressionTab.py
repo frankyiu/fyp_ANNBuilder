@@ -31,6 +31,7 @@ class MLPRegressionTab(QTabWidget):
         layout.addWidget(label1)
 
         mlpRegression_gif = QLabel()
+        mlpRegression_gif.setAlignment(Qt.AlignCenter)
         mlpRegression_movie = QMovie('./gifs/MLPRegression/mlpRegression.gif')
         mlpRegression_gif.setMovie(mlpRegression_movie)
         mlpRegression_movie.start()

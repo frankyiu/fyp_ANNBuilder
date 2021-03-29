@@ -31,6 +31,7 @@ class MLPArchitectureTab(QTabWidget):
         layout.addWidget(label1)
         
         mlpArchitecture_graph = QLabel()
+        mlpArchitecture_graph.setAlignment(Qt.AlignCenter)
         mlpArchitecture_graph.setPixmap(QPixmap('./png/ArchitectureofMLP/mlpArchitecture.png').scaled(mlpArchitecture_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(mlpArchitecture_graph)
 

@@ -86,7 +86,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout.addWidget(label2)
         
         stepFunction_graph = QLabel()
-        stepFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/StepFunction/stepFunction.png').scaled(stepFunction_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        stepFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/StepFunction/stepFunction.png'))
         layout.addWidget(stepFunction_graph)
         
         label3 = QLabel('Pros: efficient computation\nCons: not compatible with backpropagation')
@@ -116,7 +116,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
         
         sigmoid_graph = QLabel()
-        sigmoid_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sigmoid/Sigmoid.png').scaled(sigmoid_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        sigmoid_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sigmoid/Sigmoid.png'))
         layout.addWidget(sigmoid_graph)
         
         label = QLabel('x: (-∞, ∞)\nRange: [0, 1]\nNon-zero-centered\nPros: efficient backpropagation\nCons: computationally expensive, could lead to saturated gradients')
@@ -129,7 +129,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
         
         tanh_graph = QLabel()
-        tanh_graph.setPixmap(QPixmap('./png/ActivationFunctions/tanh/tanh.png').scaled(tanh_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        tanh_graph.setPixmap(QPixmap('./png/ActivationFunctions/tanh/tanh.png'))
         layout.addWidget(tanh_graph)
         
         label = QLabel('x: (-∞, ∞)\nRange: [-1, 1]\nZero-centered\nPros: efficient back propagation\nCons: could lead to saturated gradients')
@@ -142,7 +142,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
                 
         ReLU_graph = QLabel()
-        ReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ReLU/ReLU.png').scaled(ReLU_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        ReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ReLU/ReLU.png'))
         layout.addWidget(ReLU_graph)
         
         label = QLabel('x: (-∞, ∞)\nRange: [0, ∞)\nPros: quickly converges, low cost of computation, would not saturate, efficient backpropagation\nCons: will lead to dead ReLU, i.e. gradient = 0, if the input is negative or equal to 0')
@@ -155,7 +155,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         LeakyReLU_graph = QLabel()
-        LeakyReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/LeakyReLU/LeakyReLU.png').scaled(LeakyReLU_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        LeakyReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/LeakyReLU/LeakyReLU.png'))
         layout.addWidget(LeakyReLU_graph)
         
         label = QLabel('A variant of ReLU\nx: (-∞, ∞)\nRange: (-∞, ∞)\nPros: same as ReLU but has rectified the dead ReLU issue\nCons: computationally more expensive than ReLU')
@@ -168,7 +168,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         ELU_graph = QLabel()
-        ELU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ELU/ELU.png').scaled(ELU_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        ELU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ELU/ELU.png'))
         layout.addWidget(ELU_graph)
         
         label = QLabel('Another variant of ReLU\nx: (-∞, ∞)\nRange: [-a, ∞)\nPros: same as ReLU but has rectified the dead ReLU issue\nCons: computationally more expensive than ReLU and Leaky ReLU')
@@ -182,6 +182,7 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         softmax_gif = QLabel()
+        softmax_gif.setAlignment(Qt.AlignCenter)
         softmax_movie = QMovie('./gifs/ActivationFunctions/softmax.gif')
         softmax_gif.setMovie(softmax_movie)
         softmax_movie.start()
@@ -196,12 +197,13 @@ class ActivationFunctionsTabs(QTabWidget):
     def tab10UI(self):              # Wiki
         layout = QVBoxLayout()
      
-        label1 = QLabel('Gaussian function has a general form as below, which a, b, c are real constants and c is not equal to 0:')
+        label1 = QLabel('Gaussian function has a general form as below, of which a, b, c are real constants and c is not equal to 0:')
         label1.setWordWrap(True)
         layout.addWidget(label1)
 
         gaussian_eq = QLabel()
-        gaussian_eq.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_eq.png').scaled(gaussian_eq.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        gaussian_eq.setAlignment(Qt.AlignCenter)
+        gaussian_eq.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_eq.png'))
         layout.addWidget(gaussian_eq)
         
         label2 = QLabel('The graph of the Gaussian function with a = 1, b = 0 and c = 1/sqrt(2):')
@@ -209,7 +211,8 @@ class ActivationFunctionsTabs(QTabWidget):
         layout.addWidget(label2)
         
         gaussian_graph = QLabel()
-        gaussian_graph.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_graph.png').scaled(gaussian_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        gaussian_graph.setAlignment(Qt.AlignCenter)
+        gaussian_graph.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_graph.png'))
         layout.addWidget(gaussian_graph)
         
         label3 = QLabel('x: (-∞, ∞)\nRange: (0, 1]')
@@ -222,7 +225,8 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         sine_graph = QLabel()
-        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sinGraph.png').scaled(sine_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        sine_graph.setAlignment(Qt.AlignCenter)
+        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sinGraph.png'))
         layout.addWidget(sine_graph)
         
         label = QLabel('Sine function is a periodic function with a period = 2π radian, ie. sin(x) = sin(2nπ + x) where n is an integer.\nx: (-∞, ∞)\nRange: [-1, 1]\nApart from the simple sine function, there are some other activation functions derived from sin(x), eg. sin(x)/x.')
