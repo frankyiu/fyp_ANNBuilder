@@ -1,0 +1,29 @@
+
+
+model.predict(X)
+#return y_pred that has the same shape of y
+
+optim(learning_rate=lr, decay=lr_decay)
+#optimizer ? support learning rate and learning rate decay
+
+model.compile(loss, optimizer)
+#may combine with model.fit
+
+model.fit(trainX, trainY, validation = (testX, testy), batch_size, updateLosses_fun, connectLossGraph, updateLossGraph)
+#last 3 param = function ptr to the following
+UpdateDashBoard.connectLossGraph(train_losses, test_losses)     #called at the beginning in fit()
+UpdateDashBoard.updateLosses(train_losses[-1], test_losses[-1]) #called every epoch/step in fit()
+UpdateDashBoard.updateLossGraph()                               #called every epoch in fit()
+
+
+
+#connect to UI
+#lr done, lr_decay done
+#===============TODO====================
+#loss == cost function (from building panel?)
+#optimizer (from radio buttons)
+#batch size (ui missing)
+#reset (?)
+#forward (?)
+#backward (?)
+#run (?)

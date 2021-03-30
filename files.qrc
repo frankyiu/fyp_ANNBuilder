@@ -1,0 +1,28 @@
+<RCC>
+  <qresource prefix="basic">
+    <file>icons/basic/010-rhombus.png</file>
+    <file>icons/basic/close.png</file>
+    <file>icons/basic/009-costfunc.png</file>
+    <file>icons/basic/010-rhombus.png</file>
+    <file>icons/basic/maximize.png</file>
+    <file>icons/basic/minimize.png</file>
+    <file>icons/basic/008-next.png</file>
+    <file>icons/basic/006-fast-forward.png</file>
+    <file>icons/basic/007-backward-arrows-couple.png</file>
+    <file>icons/basic/005-return.png</file>
+    <file>icons/basic/back.png</file>
+    <file>icons/basic/004-circle.png</file>
+    <file>icons/basic/003-layers.png</file>
+    <file>icons/basic/001-play-button.png</file>
+    <file>icons/basic/002-play-button-1.png</file>
+    <file>icons/basic/book.png</file>
+    <file>icons/basic/house.png</file>
+    <file>icons/basic/edit.png</file>
+    <file>icons/basic/next-1.png</file>
+  </qresource>
+  <qresource prefix="toolbar">
+    <file>icons/toolbar/connecttool.png</file>
+    <file>icons/toolbar/selecttool.png</file>
+    <file>icons/toolbar/traintool.png</file>
+  </qresource>
+</RCC>
