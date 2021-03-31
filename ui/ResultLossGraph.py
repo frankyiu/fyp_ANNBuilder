@@ -1,5 +1,6 @@
 # Import libraries
-from numpy import *
+import numpy as np
+from ml.Utility import average_every
 from pyqtgraph.Qt import QtGui, QtCore
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 from PyQt5.QtGui import QPen, QColor
@@ -72,6 +73,8 @@ class ResultLossGraph(QWidget):
     def setLossesReference(self, train_losses, test_losses):
         self.train_losses = train_losses
         self.test_losses = test_losses
+        self.train_loss_graph.setData(self.train_losses)
+        self.test_loss_graph.setData(self.test_losses)
         #self.plot_widget.clear()
 
     """
@@ -87,6 +90,13 @@ class ResultLossGraph(QWidget):
     """
     def updateGraph(self):
         self.plot_widget.plotItem.disableAutoRange()    #faster render
+        """
+        n_avg = 5
+        train_pad = np.pad(self.train_losses, (n_avg//2, n_avg-1-n_avg//2), mode='edge')
+        test_pad = np.pad(self.test_losses, (n_avg//2, n_avg-1-n_avg//2), mode='edge')
+        self.train_loss_graph.setData(np.convolve(train_pad, np.ones((n_avg,))/n_avg, mode='valid'))
+        self.test_loss_graph.setData(np.convolve(test_pad, np.ones((n_avg,))/n_avg, mode='valid'))
+        """
         self.train_loss_graph.setData(self.train_losses)
         self.test_loss_graph.setData(self.test_losses)
         self.plot_widget.plotItem.autoRange()           #faster render

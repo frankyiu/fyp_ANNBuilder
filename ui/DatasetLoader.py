@@ -16,6 +16,7 @@ provide access to the dataset object through the static method
 """
 class DatasetLoader(DatasetIcon):
     dataset_object = DatasetObject()
+    inTraining = False
     def __init__(self,parent, popUpParent, loaderQRect):
         default_dataset = 'bi_moon'
         super().__init__(parent, default_dataset)
@@ -70,7 +71,8 @@ class DatasetLoader(DatasetIcon):
     #followed by the release effect
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.PointingHandCursor)
-        self.getPopupWidget().toggle()
+        if not DatasetLoader.inTraining:
+            self.getPopupWidget().toggle()
         self.showImage(hover=True)
 
     #load the image and csv file to the program
@@ -161,6 +163,10 @@ class DatasetLoader(DatasetIcon):
 
     def setTrainingSetRatio(self, val):
         DatasetLoader.getDatasetObject().setTrainingSetRatio(val)
+
+    @staticmethod
+    def setTrainingSignal(state):
+        DatasetLoader.inTraining = state
 
     def __setLastLoadedDatasetPixmap(self, pixmap):
         self.last_loaded_piximg = pixmap

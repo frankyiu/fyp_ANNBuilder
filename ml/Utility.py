@@ -23,4 +23,15 @@ a method to split the dataset into several parts
 """
 def split_evenly(arr, n_arr):
     n = int(len(arr)/n_arr)
-    return [arr[i:i+n] for i in range(0, len(arr), n)]
+    return split_chunk(arr, n)
+
+"""
+a method to split the dataset into several parts
+    arr:  np array
+      n:  size of subarray
+"""
+def split_chunk(arr, n):
+    return np.array([arr[i:i+n] for i in range(0, len(arr), n)])
+
+def average_every(arr, n):
+    return np.average(np.array(arr).reshape(-1,n), axis=1)

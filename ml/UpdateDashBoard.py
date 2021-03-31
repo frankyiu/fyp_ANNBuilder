@@ -1,5 +1,5 @@
 #from ui.ResultDashBoard import *
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from dataset.DatasetMeta import DatasetMeta
 from dataset.CNNDataset import CNNDataset
 from ml.Utility import reverse_one_hot
@@ -113,18 +113,19 @@ class UpdateDashBoard():
     the prediction of test set is perform together with the contour graph
     for performance purpose
     for CNN data, no contour graph will be computed so the prediction is
-    done separately
+    done separately (tgt with the loss computation)
     feed the data directly to the model without calling predict() for performance purpose
     must be invoked, during training, after an iteration of training
     """
     @staticmethod
-    def updatePredictionResult(X, y, model):
+    def updatePredictionResult(X, y, model, pred=None):
         y_pred = UpdateDashBoard.updateHeatmap(X, y, model)
         if UpdateDashBoard.IsDatasetReg:
             return
-        elif y_pred is None:
-            y_pred = reverse_one_hot(model(X))
+        elif y_pred is None and pred is not None:
+            y_pred = reverse_one_hot(pred)
         UpdateDashBoard.updateMetrics(y, y_pred)
+
 
     """
     reset all the references and data stored used in computing the contour graph

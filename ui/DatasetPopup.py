@@ -68,6 +68,7 @@ class DatasetPopup(QWidget):
         self.Split.setValue(split)
 
     #handles the show/hide of popup widget
+    #ignore when it is in training state
     def toggle(self, state=None):
         if state is not None:
             self.setVisible(state)

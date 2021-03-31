@@ -10,9 +10,7 @@ import numpy as np
 import time
 
 import sys
-import keras
 import tensorflow as tf
-from keras.models import Sequential, Model
 import gc
 
 """
@@ -37,6 +35,7 @@ Dataset, Hyperparameters, Model, and DashBoard
 handles the training of the model
 """
 class Training():
+    timer = pg.QtCore.QTimer()
     def __init__(self):
         #keep a reference to the dataset object, which is a wrapper of the real dataset
         self.dataset = DatasetLoader.getDatasetObject()
@@ -68,7 +67,7 @@ class Training():
         self.train_losses = []
         self.test_losses = []
         self.processed = None
-        self.timer = pg.QtCore.QTimer()     #create a new timer, clear previously connected singals
+        Training.timer = pg.QtCore.QTimer()     #create a new timer, clear previously connected singals
         if not pause:
             self.model = None
             self.curEpoch = 0
@@ -176,6 +175,7 @@ class Training():
         else:
             loss = tf.keras.losses.CategoricalCrossentropy(from_logits=True) #or softmax at last layer
         self.loss = loss
+        self.bs = 10
         #self.optim = tf.keras.optimizers.Adam
 
     """
@@ -188,11 +188,13 @@ class Training():
        e.g. loss history, refernces used in drawing the graph, processed data
     """
     def run(self):
-        if self.timer.isActive():
-            self.timer.stop()
+        if Training.timer.isActive():
+            Training.timer.stop()
             self.resetTraining(True)
+            DatasetLoader.setTrainingSignal(False)
         else:
             self.runMultithread()
+            DatasetLoader.setTrainingSignal(True)
 
     """
     This method handles the exit of training and do the clean up
@@ -205,9 +207,10 @@ class Training():
         print("Average Update heatmap time ", np.average(self.t2_lst))
         print("Average Total time ", np.average(self.t3_lst))
         print("==============================")
-        self.timer.stop()
+        Training.timer.stop()
         self.resetTraining()
         UpdateDashBoard.resetDashboardRendering()
+        DatasetLoader.setTrainingSignal(False)
 
     """
     A method for debugging, simulate the training by
@@ -247,9 +250,11 @@ class Training():
         """
         depends on real implementation
         """
-        trainX, trainy = self.trainXs[self.curEpoch%self.num_split], self.trainys[self.curEpoch%self.num_split]
         #self.random_walk()
         #"""
+        self.pred_cnn = None
+        rand_slice = np.random.randint(len(self.trainy), size=self.bs)
+        trainX, trainy = self.trainX[rand_slice, :], self.trainy[rand_slice, :]
         t0 = time.time()
         with tf.GradientTape() as tape:
             y_pred = self.model(trainX, training=True)
@@ -259,16 +264,23 @@ class Training():
         gradients = tape.gradient(loss, trainable_vars)
         self.optimizer.apply_gradients(zip(gradients, trainable_vars))
 
+        """
+        Update the loss, note that CNN data prediction is done together
+        math data prediction is done together with the contour graph
+        """
         self.train_losses.append(loss.numpy())
-        self.test_losses.append(self.loss(self.testy, self.model(self.testX)).numpy())
+        if self.dataset.isCNNData():
+            self.pred_cnn = self.model(self.testX).numpy()
+            self.test_losses.append(self.loss(self.testy, self.pred_cnn).numpy())
+        else:
+            self.test_losses.append(self.loss(self.testy, self.model(self.testX)).numpy())
+
         t1 = time.time()    #time log
-        #put the two below inside the training loop
         UpdateDashBoard.updateLosses(self.train_losses[-1], self.test_losses[-1])
         UpdateDashBoard.updateLossGraph()
         t2 = time.time()    #time log
-        #put the two above inside the training loop
-        #self.testy_label is the vector version of test set label (constrast to one hot matrix)
-        UpdateDashBoard.updatePredictionResult(self.testX, self.testy_label, self.model)
+        #self.testy_label is the vector version of test set label (not one hot matrix)
+        UpdateDashBoard.updatePredictionResult(self.testX, self.testy_label, self.model, self.pred_cnn)
         t3 = time.time()    #time log
         self.t0_lst.append(t1-t0)
         self.t1_lst.append(t2-t1)
@@ -277,7 +289,7 @@ class Training():
         #"""
         self.curEpoch += 1      #next slice of data
         self.updateEpochGUI()
-        self.timer.start(1)     #continue
+        Training.timer.start(1)     #continue
 
     """
     This method set up the environment before going to the training loop, namely
@@ -290,7 +302,7 @@ class Training():
     def runMultithread(self):
         self._preprocess()
 
-        (trainX, trainy, self.testX, self.testy) = self.processed
+        (self.trainX, self.trainy, self.testX, self.testy) = self.processed
 
         """
         Below depends on real implementation
@@ -329,14 +341,8 @@ class Training():
 
         """
         Below depends on real implementation
-        The dataset is split into many parts to simulate an iteration in training
-        so that model.fit(batch1X, batch1y) train on one batch of data
         """
         self.optimizer = Optimizer(optim, lr, lr_decay).getOptim()
-        #print(self.model.optimizer.get_config())
-        self.num_split = 64 #split the dataset to speed up, should be removed
-        self.trainXs, self.trainys = split_evenly(trainX, self.num_split), split_evenly(trainy, self.num_split)
-        self.curEpoch = max(0, self.curEpoch)
         self.t0_lst = []
         self.t1_lst = []
         self.t2_lst = []
@@ -347,9 +353,16 @@ class Training():
 
         #update the dash board
         self._connectDashboard()
-        self.timer.timeout.connect(self.doTrainingStep)
-        self.timer.start(0)
+        Training.timer.timeout.connect(self.doTrainingStep)
+        Training.timer.start(0)
 
+    """
+    Return True if it is running, False when it is paused
+    Used to signal whether it is training
+    """
+    @staticmethod
+    def isTraining():
+        return Training.timer.isActive()
 
     def forward(self):
         print("Forward")
