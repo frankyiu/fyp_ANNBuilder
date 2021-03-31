@@ -63,6 +63,9 @@ class DatasetObject():
     def getLabelShape(self):
         return self.getTestLabel().shape[1:] if self.dataset is not None else None
 
+    """
+    Get the number of unique classes 
+    """
     def getNumberOfClass(self):
         return len(np.unique(self.getTrainLabel())) \
                 if DatasetMeta.isClassify(self.dataset.dataset_name) else 1

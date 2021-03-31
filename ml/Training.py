@@ -203,8 +203,8 @@ class Training():
         print("Training Done")
         print("==============================")
         print("Average Training time ", np.average(self.t0_lst))
-        print("Average Update loss graph time ", np.average(self.t1_lst))
-        print("Average Update heatmap time ", np.average(self.t2_lst))
+        print("Average Prediction and update heatmap time ", np.average(self.t1_lst))
+        print("Average Update loss graph time ", np.average(self.t2_lst))
         print("Average Total time ", np.average(self.t3_lst))
         print("==============================")
         Training.timer.stop()
@@ -264,24 +264,29 @@ class Training():
         gradients = tape.gradient(loss, trainable_vars)
         self.optimizer.apply_gradients(zip(gradients, trainable_vars))
 
+        t1 = time.time()    #time log
         """
-        Update the loss, note that CNN data prediction is done together
+        Compute the loss and update the contour graph
+        note that CNN data prediction is done together with the loss compute
+            (only a slice of CNN data is used to evaluate to increase interactivity)
         math data prediction is done together with the contour graph
         """
         self.train_losses.append(loss.numpy())
         if self.dataset.isCNNData():
-            self.pred_cnn = self.model(self.testX).numpy()
-            self.test_losses.append(self.loss(self.testy, self.pred_cnn).numpy())
+            test_rand_slice = np.random.randint(len(self.testy), size=100*self.dataset.getNumberOfClass())
+            self.pred_cnn = self.model(self.testX[test_rand_slice, :]).numpy()
+            self.test_losses.append(self.loss(self.testy[test_rand_slice, :], self.pred_cnn).numpy())
+            UpdateDashBoard.updatePredictionResult(self.testX, self.testy_label[test_rand_slice], self.model, self.pred_cnn)
         else:
             self.test_losses.append(self.loss(self.testy, self.model(self.testX)).numpy())
+            #self.testy_label is the vector version of test set label (not one hot matrix)
+            UpdateDashBoard.updatePredictionResult(self.testX, self.testy_label, self.model)
 
-        t1 = time.time()    #time log
+        t2 = time.time()    #time log
         UpdateDashBoard.updateLosses(self.train_losses[-1], self.test_losses[-1])
         UpdateDashBoard.updateLossGraph()
-        t2 = time.time()    #time log
-        #self.testy_label is the vector version of test set label (not one hot matrix)
-        UpdateDashBoard.updatePredictionResult(self.testX, self.testy_label, self.model, self.pred_cnn)
-        t3 = time.time()    #time log
+        t3 = time.time()
+
         self.t0_lst.append(t1-t0)
         self.t1_lst.append(t2-t1)
         self.t2_lst.append(t3-t2)
