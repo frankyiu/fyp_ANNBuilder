@@ -27,17 +27,11 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ANNBuilder</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">
-
-QToolTip {
-	color: #ffffff;
-	background-color: rgba(27, 29, 35, 160);
-	border: 1px solid rgb(40, 40, 40);
-	border-radius: 2px;
-}</string>
+  <property name="windowIcon">
+   <iconset resource="../files.qrc">
+    <normaloff>:/basic/icons/basic/logo.png</normaloff>:/basic/icons/basic/logo.png</iconset>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -77,7 +71,9 @@ background:transparent;</string>
        <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">QScrollBar:horizontal
+       <string notr="true">QToolTip { color: #fff; background-color: #000; border: none; }
+
+QScrollBar:horizontal
 {
     border: 1px solid #222222;
     background-color: #3d3d3d;
@@ -363,6 +359,28 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
+                   <item>
+                    <widget class="QLabel" name="label_logo">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="../files.qrc">:/basic/icons/basic/logo.png</pixmap>
+                     </property>
+                     <property name="scaledContents">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
                    <item>
                     <widget class="QLabel" name="label_title_bar_top">
                      <property name="sizePolicy">
@@ -881,9 +899,6 @@ QPushButton:checked {
                <property name="autoFillBackground">
                 <bool>false</bool>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>
@@ -931,8 +946,14 @@ QPushButton:checked {
                       <property name="text">
                        <string>Welcome to ANN Builder</string>
                       </property>
+                      <property name="textFormat">
+                       <enum>Qt::AutoText</enum>
+                      </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>false</bool>
                       </property>
                      </widget>
                     </item>
@@ -1056,9 +1077,6 @@ Neural Network Model</string>
                    </layout>
                   </widget>
                   <widget class="QWidget" name="page_draw">
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_6">
                     <item>
                      <widget class="QFrame" name="draw_left">
@@ -1076,7 +1094,6 @@ Neural Network Model</string>
                       </property>
                       <property name="styleSheet">
                        <string notr="true">
-
 #frame_component{
 	border-radius: 10px;
 	background-color: rgb(35, 36, 40);
@@ -1293,7 +1310,7 @@ border:None;
                                 <property name="geometry">
                                  <rect>
                                   <x>0</x>
-                                  <y>-265</y>
+                                  <y>0</y>
                                   <width>169</width>
                                   <height>718</height>
                                  </rect>
@@ -1379,6 +1396,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>2D Neuron</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1443,6 +1463,9 @@ border:None;
                                          <widget class="NNB1DBiasNeuronIcon" name="neuron_bias_1D">
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
+                                          </property>
+                                          <property name="toolTip">
+                                           <string>1D Bias</string>
                                           </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
@@ -1509,6 +1532,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>1D Neuron</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1574,6 +1600,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>2D Bias</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1625,7 +1654,7 @@ border:None;
                                     <property name="geometry">
                                      <rect>
                                       <x>0</x>
-                                      <y>235</y>
+                                      <y>238</y>
                                       <width>35</width>
                                       <height>16</height>
                                      </rect>
@@ -1649,7 +1678,7 @@ border:None;
                                     <property name="geometry">
                                      <rect>
                                       <x>-5</x>
-                                      <y>250</y>
+                                      <y>259</y>
                                       <width>161</width>
                                       <height>291</height>
                                      </rect>
@@ -1680,6 +1709,9 @@ border:None;
                                          <widget class="NNBConvLayerIcon" name="conv_layer">
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
+                                          </property>
+                                          <property name="toolTip">
+                                           <string>Convuntional Layer</string>
                                           </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
@@ -1746,6 +1778,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>Stacked Affine Layer</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1810,6 +1845,9 @@ border:None;
                                          <widget class="NNBPoolingLayerIcon" name="pooling_layer">
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
+                                          </property>
+                                          <property name="toolTip">
+                                           <string>Pooling Layer</string>
                                           </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
@@ -1876,6 +1914,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>Affine Layer</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1941,6 +1982,9 @@ border:None;
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
                                           </property>
+                                          <property name="toolTip">
+                                           <string>Flatten Layer</string>
+                                          </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
                                           </property>
@@ -1992,9 +2036,9 @@ border:None;
                                     <property name="geometry">
                                      <rect>
                                       <x>0</x>
-                                      <y>569</y>
+                                      <y>559</y>
                                       <width>61</width>
-                                      <height>21</height>
+                                      <height>16</height>
                                      </rect>
                                     </property>
                                     <property name="sizePolicy">
@@ -2047,6 +2091,9 @@ border:None;
                                          <widget class="NNBLostFuncBlock" name="loss_func_block">
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
+                                          </property>
+                                          <property name="toolTip">
+                                           <string>Loss Function</string>
                                           </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
@@ -2112,6 +2159,9 @@ border:None;
                                          <widget class="NNBRegularizerIcon" name="regularizer">
                                           <property name="cursor">
                                            <cursorShape>PointingHandCursor</cursorShape>
+                                          </property>
+                                          <property name="toolTip">
+                                           <string>Regularizer</string>
                                           </property>
                                           <property name="styleSheet">
                                            <string notr="true"/>
@@ -2211,6 +2261,9 @@ border:None;
                              <property name="topMargin">
                               <number>0</number>
                              </property>
+                             <property name="bottomMargin">
+                              <number>0</number>
+                             </property>
                              <item>
                               <widget class="QFrame" name="frame_2">
                                <property name="minimumSize">
@@ -2272,6 +2325,9 @@ border:None;
                                   <property name="cursor">
                                    <cursorShape>PointingHandCursor</cursorShape>
                                   </property>
+                                  <property name="toolTip">
+                                   <string>Warning Message</string>
+                                  </property>
                                   <property name="text">
                                    <string>Warning: 0</string>
                                   </property>
@@ -2285,7 +2341,7 @@ border:None;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="ToolBarWidget" name="widget_toolbar" native="true">
+                                 <widget class="QWidget" name="widget_toolbar" native="true">
                                   <property name="sizePolicy">
                                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                                     <horstretch>0</horstretch>
@@ -2385,6 +2441,9 @@ border-color: rgba(84, 84, 84, 200);
                                <property name="cursor">
                                 <cursorShape>PointingHandCursor</cursorShape>
                                </property>
+                               <property name="toolTip">
+                                <string>Helper</string>
+                               </property>
                                <property name="text">
                                 <string/>
                                </property>
@@ -2468,8 +2527,11 @@ border: none;
                           </size>
                          </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_14">
+                          <property name="topMargin">
+                           <number>0</number>
+                          </property>
                           <item>
-                           <widget class="QFrame" name="frame">
+                           <widget class="QFrame" name="frame_optimi">
                             <property name="frameShape">
                              <enum>QFrame::StyledPanel</enum>
                             </property>
@@ -2521,7 +2583,7 @@ border: none;
                                    </font>
                                   </property>
                                   <property name="text">
-                                   <string>Optrimazation</string>
+                                   <string>Optrimization</string>
                                   </property>
                                  </widget>
                                 </item>
@@ -2599,6 +2661,9 @@ border: none;
                                      </property>
                                      <property name="text">
                                       <string>Full-Batch</string>
+                                     </property>
+                                     <property name="checked">
+                                      <bool>true</bool>
                                      </property>
                                     </widget>
                                    </item>
@@ -2690,7 +2755,7 @@ border: none;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                                 <widget class="QDoubleSpinBox" name="spin_learningRate">
                                   <property name="minimumSize">
                                    <size>
                                     <width>0</width>
@@ -2768,7 +2833,7 @@ border:None
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                                 <widget class="QDoubleSpinBox" name="spin_decayRate">
                                   <property name="minimumSize">
                                    <size>
                                     <width>0</width>
@@ -2875,7 +2940,7 @@ border:None
                                    </font>
                                   </property>
                                   <property name="text">
-                                   <string>Epoch: 99999</string>
+                                   <string>Epoch: 0</string>
                                   </property>
                                  </widget>
                                 </item>
@@ -2907,6 +2972,9 @@ border:None
                                   </property>
                                   <property name="cursor">
                                    <cursorShape>PointingHandCursor</cursorShape>
+                                  </property>
+                                  <property name="toolTip">
+                                   <string>Restart</string>
                                   </property>
                                   <property name="text">
                                    <string/>
@@ -2967,6 +3035,9 @@ border:None
                                   <property name="mouseTracking">
                                    <bool>false</bool>
                                   </property>
+                                  <property name="toolTip">
+                                   <string>Train</string>
+                                  </property>
                                   <property name="text">
                                    <string/>
                                   </property>
@@ -3008,6 +3079,9 @@ border:None
                                   <property name="cursor">
                                    <cursorShape>PointingHandCursor</cursorShape>
                                   </property>
+                                  <property name="toolTip">
+                                   <string>Feed Forward</string>
+                                  </property>
                                   <property name="text">
                                    <string/>
                                   </property>
@@ -3033,6 +3107,9 @@ border:None
                                   </property>
                                   <property name="cursor">
                                    <cursorShape>PointingHandCursor</cursorShape>
+                                  </property>
+                                  <property name="toolTip">
+                                   <string>Backpropagation</string>
                                   </property>
                                   <property name="text">
                                    <string/>
@@ -3085,12 +3162,6 @@ border:None
    <class>Ui_tutorialsWindow</class>
    <extends>QWidget</extends>
    <header>.Ui_tutorialsWindow.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ToolBarWidget</class>
-   <extends>QWidget</extends>
-   <header>.ToolBarWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -24,6 +24,7 @@ class Message(QWidget):
         if nMessage is not None:
             self.message = nMessage
         self.text.setText(self.message)
+        self.show()
 
     def setupUi(self):
         pos = self.targetWidget.mapTo(self.parent(), QPoint(0, 0))
@@ -86,6 +87,5 @@ class Message(QWidget):
         self.move(pos.x()+self.targetWidget.width()-self.width()-10, pos.y()+self.targetWidget.height()-self.height()-10)
 
     def toggleEvent(self,checked):
-        print('toggled')
         self.refreshUi()
         self.hide() if self.isVisible() else self.show()

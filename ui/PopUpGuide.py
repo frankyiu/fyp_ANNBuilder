@@ -7,16 +7,17 @@ from PyQt5.QtGui import QFont
 class PopUpGuide():
     size = QPoint(250, 150)
 
-    def __init__(self, offset, text, targetWidget, backWidget, factory):
-        self.targetWidget = targetWidget
+    def __init__(self, obj, backWidget, factory):
+        self.targetWidget = obj['item']
         self.backWidget = backWidget
         self.pos = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
-        self.offset = offset
+        self.offset = obj['offset']
         self.factory = factory
         self.setUpUI()
-        self.setText(text)
+        self.setText(obj['text'])
         self.setUpButton()
         self.show()
+
 
     def setText(self, text):
         self.guide.textBrowser.append(text)
@@ -53,13 +54,13 @@ class PopUpGuide():
         self.guide.setStyleSheet("#widget{\n"
                                  "border: 1px solid;\n"
                                  "border-radius: 8px;\n"
-                                 "background-color: rgb(81, 90, 106);\n"
+                                 "background-color: rgb(40, 44, 52);\n"
                                  "}")
         self.guide.verticalLayout = QtWidgets.QVBoxLayout(self.guide)
         self.guide.verticalLayout.setObjectName("verticalLayout")
         self.guide.label = QtWidgets.QLabel(self.guide)
-        self.guide.label.setText("Welcome to Builder Tour!")
         self.guide.label.setFont(font)
+        self.guide.label.setText("  Welcome to Builder Tour!")
 
         self.guide.verticalLayout.addWidget(self.guide.label)
 
@@ -67,10 +68,10 @@ class PopUpGuide():
         self.guide.textBrowser.setObjectName("textBrowser")
         self.guide.textBrowser.setFont(font)
         self.guide.textBrowser.setStyleSheet("\n"
-                                 "border-top: 1px solid;\n"
-                                 "background-color: rgb(81, 90, 106);\n"
-                                 "")
+                                             "border-top: none;\n"
+                                             "")
         self.guide.verticalLayout.addWidget(self.guide.textBrowser)
+
         self.guide.frame = QtWidgets.QFrame(self.guide)
         self.guide.frame.setMinimumSize(QtCore.QSize(0, 30))
         self.guide.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -92,10 +93,10 @@ class PopUpGuide():
         self.guide.btn_skip.setText('Skip')
         self.guide.btn_skip.setFont(font)
         self.guide.btn_skip.setStyleSheet(
-                                          "border-radius: 4px;\n"
-                                          "background-color: rgb(255,208,69);\n"
-                                          "color: rgb(255,255,255);"
-                                          )
+            "border-radius: 4px;\n"
+            "background-color: rgb(255,208,69);\n"
+            "color: rgb(255,255,255);"
+        )
         self.guide.horizontalLayout.addWidget(self.guide.btn_skip)
         self.guide.btn_next = QtWidgets.QPushButton(self.guide.frame)
         self.guide.btn_next.setMaximumSize(QtCore.QSize(70, 16777215))
@@ -103,7 +104,8 @@ class PopUpGuide():
         self.guide.btn_next.setObjectName("btn_next")
         self.guide.btn_next.setText('Next')
         self.guide.btn_next.setFont(font)
-        self.guide.btn_next.setStyleSheet("border: 1px solid;\n"
+        self.guide.btn_next.setStyleSheet(
+                                          "background-color: rgb(102, 187, 106);\n"
                                           "border-radius: 4px;\n"
                                           )
         self.guide.horizontalLayout.addWidget(self.guide.btn_next)
@@ -116,5 +118,6 @@ class PopUpGuide():
     def close(self):
         self.shadow.hide()
         self.guide.hide()
-        self.guide.close()
-        self.shadow.close()
+        self.shadow.deleteLater()
+        self.guide.deleteLater()
+

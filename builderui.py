@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QStyleOption, QStyle
+from PyQt5.QtWidgets import QStyleOption, QStyle, QButtonGroup
 
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon
@@ -7,18 +7,24 @@ from ui.Message import Message
 from ui.PopUpGuideFactory import *
 from ui.DatasetLoader import *
 from ui.ToolBarWidget import *
+from nnbuilder.config import *
 from nnbuilder.scene import NNBScene
 
 
-class Builder():
+class BuilderUI():
+
     def __init__(self, ui):
         self.ui = ui
-        self.dataText = {}
+        self.modelPara ={
+            "Learning_rate": 0.01,
+            "Decay_rate": 0.9,
+            "Optimization": "Full-Batch",
+        }
         self.popUpGuide = PopUpGuideFactory(self.ui.page_draw)
         self.setupData()
         self.setupControl()
-        self.setupGuide()
         self.setupBuilder()
+        self.setupGuide()
         self.setupViewer()
         self.setupMessage()
         self.firstTimeGuide = True
@@ -29,13 +35,16 @@ class Builder():
 
     def setupBuilder(self):
 
-        scene = NNBScene()
-        scene.setSceneRect(0,0,self.ui.graphicsView.width(), self.ui.graphicsView.height())
+        self.scene = NNBScene()
+        self.scene.setSceneRect(0,0,self.ui.graphicsView.width(), self.ui.graphicsView.height())
         self.ui.graphicsView.setMouseTracking(True)
         self.ui.graphicsView.setRenderHints(QPainter.Antialiasing | QPainter.HighQualityAntialiasing)
-        self.ui.graphicsView.setScene(scene)
+        self.ui.graphicsView.setScene(self.scene)
+        self.ui.widget_toolbar = ToolBarWidget(self.scene, parent=self.ui.frame_2)
+        self.ui.horizontalLayout_7.addWidget(self.ui.widget_toolbar)
 
     def setupControl(self):
+
         def trainOnclickedEvent(checked):
             icon = QIcon()
             if checked:
@@ -47,6 +56,30 @@ class Builder():
         def empty():
             return
 
+        def optimiBtnsOnclickEvent(btn):
+            self.modelPara["Optimization"] = btn.text()
+            print(self.modelPara)
+
+        def decayRateChanged(i):
+            self.modelPara["Decay_rate"] = i
+
+        def learningRateChanged(i):
+            self.modelPara["Learning_rate"] = i
+
+        self.optimiBtns = QButtonGroup()
+        self.optimiBtns.addButton(self.ui.radio_fullbatch)
+        self.optimiBtns.addButton(self.ui.radio_minibatch)
+        self.optimiBtns.addButton(self.ui.radio_adaDelta)
+        self.optimiBtns.addButton(self.ui.radio_adaGrad)
+        self.optimiBtns.addButton(self.ui.radio_adam)
+        self.optimiBtns.addButton(self.ui.radio_momentum)
+        self.optimiBtns.addButton(self.ui.radio_rmsProp)
+        self.optimiBtns.addButton(self.ui.radio_sgd)
+
+        self.optimiBtns.buttonClicked.connect(optimiBtnsOnclickEvent)
+        self.ui.spin_decayRate.valueChanged.connect(decayRateChanged)
+        self.ui.spin_learningRate.valueChanged.connect(learningRateChanged)
+
         self.ui.btn_train.toggled.connect(trainOnclickedEvent)
         self.ui.btn_backprop.toggled.connect(empty)
         self.ui.btn_feedfor.toggled.connect(empty)
@@ -56,17 +89,24 @@ class Builder():
 
     def setupGuide(self):
         self.popUpGuide.append(self.ui.frame_dataset, QPoint(150, 0),
-                               'This is the Data Panel\nYou can setup the Dataset and Parameter here')
+                               'This is the Data Panel\nYou can choose our prepared dataset here before building your own model')
         self.popUpGuide.append(self.ui.frame_component, QPoint(150, 0),
                                'This is the Component Panel\nYou can drag and drop the components to the building panel to build your own model')
         self.popUpGuide.append(self.ui.graphicsView, QPoint(-200, 0),
-                               'This is the Building Panel\nYou can modify the model by moving the components, be sure to create a valid model before training the model')
-        self.popUpGuide.append(self.ui.draw_right, QPoint(-280, 0),
-                               'This is the Viewer Panel\nYou can inspect the variable weighting and metrics here.\nYou can click the arrow button to hide it')
+                               'This is the Building Panel\nYou can modify the model by moving and connecting the components, details of the components can be setted by right click')
+        self.popUpGuide.append(self.ui.btn_message, QPoint(-250, 0),
+                               'A warning message will be prompted for any errors in constructing the model')
+        self.popUpGuide.append(self.ui.widget_toolbar, QPoint(-250, 0),
+                               'You can change the mode in building by clicking these icons')
+        self.popUpGuide.append(self.ui.frame_optimi, QPoint(-200, -120),
+                               'This is the Optimization Panel\nBe sure to set the optimization, learning rate, decay rate here before training the model')
         self.popUpGuide.append(self.ui.frame_control, QPoint(-280, -50),
-                               'This is the Control Panel\nClick the Play button to train the model')
+                               'This is the Control Panel\nYou can click the Play button to train the model, perform Feedforward or Backpropagation in once by clicking the buttons beside.')
+        self.popUpGuide.append(self.ui.draw_right, QPoint(-280, 0),
+                               'This is the Viewer Panel\nYou can inspect the trained model metrics here by toggled this button')
         self.popUpGuide.append(self.ui.btn_guide, QPoint(-250, 0),
-                               'If you want to check this tour again, you can click this question button.\nEnjoy your building!')
+                               'If you want to check this tour again, you can click this question button.\nEnjoy building!')
+
         self.ui.btn_guide.clicked.connect(self.guideOnclickEvent)
         return
 
@@ -114,6 +154,9 @@ class Builder():
             self.ui.draw_right.setMinimumWidth(self.ui.btn_viewer.width() + 10)
             icon.addFile(u":/basic/icons/basic/back.png", QSize(), QIcon.Normal, QIcon.Off)
         self.ui.btn_viewer.setIcon(icon)
+
+    def update(self):
+        return
 
     def resizeEvent(self, event):
         if self.popUpGuide.isStarted:

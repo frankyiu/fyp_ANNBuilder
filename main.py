@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from ui.Ui_GuiMainWindow import *
 from ui.DatasetLoader import *
 from ui.PopUpGuideFactory import *
-from builder import Builder
+from builderui import BuilderUI
 
 
 class MainWindow(QMainWindow):
@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.setupTitleBar()
         self.setupWindow()
         self.setupHome()
-        self.builder = Builder(self.ui)
+        self.builder = BuilderUI(self.ui)
         self.ui.btn_home.animateClick()
         self.show()
         self.resizeEvent(None)
@@ -47,7 +47,6 @@ class MainWindow(QMainWindow):
         self.builder.resizeEvent(event)
 
     def setupTitleBar(self):
-        # remove title bar
         self.ui.btn_minimize.clicked.connect(self.showMinimized)
         self.ui.btn_maximize_restore.clicked.connect(self.maxOrRestore)
         self.ui.btn_close.clicked.connect(self.close)
@@ -55,7 +54,7 @@ class MainWindow(QMainWindow):
     def setupMenu(self):
         # set up expand btn
         self.expandOrgWidth = self.ui.frame_left_menu.width()
-        self.ui.btn_expand.clicked.connect(lambda: self.ExpandOnclickEvent(200))
+        self.ui.btn_expand.clicked.connect(lambda: self.ExpandOnclickEvent(150))
         # set up meunu btn
         self.menuButtons = QButtonGroup()
         self.menuButtons.addButton(self.ui.btn_home)
@@ -70,7 +69,7 @@ class MainWindow(QMainWindow):
     def ExpandOnclickEvent(self, maxWidth):
         icon = QIcon()
         width = self.ui.frame_left_menu.width()
-        if (width == maxWidth):
+        if width == maxWidth:
             targetWidth = self.expandOrgWidth
             icon.addFile(u":/basic/icons/basic/next-1.png", QSize(), QIcon.Normal, QIcon.Off)
         else:
@@ -183,4 +182,5 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
+
     sys.exit(app.exec_())

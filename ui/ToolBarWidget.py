@@ -5,13 +5,15 @@ from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
 from PyQt5.QtCore import QMimeData, Qt, QPoint
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.ToolBarIcon import *
+from nnbuilder.config import *
 
 #This is the widget attached to the program UI
 #All the switch tool logic is implemented here
 #This includes: control the mode flag, control the press effect of icons
 class ToolBarWidget(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, api, parent=None):
         super(QWidget,self).__init__(parent)
+        self.api = api
         self.toolbar = {}   #use dict to track the icons, regardless the order of object creation
         self.setupUi()
         self.addTools()
@@ -29,18 +31,21 @@ class ToolBarWidget(QWidget):
     #call the api
     def toolSelect(self):
         self.controlPressEffect(0)
+        self.api.switchMode(SceneMode.SelectMode)
         print(ToolBarIcon.tool_name[self.toolbar[0].tool])
         pass
 
     #call the api
     def toolConnect(self):
         self.controlPressEffect(1)
+        self.api.switchMode(SceneMode.ConnectMode)
         print(ToolBarIcon.tool_name[self.toolbar[1].tool])
         pass
 
     #call the api
     def toolTrain(self):
         self.controlPressEffect(2)
+        self.api.switchMode(SceneMode.TrainMode)
         print(ToolBarIcon.tool_name[self.toolbar[2].tool])
         pass
 
