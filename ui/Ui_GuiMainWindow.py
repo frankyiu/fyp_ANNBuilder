@@ -1302,8 +1302,9 @@ class Ui_MainWindow(object):
 "border:None\n"
 "")
         self.spin_learningRate.setButtonSymbols(QAbstractSpinBox.PlusMinus)
+        self.spin_learningRate.setDecimals(3)
         self.spin_learningRate.setMaximum(100.000000000000000)
-        self.spin_learningRate.setSingleStep(0.010000000000000)
+        self.spin_learningRate.setSingleStep(0.0010000000000000)
         self.spin_learningRate.setValue(0.010000000000000)
 
         self.horizontalLayout_17.addWidget(self.spin_learningRate)
@@ -1335,9 +1336,9 @@ class Ui_MainWindow(object):
 "border:None\n"
 "")
         self.spin_decayRate.setButtonSymbols(QAbstractSpinBox.PlusMinus)
-        self.spin_decayRate.setDecimals(1)
+        self.spin_decayRate.setDecimals(4)
         self.spin_decayRate.setMaximum(1.000000000000000)
-        self.spin_decayRate.setSingleStep(0.100000000000000)
+        self.spin_decayRate.setSingleStep(0.000100000000000000)
         self.spin_decayRate.setValue(0.900000000000000)
 
         self.horizontalLayout_18.addWidget(self.spin_decayRate)
@@ -1623,4 +1624,31 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btn_backprop.setText("")
     # retranslateUi
+    # retranslateUi
 
+    """
+    accept a Training object
+    connect the GUI to training object
+    """
+    def connect(self, train):
+        self.spin_learningRate.valueChanged.connect(train.setLearningRate)
+        self.spin_decayRate.valueChanged.connect(train.setLearningRateDecay)
+        self.radio_adaDelta.toggled.connect(lambda: train.setOptimizer(self.radio_adaDelta))
+        self.radio_adaGrad.toggled.connect(lambda: train.setOptimizer(self.radio_adaGrad))
+        self.radio_sgd.toggled.connect(lambda: train.setOptimizer(self.radio_sgd))
+        self.radio_fullbatch.toggled.connect(lambda: train.setOptimizer(self.radio_fullbatch))
+        self.radio_momentum.toggled.connect(lambda: train.setOptimizer(self.radio_momentum))
+        self.radio_minibatch.toggled.connect(lambda: train.setOptimizer(self.radio_minibatch))
+        self.radio_rmsProp.toggled.connect(lambda: train.setOptimizer(self.radio_rmsProp))
+        self.radio_adam.toggled.connect(lambda: train.setOptimizer(self.radio_adam))
+        self.radio_adam.setChecked(True)
+        self.spin_learningRate.setValue(0.001)
+        self.spin_decayRate.setValue(1e-4)
+        train.connectEpochWidget(self.label_13)
+        self.btn_train.clicked.connect(train.run)
+        self.btn_restart.clicked.connect(train.reset)
+        self.btn_feedfor.clicked.connect(train.forward)
+        self.btn_backprop.clicked.connect(train.backward)
+        #convert the radio button states to a meaningful value (String, depends on real implementation)
+        #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
+        train.setBatchSize()    #please add back a batch size spin box just like the learning rate

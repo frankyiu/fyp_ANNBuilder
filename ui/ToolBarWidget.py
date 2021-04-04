@@ -1,53 +1,41 @@
-import sys
-import numpy as np
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
 from PyQt5.QtCore import QMimeData, Qt, QPoint
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ui.ToolBarIcon import *
-from nnbuilder.config import *
+from ui.ToolBarIcon import ToolBarIcon
+from ui.ToolBarIconSelect import ToolBarIconSelect
+from ui.ToolBarIconConnect import ToolBarIconConnect
+from ui.ToolBarIconTrain import ToolBarIconTrain
 
-#This is the widget attached to the program UI
-#All the switch tool logic is implemented here
-#This includes: control the mode flag, control the press effect of icons
+"""
+A widget that contains all the ToolBarIcon Object
+Implement the switch tool logic
+"""
 class ToolBarWidget(QWidget):
     def __init__(self, api, parent=None):
         super(QWidget,self).__init__(parent)
+        self.toolbar_dict = {}
         self.api = api
-        self.toolbar = {}   #use dict to track the icons, regardless the order of object creation
+        self.selected_tool = None
         self.setupUi()
         self.addTools()
+        self.setTool(self.toolbar_dict["select"])
 
-    #helper function to ensure 1 and only 1 button is pressed
-    def controlPressEffect(self, selected_idx):
-        for k,v in self.toolbar.items():
-            if k == selected_idx:
-                v.press=True
-            else:
-                v.press=False
-            v.showImage()
-        return
+    """
+    Implement the switch tool logic, it
+    - first remove the press effect of the previously selected tool
+    - then add the press effect of the new one and switch the mode
+    """
+    def setTool(self, selected):
+        if self.selected_tool is not None:
+            self.__setToolPressEffect(self.selected_tool, False)
+        self.selected_tool = selected
+        self.__setToolPressEffect(self.selected_tool, True)
+        self.selected_tool.switchMode()
 
-    #call the api
-    def toolSelect(self):
-        self.controlPressEffect(0)
-        self.api.switchMode(SceneMode.SelectMode)
-        print(ToolBarIcon.tool_name[self.toolbar[0].tool])
-        pass
-
-    #call the api
-    def toolConnect(self):
-        self.controlPressEffect(1)
-        self.api.switchMode(SceneMode.ConnectMode)
-        print(ToolBarIcon.tool_name[self.toolbar[1].tool])
-        pass
-
-    #call the api
-    def toolTrain(self):
-        self.controlPressEffect(2)
-        self.api.switchMode(SceneMode.TrainMode)
-        print(ToolBarIcon.tool_name[self.toolbar[2].tool])
-        pass
+    def __setToolPressEffect(self, tool_widget, press):
+        tool_widget.press = press
+        tool_widget.showImage()
 
     #control the display size of widget
     def setupUi(self):
@@ -62,13 +50,15 @@ class ToolBarWidget(QWidget):
 
     #add the tools qlabel to the widget
     def addTools(self):
-        #expandable
-        SelectTool = ToolBarIcon(self, 0)
+        SelectTool = ToolBarIconSelect(self, self.api)
         SelectTool.setObjectName("ToolBarSelectTool")
         self.horizontalLayout.addWidget(SelectTool)
-        ConnectTool = ToolBarIcon(self, 1)
+        self.toolbar_dict["select"] = SelectTool
+        ConnectTool = ToolBarIconConnect(self, self.api)
         ConnectTool.setObjectName("ToolBarConnectTool")
         self.horizontalLayout.addWidget(ConnectTool)
-        TrainTool = ToolBarIcon(self, 2)
+        self.toolbar_dict["connect"] = ConnectTool
+        TrainTool = ToolBarIconTrain(self, self.api)
         TrainTool.setObjectName("ToolBarTrainTool")
         self.horizontalLayout.addWidget(TrainTool)
+        self.toolbar_dict["train"] = TrainTool

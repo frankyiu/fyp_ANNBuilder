@@ -4,6 +4,7 @@ from PyQt5.QtGui import QIcon
 from ui.Ui_GuiMainWindow import *
 from ui.DatasetLoader import *
 from ui.PopUpGuideFactory import *
+from ml.Training import *
 from builderui import BuilderUI
 
 
@@ -22,6 +23,8 @@ class MainWindow(QMainWindow):
         self.setupHome()
         self.builder = BuilderUI(self.ui)
         self.ui.btn_home.animateClick()
+        self.ml = Training()
+        self.ui.connect(self.ml) #connect the GUI to training module
         self.show()
         self.resizeEvent(None)
 

@@ -4,7 +4,9 @@ from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
 from PyQt5.QtCore import QMimeData, Qt, QPoint
 
-
+"""
+The QLabel Shown in the top right of the data set pop up
+"""
 class DatasetLoaderImage(QLabel):
     def __init__(self,parent):
         super(QLabel,self).__init__(parent)

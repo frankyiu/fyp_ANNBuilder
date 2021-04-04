@@ -30,6 +30,16 @@ class ActivationFunctionsTabs(QTabWidget):
         self.addTab(self.tab9, 'Softmax')
         self.addTab(self.tab10, 'Gaussian')
         self.addTab(self.tab11, 'Sine')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 16pt;
+        }
+        """
+        self.setStyleSheet(style)
 
         self.tab1UI()
         self.tab2UI()
@@ -46,44 +56,60 @@ class ActivationFunctionsTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Activation function is the mathematical function adopted by the processing unit of an artificial neuron.'))
-        layout.addWidget(QLabel('It dictates how the incoming data from the previous layer of nodes would be handled by the processing unit mathematically.'))
-        layout.addWidget(QLabel('The input to the processing unit is generally the weighted sum of the input values to the previous layer of nodes.'))
-        layout.addWidget(QLabel('Several common activation functions will be introduced in the following tabs.'))
+        label1 = QLabel('Activation function is the mathematical function adopted by the processing unit of an artificial neuron.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('It dictates how the incoming data from the previous layer of nodes would be handled by the processing unit.')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
+        
+        label3 = QLabel('The input to the processing unit is generally the weighted sum of the input values to the previous layer of nodes.')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
+        
+        label4 = QLabel('Several common activation functions will be introduced in the following tabs.')
+        label4.setWordWrap(True)
+        layout.addWidget(label4)
         
         self.tab1.setLayout(layout)
     
     def tab2UI(self):
         layout = QVBoxLayout()
     
-        layout.addWidget(QLabel('Step function only gives discrete ouputs and needs a pre-defined threshold.\nIt is usually adopted to build perceptrons as illustrated previously.'))
-        layout.addWidget(QLabel('Here is the typical setup of a step function with threshold = 2:'))
-
+        label1 = QLabel('Step function gives discrete outputs.\nThe threshold of a step function defines most of its properties.\n')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('Here is the typical setup of a step function:')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
+        
         stepFunction_graph = QLabel()
         stepFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/StepFunction/stepFunction.png'))
         layout.addWidget(stepFunction_graph)
         
-        layout.addWidget(QLabel('The output is 1 if the input is equal to or larger than 2.\nOtherwise, the output is 0.'))
-        layout.addWidget(QLabel('Pros: efficient computation'))
-        layout.addWidget(QLabel('Cons: not compatible with backpropagation'))
+        label3 = QLabel('Pros: efficient computation\nCons: not compatible with backpropagation')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
         
         self.tab2.setLayout(layout)
 
     def tab3UI(self): 
         layout = QVBoxLayout()
-        
-        layout.addWidget(QLabel('Linear function gives output proportional to the input.'))
-        layout.addWidget(QLabel('Here is the typical setup of a linear function with slope = 1.'))
 
         linearFunction_graph = QLabel()
-        linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction.png'))
+        linearFunction_graph.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction1.png'))
         layout.addWidget(linearFunction_graph)
         
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: (-∞, ∞)'))
-        layout.addWidget(QLabel('Pros: efficient computation'))
-        layout.addWidget(QLabel('Cons: not compatible with backpropagation'))
+        linearFunction_graph2 = QLabel()
+        linearFunction_graph2.setPixmap(QPixmap('./png/ActivationFunctions/LinearFunction/linearFunction2.png'))
+        layout.addWidget(linearFunction_graph2)
         
+        label1 = QLabel('x: (-∞, ∞)\nRange: (-∞, ∞)\nPros: efficient computation\nCons: not compatible with backpropagation')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+
         self.tab3.setLayout(layout)
         
     def tab4UI(self):               # medium.com
@@ -93,11 +119,9 @@ class ActivationFunctionsTabs(QTabWidget):
         sigmoid_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sigmoid/Sigmoid.png'))
         layout.addWidget(sigmoid_graph)
         
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: [0, 1]'))
-        layout.addWidget(QLabel('Non-zero-centered'))
-        layout.addWidget(QLabel('Pros: efficient backpropagation'))
-        layout.addWidget(QLabel('Cons: computationally expensive, could lead to saturated gradients'))
+        label = QLabel('x: (-∞, ∞)\nRange: [0, 1]\nNon-zero-centered\nPros: efficient backpropagation\nCons: computationally expensive, could lead to saturated gradients')
+        label.setWordWrap(True)
+        layout.addWidget(label)
         
         self.tab4.setLayout(layout)
 
@@ -108,11 +132,9 @@ class ActivationFunctionsTabs(QTabWidget):
         tanh_graph.setPixmap(QPixmap('./png/ActivationFunctions/tanh/tanh.png'))
         layout.addWidget(tanh_graph)
         
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: [-1, 1]'))
-        layout.addWidget(QLabel('Zero-centered'))
-        layout.addWidget(QLabel('Pros: efficient back propagation'))
-        layout.addWidget(QLabel('Cons: could lead to saturated gradients'))
+        label = QLabel('x: (-∞, ∞)\nRange: [-1, 1]\nZero-centered\nPros: efficient back propagation\nCons: could lead to saturated gradients')
+        label.setWordWrap(True)
+        layout.addWidget(label)
         
         self.tab5.setLayout(layout)
     
@@ -123,11 +145,10 @@ class ActivationFunctionsTabs(QTabWidget):
         ReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ReLU/ReLU.png'))
         layout.addWidget(ReLU_graph)
         
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: [0, ∞)'))
-        layout.addWidget(QLabel('Pros: quickly converges, low cost of computation, would not saturate, efficient backpropagation'))
-        layout.addWidget(QLabel('Cons: will lead to dead ReLU, i.e. gradient = 0, if the input is negative or equal to 0'))
-
+        label = QLabel('x: (-∞, ∞)\nRange: [0, ∞)\nPros: quickly converges, low cost of computation, would not saturate, efficient backpropagation\nCons: will lead to dead ReLU, i.e. gradient = 0, if the input is negative or equal to 0')
+        label.setWordWrap(True)
+        layout.addWidget(label)
+        
         self.tab6.setLayout(layout)
 
     def tab7UI(self):               #  medium.com
@@ -137,11 +158,9 @@ class ActivationFunctionsTabs(QTabWidget):
         LeakyReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/LeakyReLU/LeakyReLU.png'))
         layout.addWidget(LeakyReLU_graph)
         
-        layout.addWidget(QLabel('A variant of ReLU'))
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: (-∞, ∞)'))
-        layout.addWidget(QLabel('Pros: same as ReLU but has rectified the dead ReLU issue'))
-        layout.addWidget(QLabel('Cons: computationally more expensive than ReLU'))
+        label = QLabel('A variant of ReLU\nx: (-∞, ∞)\nRange: (-∞, ∞)\nPros: same as ReLU but has rectified the dead ReLU issue\nCons: computationally more expensive than ReLU')
+        label.setWordWrap(True)
+        layout.addWidget(label)
 
         self.tab7.setLayout(layout)
         
@@ -152,11 +171,9 @@ class ActivationFunctionsTabs(QTabWidget):
         ELU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ELU/ELU.png'))
         layout.addWidget(ELU_graph)
         
-        layout.addWidget(QLabel('Another variant of ReLU'))
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: [-α, ∞)'))
-        layout.addWidget(QLabel('Pros: same as ReLU but has rectified the dead ReLU issue'))
-        layout.addWidget(QLabel('Cons: computationally more expensive than ReLU and Leaky ReLU'))
+        label = QLabel('Another variant of ReLU\nx: (-∞, ∞)\nRange: [-a, ∞)\nPros: same as ReLU but has rectified the dead ReLU issue\nCons: computationally more expensive than ReLU and Leaky ReLU')
+        label.setWordWrap(True)
+        layout.addWidget(label)
         
         self.tab8.setLayout(layout)
         
@@ -165,33 +182,42 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         softmax_gif = QLabel()
+        softmax_gif.setAlignment(Qt.AlignCenter)
         softmax_movie = QMovie('./gifs/ActivationFunctions/softmax.gif')
         softmax_gif.setMovie(softmax_movie)
         softmax_movie.start()
         layout.addWidget(softmax_gif)
         
-        layout.addWidget(QLabel('Softmax function is generally applied on the last layer of nodes of a neural network, indicated by the "Z"s above.'))
-        layout.addWidget(QLabel('Each of the eventual outputs, indicated by the "O"s above, would be normalized to [0, 1] and the "O"s sum up to 1.'))
+        label = QLabel('Softmax function is generally applied on the last layer of nodes of a neural network, indicated by the "Z"s above.\nEach of the eventual outputs, indicated by the "O"s above, would be normalized to [0, 1] and the values sum up to 1.')
+        label.setWordWrap(True)
+        layout.addWidget(label)
         
         self.tab9.setLayout(layout) 
         
     def tab10UI(self):              # Wiki
         layout = QVBoxLayout()
      
-        layout.addWidget(QLabel('Gaussian function has a general form as below, which a, b, c are real constants and c is not equal to 0:'))
+        label1 = QLabel('Gaussian function has a general form as below, of which a, b, c are real constants and c is not equal to 0:')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
 
         gaussian_eq = QLabel()
+        gaussian_eq.setAlignment(Qt.AlignCenter)
         gaussian_eq.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_eq.png'))
         layout.addWidget(gaussian_eq)
         
-        layout.addWidget(QLabel('The graph of the Gaussian function with a = 1, b = 0 and c = 1/sqrt(2):'))
+        label2 = QLabel('The graph of the Gaussian function with a = 1, b = 0 and c = 1/sqrt(2):')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
         
         gaussian_graph = QLabel()
+        gaussian_graph.setAlignment(Qt.AlignCenter)
         gaussian_graph.setPixmap(QPixmap('./png/ActivationFunctions/Gaussian/gaussian_graph.png'))
         layout.addWidget(gaussian_graph)
         
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: (0, 1]'))
+        label3 = QLabel('x: (-∞, ∞)\nRange: (0, 1]')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
         
         self.tab10.setLayout(layout)
     
@@ -199,12 +225,12 @@ class ActivationFunctionsTabs(QTabWidget):
         layout = QVBoxLayout()
      
         sine_graph = QLabel()
-        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sineGraph.png'))
+        sine_graph.setAlignment(Qt.AlignCenter)
+        sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sinGraph.png'))
         layout.addWidget(sine_graph)
         
-        layout.addWidget(QLabel('Sine function is a periodic function with a period = 2π, ie. sin(x) = sin(2nπ + x) where n is an integer.'))
-        layout.addWidget(QLabel('x: (-∞, ∞)'))
-        layout.addWidget(QLabel('Range: [-1, 1]'))
-        layout.addWidget(QLabel('Apart from the simple sine function, there are some other activation functions derived from sin(x), eg. sin(x)/x.'))
+        label = QLabel('Sine function is a periodic function with a period = 2π radian, ie. sin(x) = sin(2nπ + x) where n is an integer.\nx: (-∞, ∞)\nRange: [-1, 1]\nApart from the simple sine function, there are some other activation functions derived from sin(x), eg. sin(x)/x.')
+        label.setWordWrap(True)
+        layout.addWidget(label)
         
         self.tab11.setLayout(layout)

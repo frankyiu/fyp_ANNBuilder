@@ -3,15 +3,16 @@ import numpy as np
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget
 from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
 from PyQt5.QtCore import QMimeData, Qt, QPoint, QFile
+from ui.QLabelEffect import QLabelEffect
+from dataset.DatasetMeta import *
 
-#This is the class for the icons used in popup widget
-class DatasetIcon(QLabel):
-
-    dataset_directory = 'dataset/'
-
+"""
+The class for the icons used in popup widget, inherit QLabelEffect to Reuse the drawing Code
+"""
+class DatasetIcon(QLabelEffect):
     def __init__(self,parent, dataset, popup=None):
-        super(QLabel,self).__init__(parent)
-        self.dataset_name = dataset     #string name of the dataset, used for loading the image and csv
+        super().__init__(parent)
+        self.dataset_name = dataset     #string name of the dataset, used for loading the image and data
         self.dataset_piximg = None      #Pixmap of the dataset icon
         self.popup = popup              #the popup widget which owns this icon
         self.icon_loaded = False
@@ -20,84 +21,77 @@ class DatasetIcon(QLabel):
         self.loadDatasetImg()
         self.show()
 
-    #When user press the icon, the icon shows a pressing effect
-    #overrided by the DatasetLoader
+    """
+    When user press the icon, the icon shows a pressing effect
+    overrided by the DatasetLoader
+    """
     def mousePressEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
         if event.button() == Qt.LeftButton:
             self.showImage(press=True)
 
-    #When user release the button, it select and load the dataset.
-    #after that, close the popup panel
-    #overrided by the DatasetLoader
+    """
+    When user release the button, it select and load the dataset.
+    overrided by the DatasetLoader
+    """
     def mouseReleaseEvent(self, event):
         self.showImage(hover=True)
         self.getPopupWidget().getDataLoader().loadDataset(self)
 
-    #When user hover the icon, it changes the icon of dataloader temporarily
+    """
+    When user hover the icon, it changes the icon of dataloader temporarily
+    """
     def enterEvent(self, event):
         self.setCursor(Qt.PointingHandCursor)
         self.showImage(hover=True)
         if self.isDatasetIcon():
             self.getPopupWidget().getDataLoader().changeIconImg(self, hover=True)
             self.getPopupWidget().showDatasetInfo(self.getDatasetName())
-            if not self.isIconLoaded():
+            if not self.isIconLoaded(): #try reloading the image
                 self.loadDatasetImg()
 
-
-    #When user leave the icon after hovering, it change back the icon of dataloader
+    """
+    When user leave the icon after hovering, it change back the icon of dataloader
+    """
     def leaveEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
-        if not self.isDataLoader():
-            if not self.isSelectedByDataLoader():
-                self.showImage(hover=False)
-                self.getPopupWidget().getDataLoader().changeIconImg(self.getPopupWidget().getDataLoader(), hover=True)
-                self.getPopupWidget().showDatasetInfo()
-            else:
-                self.showImage(press=True)
-                self.getPopupWidget().getDataLoader().changeIconImg(self.getPopupWidget().getDataLoader(), hover=True)
-                self.getPopupWidget().showDatasetInfo()
-        else:
+        if self.isDataLoader():
             self.showImage(hover=False)
+        else:
+            self.showImage(press=self.isSelectedByDataLoader())        #show the press effect if this dataset is selected
+            self.getPopupWidget().getDataLoader().changeIconImg( \
+                    self.getPopupWidget().getDataLoader(), hover=True) #show the image of last selected dataset
+            self.getPopupWidget().showDatasetInfo()                    #show the info of last selected dataset
 
-
-    #This function handles the hovering and pressing effect of the icon
+    """
+    handles the hovering and pressing effect of the icon
+    """
     def showImage(self, hover=False, press=False):
-        tmp = QPixmap(self.getDatasetPixmap().size())
-        tmp.fill(Qt.transparent)
-        painter = QPainter(tmp)
-        painter.setBrush(QBrush(self.getDatasetPixmap()))
-        painter.setPen(Qt.NoPen)
-        painter.setRenderHint(QPainter.Antialiasing)
-        radius = 50
-        painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
-        if hover:
-            painter.setBrush(QColor(255,255,255,128))
-            painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
-        elif press:
-            painter.setBrush(QColor(0,0,0,128))
-            painter.drawRoundedRect(self.getDatasetPixmap().rect(), radius, radius)
-        self.setPixmap(tmp)
-        painter.end()
+        super().showImage(hover, press)
 
     #load the image file using the dataset name from the system
     def loadDatasetImg(self, filename=None):
-        if filename is None:
-            filename = self.getDatasetName()
-        path = DatasetIcon.dataset_directory+'img/'+filename+('.png' if not self.isCNNIcon() else '_0.png')
+        filename = self.getDatasetName() if filename is None else filename
+        path = DatasetMeta.dataset_img_directory+filename+('.png' if not self.isCNNIcon() else '_0.png')
+        self.__setIconPixmap(path)
+        self.setQPixmapDrawn(self.getDatasetPixmap())
+        self.setRoundedRadius(50)
+        self.showImage()
+
+    def __setIconPixmap(self, path):
         if QFile.exists(path):
-            self.setDatasetPixmap(QPixmap(path))
+            self._setDatasetPixmap(QPixmap(path))
             self.icon_loaded = True
         else:
             print("Image Source File not Found:", path)
-            self.setDatasetPixmap(QPixmap(600,600))
+            self._setDatasetPixmap(DatasetIcon.getDefaultPixmap())
             self.icon_loaded = False
-        if self.isDataLoader():
-            self.setLastLoadedDatasetPixmap(self.getDatasetPixmap())
-        self.showImage()
 
+    """
+    Whether this refers to a CNN dataset or not
+    """
     def isCNNIcon(self):
-        return False
+        return DatasetMeta.isCNN(self.dataset_name) if self.isDatasetIcon() else False
 
     def isDataLoader(self):
         return False
@@ -120,5 +114,10 @@ class DatasetIcon(QLabel):
     def getDatasetPixmap(self):
         return self.dataset_piximg
 
-    def setDatasetPixmap(self, pixmap):
+    def _setDatasetPixmap(self, pixmap):
         self.dataset_piximg = pixmap
+        self.setQPixmapDrawn(self.dataset_piximg)
+
+    @staticmethod
+    def getDefaultPixmap():
+        return QLabelEffect.getDefaultPixmap()

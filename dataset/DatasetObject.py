@@ -1,129 +1,120 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from dataset.CNNDataset import *
+from dataset.MathDataset import *
 #from CNNDataset import *
+from dataset.DatasetMeta import *
 
+"""
+A wrapper class to the dataset
+Important method attached with comments
+"""
 class DatasetObject():
     def __init__(self):
-        self.data = None
-        self.data_no_noise = None
+        self.dataset = None
         self.train_set_ratio = 0.8
-        self.isCNN = False
 
-    def plotData(self, filename, isClassify=True):
-        if self.isCNNData():
-            self.data.showGraph(filename)
-        else:
-            from dataset.generator import plot_np
-            if self.hasData():
-                fig, _ = plot_np(self.data, filename, isClassify)
-                plt.close(fig)
-            else:
-                print("No Dataset is loaded")
+    def plotData(self, filename):
+        if self.dataset:
+            self.dataset.showGraph(filename)
 
-    def loadDataset(self, path, dataset_name):
-        csv = path + dataset_name + '.csv'
-        isCNN = True if 'cnn' in dataset_name else False
+    def loadDataset(self, dataset_name):
+        isCNN = DatasetMeta.isCNN(dataset_name)
+        dataset_ptr = None
         if isCNN:
-            try:
-                self.data = CNNDataset(dataset_name, path)
-                print('Dataset ' + dataset_name +' is loaded')
-                self.isCNN = isCNN
-                return True
-            except:
-                print("Dataset " + dataset_name + " not Found")
-                self.data = None
-                self.data_no_noise = None
-                self.isCNN = False
-                return False
+            dataset_ptr = CNNDataset
         else:
-            try:
-                self.data = np.genfromtxt(csv, delimiter=',', skip_header=1)
-                self.data_no_noise = self.data.copy()
-                self.isCNN = isCNN
-                print('Dataset ' + dataset_name +' is loaded')
-                return True
-            except:
-                print("Dataset Source not Found:", csv)
-                self.data = None
-                self.data_no_noise = None
-                self.isCNN = False
-                return False
+            dataset_ptr = MathDataset
+        try:
+            self.dataset = dataset_ptr(dataset_name)
+            print('Dataset ' + dataset_name +' is loaded')
+            self.varyData(0)    #selection for CNN data, do nothing to Math data
+            return True
+        except:
+            self.dataset = None
+            print("Dataset " + dataset_name + " not Found")
+            return False
 
-    def addNoiseToData(self, val, is_gaussian, is_regression):
-        if self.hasData():
-            mean = 0
-            multiplier = 7 if is_gaussian else 1
-            sd = 0.1 * val * multiplier
-            self.data = self.data_no_noise.copy()
-            if is_regression:
-                self.data += np.random.normal(mean,sd, self.data.shape)
-                isClassify = False
-            else:
-                self.data[:,:-1] += np.random.normal(mean,sd, self.data[:,:-1].shape)
-                isClassify = True
-            return isClassify
-        else:
-            print("No Dataset is loaded")
-
-    def doVariation(self, val):
-        self.data.doVariation(val)
-
-    def getVariation(self):
-        return self.data.getVariation() if self.isCNNData() else None
+    def varyData(self, val):
+        if self.isMathData():
+            self.dataset.addNoiseToData(val)
+        elif self.isCNNData():
+            self.dataset.doVariation(val)
 
     """
-    Member functions below are for the ML Process
+    Functions below for the ML Process
     """
+    def isLoadSuccess(self):
+        return self.dataset.isLoadSuccess() if self.dataset else False
+
+    def isMathData(self):
+        return self.dataset.isMath() if self.dataset else False
 
     def isCNNData(self):
-        return self.isCNN
+        return self.dataset.isCNN() if self.dataset else False
 
-    def hasData(self):
-        return self.data is not None
+    def getVariation(self):
+        return self.dataset.getVariation() if self.dataset.isCNN() else 0
 
-    def getRawData(self):
-        return self.data if not self.isCNNData() else None
+    def getDatasetName(self):
+        return self.dataset.dataset_name if self.dataset is not None else ""
 
     def getFeatureShape(self):
-        return self.getTestFeature().shape[1:] if self.data is not None else None
+        return self.getTestFeature().shape[1:] if self.dataset is not None else None
 
     def getLabelShape(self):
-        return self.getTestLabel().shape[1:] if self.data is not None else None
+        return self.getTestLabel().shape[1:] if self.dataset is not None else None
+
+    """
+    Get the number of unique classes 
+    """
+    def getNumberOfClass(self):
+        return len(np.unique(self.getTrainLabel())) \
+                if DatasetMeta.isClassify(self.dataset.dataset_name) else 1
 
     def getTrainSize(self):
-        return self.data.getTrainSize() if self.isCNNData() \
-                else int(len(self.data)*self.getTrainingSetRatio()) if self.data is not None else None
+        return self.dataset.getTrainSize() if self.isCNNData() \
+               else self.dataset.getTrainSize(self.getTrainingSetRatio()) \
+               if self.isMathData() else None
 
     def getTestSize(self):
-        return self.data.getTestSize() if self.isCNNData() \
-                else (len(self.data)-int(len(self.data)*self.getTrainingSetRatio())) if self.data is not None else None
+        return self.dataset.getTestSize() if self.isCNNData() \
+               else self.dataset.getTestSize(self.getTrainingSetRatio()) \
+               if self.isMathData() else None
 
+    """
+    Get the train set data
+    """
     def getTrainData(self):
         return self.getTrainFeature(), self.getTrainLabel()
 
+    """
+    Get the test set data
+    """
     def getTestData(self):
         return self.getTestFeature(), self.getTestLabel()
 
     def getTrainFeature(self):
-        return self.data.getTrainFeature() if self.isCNNData() \
-                else self.data[:self.getTrainSize(),:-1] if self.data is not None else None
+        return self.dataset.getTrainFeature().astype(np.float32) if self.isCNNData() \
+               else self.dataset.getTrainFeature(self.getTrainingSetRatio()).astype(np.float32) \
+               if self.isMathData() else None
 
     def getTrainLabel(self):
-        return self.data.getTrainLabel() if self.isCNNData() \
-                else self.data[:self.getTrainSize(),-1] if self.data is not None else None
+        return self.dataset.getTrainLabel() if self.isCNNData() \
+               else self.dataset.getTrainLabel(self.getTrainingSetRatio()) \
+               if self.isMathData() else None
 
     def getTestFeature(self):
-        return self.data.getTestFeature() if self.isCNNData() \
-                else self.data[self.getTrainSize():,:-1] if self.data is not None else None
+        return self.dataset.getTestFeature().astype(np.float32) if self.isCNNData() \
+               else self.dataset.getTestFeature(self.getTrainingSetRatio()).astype(np.float32) \
+               if self.isMathData() else None
 
     def getTestLabel(self):
-        return self.data.getTestLabel() if self.isCNNData() \
-                else self.data[self.getTrainSize():,-1] if self.data is not None else None
+        return self.dataset.getTestLabel() if self.isCNNData() \
+               else self.dataset.getTestLabel(self.getTrainingSetRatio()) \
+               if self.isMathData() else None
 
     def getTrainingSetRatio(self):
-        return float(self.data.getTrainSize()/(self.data.getTrainSize()+self.data.getTestSize())) \
-                if self.isCNNData() else self.train_set_ratio
+        return float(self.dataset.getTrainSize()/(self.dataset.getTrainSize()+self.dataset.getTestSize())) \
+               if self.isCNNData() else self.train_set_ratio
 
     def setTrainingSetRatio(self, val):
         self.train_set_ratio = val

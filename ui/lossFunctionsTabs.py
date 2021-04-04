@@ -16,6 +16,16 @@ class LossFunctionsTabs(QTabWidget):                # towardsdatascience
         self.addTab(self.tab2, 'MAE - Mean Absolute Error')
         self.addTab(self.tab3, 'MSE - Mean Squared Error')
         self.addTab(self.tab4, 'CE - Cross Entropy Loss')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 16pt;
+        }
+        """
+        self.setStyleSheet(style)
 
         self.tab1UI()
         self.tab2UI()
@@ -25,47 +35,63 @@ class LossFunctionsTabs(QTabWidget):                # towardsdatascience
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('As illustrated in "Feedforward And Backpropagation", loss functions serve the purpose to guide the weight updates in backpropagation by indicating the accuracy of predictions against the corresponding ground truths.'))
-        layout.addWidget(QLabel('There are many loss functions available for artificial neural network construction.'))
-        layout.addWidget(QLabel('The most common three will be introduced in the following tabs.'))
+        label1 = QLabel('In supervised learning, an artificial neural network is usually connectd to a loss function.')
+        label1.setWordWrap(True)
+        layout.addWidget(label1)
+        
+        label2 = QLabel('In each prediction made, the loss function takes the outcome and the ground truth of the fed-in example as input and indicates the loss, i.e. accuracy, of the prediction.')
+        label2.setWordWrap(True)
+        layout.addWidget(label2)
+        
+        label3 = QLabel('In the learning process, the objective is to minimize the loss in predictions.')
+        label3.setWordWrap(True)
+        layout.addWidget(label3)
+        
+        label4 = QLabel('There are many loss functions available for neural network construction and they serve different purposes.')
+        label4.setWordWrap(True)
+        layout.addWidget(label4)
+        
+        label5 = QLabel('The most common three are going to be introduced in the following tabs.')
+        label5.setWordWrap(True)
+        layout.addWidget(label5)
         
         self.tab1.setLayout(layout)
 
     def tab2UI(self):
         layout = QVBoxLayout()
-        
-        layout.addWidget(QLabel('Mean Absolute Error'))
-        
+                
         mae_graph = QLabel()
-        mae_graph.setPixmap(QPixmap('./png/LossFunctions/mae.png'))
+        mae_graph.setPixmap(QPixmap('./png/LossFunctions/mae.png').scaled(mae_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(mae_graph)
         
-        layout.addWidget(QLabel('n: the total number of training examples\nyi: the prediction on the i-th training example\nŷi: the ground truth of the i-th training example'))
-      
+        mae_notations_graph = QLabel()
+        mae_notations_graph.setPixmap(QPixmap('./png/LossFunctions/mae_notations.png').scaled(mae_notations_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        layout.addWidget(mae_notations_graph)
+              
         self.tab2.setLayout(layout)
 
     def tab3UI(self):
         layout = QVBoxLayout()
         
-        layout.addWidget(QLabel('Mean Squared Error'))
-
         mse_graph = QLabel()
-        mse_graph.setPixmap(QPixmap('./png/LossFunctions/mse.png'))
+        mse_graph.setPixmap(QPixmap('./png/LossFunctions/mse.png').scaled(mse_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(mse_graph)
         
-        layout.addWidget(QLabel('n: the total number of training examples\nyi: the prediction on the i-th training example\nŷi: the ground truth of the i-th training example'))
-
+        mse_notations_graph = QLabel()
+        mse_notations_graph.setPixmap(QPixmap('./png/LossFunctions/mse_notations.png').scaled(mse_notations_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        layout.addWidget(mse_notations_graph)
+        
         self.tab3.setLayout(layout)
     
     def tab4UI(self):
         layout = QVBoxLayout()
-                
-        layout.addWidget(QLabel('Cross Entropy Loss'))
-        
+                        
         ce_graph = QLabel()
-        ce_graph.setPixmap(QPixmap('./png/LossFunctions/ce.png'))
+        ce_graph.setPixmap(QPixmap('./png/LossFunctions/ce.png').scaled(ce_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
         layout.addWidget(ce_graph)
         
-        layout.addWidget(QLabel('n: the total number of training examples\nyi: the prediction on the i-th training example\nŷi: the ground truth of the i-th training example'))
-
+        ce_notations_graph = QLabel()
+        ce_notations_graph.setPixmap(QPixmap('./png/LossFunctions/ce_notations.png').scaled(ce_notations_graph.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        layout.addWidget(ce_notations_graph)
+        
         self.tab4.setLayout(layout)

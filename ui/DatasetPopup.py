@@ -6,71 +6,69 @@ from PyQt5.QtGui import QDrag, QPixmap, QPainter, QCursor, QPen, QColor, QBrush
 from PyQt5.QtCore import QMimeData, Qt, QPoint, QEvent
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.DatasetIcon import *
-from ui.DatasetIconCNN import *
 from ui.DatasetLoaderImage import *
+from dataset.DatasetMeta import *
 
+"""
+The pop up shown when dataloader is clicked
+It shows the DatasetIcons for user to select
+On the right, shows the meta info of the selected/hovering dataset
+A graph is shown on the top to visualize the data
+"""
 class DatasetPopup(QWidget):
     #List of prepared datasets
-    datasets = ['bi_linear', 'bi_moon', 'bi_circle', 'bi_xor', 'bi_spiral', 'multi_three', 'multi_four', 'multi_circles', 'reg_inform', 'reg_redun', 'cnn_mnist', 'cnn_cifar10']
+    datasets = DatasetMeta.datasets
+    num_of_datasets = 0
 
     def __init__(self,parent, loader):
         super(QWidget,self).__init__(parent)
         self.loader = loader        #The loader that owns this popup
         self.widget_lst = []        #The list of icons that this popup owns
-        self.datasets_info = None
         self.setupUI()
-        self.loadDatasetMetadata()
 
-    #accept a dataset name string, show the target dataset meta info with no noise
-    #if None is passed, it shows the current selected dataset meta info and current noise
+
+    """
+    This methods updates the meta info panel in the pop up
+    it accepts the dataset name as argument and get the meta info
+        from DatasetMeta class
+    if no argument is specified, it shows the meta info of the
+        currently selected dataset
+    The meta info panel will update whenever a dataset is loaded, or
+        hovering a dataset Icon, or the noise/split ratio is updated
+    For hovering, the original version of dataset will be displayed for math,
+        and binary classification task for cnn dataset
+    """
     def showDatasetInfo(self, dataset_name=None):
-        noise_statement = ["No Noise", "Low", "Medium", "High"]
         noise_val = 0
         if dataset_name is None:
             noise_val = self.getNoiseValue()
             dataset_name = self.getDataLoader().getDatasetName()
 
-        (dataname, tasktype, difficulty) = self.datasets_info[dataset_name]
+        (dataname, tasktype, difficulty) = DatasetMeta.getDatasetMetaInfo(dataset_name, noise_val)
+        split_statement = "Train Set Split Ratio: {ratio:.0f}%".format(
+                          ratio=self.getDataLoader().getTrainingSetRatio()*100)
+        noise_statement = DatasetMeta.getVaryStatement(dataset_name, noise_val)
+        split_enabled = False if DatasetMeta.isCNN(dataset_name) else True
+        self.__setDatasetMetaInfo(dataname, tasktype, difficulty, split_statement, noise_statement, split_enabled)
 
-        self.DatasetName.setText("Name: {name}".format(name=dataname))
-        self.TaskType.setText("Task: {task}".format(task=tasktype))
-        self.Difficulty.setText( "Difficulty: {difficulty}".format(difficulty=difficulty[noise_val]))
-        self.Split.setEnabled(True)
-        self.SplitName.setText("Train Set Split Ratio: {ratio:.0f}%".format(ratio=self.getDataLoader().getTrainingSetRatio()*100))
-        self.NoiseName.setText("Noise: {noise}".format(noise=noise_statement[noise_val]))
-        if dataset_name is "cnn_mnist":
-            vary_statement = ["0, 1", "4, 7, 9", "2, 3, 5, 6, 8", "All"]
-            self.NoiseName.setText("Digits: {vary}".format(vary=vary_statement[noise_val]))
-            self.Split.setEnabled(False)
-            if noise_val==0:
-                self.TaskType.setText("Task: {task}".format(task="Binary Classification"))
-        elif dataset_name is "cnn_cifar10":
-            vary_statement = ["Cat vs Dog", "Vehicles", "Animals", "All"]
-            self.NoiseName.setText("Classes: {vary}".format(vary=vary_statement[noise_val]))
-            self.Split.setEnabled(False)
-            if noise_val==0:
-                self.TaskType.setText("Task: {task}".format(task="Binary Classification"))
+    def __setDatasetMetaInfo(self, name, task, difficulty, split_str, noise_str, split_enabled):
+        self.DatasetName.setText("Name: {name}".format(name=name))
+        self.TaskType.setText("Task: {task}".format(task=task))
+        self.Difficulty.setText( "Difficulty: {difficulty}".format(difficulty=difficulty))
+        self.SplitName.setText(split_str)
+        self.NoiseName.setText(noise_str)
+        self.Split.setEnabled(split_enabled)
 
-    def loadDatasetMetadata(self):
-        tmp = {}
-        import json
-        try:
-            with open(DatasetIcon.dataset_directory+"DatasetsMetaInfo.json", "r") as f:
-                tmp = json.loads(f.read())
-        except FileNotFoundError as fnf_error:
-            print(fnf_error, "(Failed to Load Datasets Metadata)")
-        finally:
-            from collections import defaultdict
-            self.datasets_info = defaultdict(lambda: ("", "", [0,0,0,0]))
-            self.datasets_info.update(tmp)
-
+    #invoked when a dataset is loaded or a dataset setting is loaded
     def resetNoise(self, noise=0):
         self.Noise.setValue(noise)
 
+    #invoked when a dataset setting is loaded
     def resetSplit(self, split=8):
         self.Split.setValue(split)
 
-    #This function handles the show/hide of popup widget
+    #handles the show/hide of popup widget
+    #ignore when it is in training state
     def toggle(self, state=None):
         if state is not None:
             self.setVisible(state)
@@ -79,7 +77,7 @@ class DatasetPopup(QWidget):
         else:
             self.show()
 
-    #When user move the cursor from icon to panel, the loader icon keeps the hovering effect
+    #maintain the hovering effect of the dataloader when user is still focusing on the popup
     def enterEvent(self, event):
         self.getDataLoader().showImage(hover=True)
 
@@ -88,22 +86,19 @@ class DatasetPopup(QWidget):
         self.getDataLoader().changeIconImg(self.getDataLoader(), hover=False)
         self.toggle(False)
 
+    #handles the update of graph on top right corner
     def updateDatasetPlotPixmap(self):
         return self.DatasetSelected.updateReferenceImg(self.getDataLoader().getDatasetPixmap())
 
+    #connected to the slider
     def updateDatasetNoise(self, noise_val):
-        self.showDatasetInfo()
         self.getDataLoader().addNoiseToData(noise_val)
+        self.showDatasetInfo()
 
+    #connected to the slider
     def updateDatasetSplit(self, split_val):
         self.getDataLoader().setTrainingSetRatio(split_val/10.0)
         self.showDatasetInfo()
-
-    def isGaussian(self, dataset):
-        return True if dataset in ['bi_linear', 'multi_three', 'multi_four'] else False
-
-    def isRegression(self, dataset):
-        return True if dataset in ['reg_inform', 'reg_redun'] else False
 
     def getDataLoader(self):
         return self.loader
@@ -124,13 +119,21 @@ class DatasetPopup(QWidget):
         elif isinstance(query, int):
             return self.widget_lst[idx]
         elif query in DatasetPopup.datasets:
-            for obj in  self.widget_lst:
+            for obj in self.widget_lst:
                 if query == obj.getDatasetName():
                     return obj
         return None
 
-    def updateDatasetIconList(self, widget):
+    def __createDatasetIcon(self, parent_of_icon_widget):
+        name = DatasetPopup.datasets[DatasetPopup.num_of_datasets]
+        widget = DatasetIcon(parent_of_icon_widget, name, self)
+        widget.setEnabled(True)
+        widget.setMinimumSize(QtCore.QSize(100, 100))
+        widget.setMaximumSize(QtCore.QSize(100, 100))
+        widget.setObjectName("Dataset" + name)
         self.widget_lst.append(widget)
+        DatasetPopup.num_of_datasets += 1
+        return widget
 
     def setupUI(self):
         r_topleft = self.getDataLoader().mapTo(self.parent(),  QtCore.QPoint(0, 0))
@@ -163,92 +166,31 @@ class DatasetPopup(QWidget):
         self.DatasetSelect.setAlignment(Qt.AlignCenter)
         self.gridLayout_3.addWidget(self.DatasetSelect, 0, 0, 1, 1)
 
-
         self.gridLayout_2 = QtWidgets.QGridLayout()
-        #self.gridLayout_2.setContentsMargins(10, 10, -1, 10)
         self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.gridLayout_2.setSpacing(5)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.Dataset01 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset01)
-        i += 1
-        self.Dataset01.setEnabled(True)
-        self.Dataset01.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset01.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset01.setObjectName("Dataset01")
-        self.gridLayout_2.addWidget(self.Dataset01, 0, 0, 1, 1)
-        self.Dataset02 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset02)
-        i += 1
-        self.Dataset02.setEnabled(True)
-        self.Dataset02.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset02.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset02.setObjectName("Dataset02")
-        self.gridLayout_2.addWidget(self.Dataset02, 0, 1, 1, 1)
-        self.Dataset03 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset03)
-        i += 1
-        self.Dataset03.setEnabled(True)
-        self.Dataset03.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset03.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset03.setObjectName("Dataset03")
-        self.gridLayout_2.addWidget(self.Dataset03, 0, 2, 1, 1)
-        self.Dataset04 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset04)
-        i += 1
-        self.Dataset04.setEnabled(True)
-        self.Dataset04.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset04.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset04.setObjectName("Dataset04")
-        self.gridLayout_2.addWidget(self.Dataset04, 0, 3, 1, 1)
-        self.Dataset05 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset05)
-        i += 1
-        self.Dataset05.setEnabled(True)
-        self.Dataset05.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset05.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset05.setObjectName("Dataset05")
-        self.gridLayout_2.addWidget(self.Dataset05, 1, 0, 1, 1)
-        self.Dataset06 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset06)
-        i += 1
-        self.Dataset06.setEnabled(True)
-        self.Dataset06.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset06.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset06.setObjectName("Dataset06")
-        self.gridLayout_2.addWidget(self.Dataset06, 1, 1, 1, 1)
-        self.Dataset07 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset07)
-        i += 1
-        self.Dataset07.setEnabled(True)
-        self.Dataset07.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset07.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset07.setObjectName("Dataset07")
-        self.gridLayout_2.addWidget(self.Dataset07, 1, 2, 1, 1)
-        self.Dataset08 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[i], self)
-        self.updateDatasetIconList(self.Dataset08)
-        i += 1
-        self.Dataset08.setEnabled(True)
-        self.Dataset08.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset08.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset08.setObjectName("Dataset08")
-        self.gridLayout_2.addWidget(self.Dataset08, 1, 3, 1, 1)
-        self.Dataset09 = DatasetIconCNN(self.horizontalLayoutWidget, DatasetPopup.datasets[10], self)
-        self.updateDatasetIconList(self.Dataset09)
-        i += 1
-        self.Dataset09.setEnabled(True)
-        self.Dataset09.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset09.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset09.setObjectName("Dataset09")
-        self.gridLayout_2.addWidget(self.Dataset09, 2, 0, 1, 1)
-        self.Dataset10 = DatasetIconCNN(self.horizontalLayoutWidget, DatasetPopup.datasets[11], self)
-        self.updateDatasetIconList(self.Dataset10)
-        i += 1
-        self.Dataset10.setEnabled(True)
-        self.Dataset10.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset10.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset10.setObjectName("Dataset10")
-        self.gridLayout_2.addWidget(self.Dataset10, 2, 1, 1, 1)
+
+        dw0 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw0, 0, 0, 1, 1)
+        dw1 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw1, 0, 1, 1, 1)
+        dw2 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw2, 0, 2, 1, 1)
+        dw3 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw3, 0, 3, 1, 1)
+        dw4 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw4, 1, 0, 1, 1)
+        dw5 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw5, 1, 1, 1, 1)
+        dw6 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw6, 1, 2, 1, 1)
+        dw7 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw7, 1, 3, 1, 1)
+        dw8 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw8, 2, 0, 1, 1)
+        dw9 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout_2.addWidget(dw9, 2, 1, 1, 1)
 
         self.gridLayout_3.addLayout(self.gridLayout_2, 2, 0, 1, 1)
         self.horizontalLayout_6.addLayout(self.gridLayout_3)
@@ -256,27 +198,19 @@ class DatasetPopup(QWidget):
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setSpacing(5)
         self.gridLayout.setObjectName("gridLayout")
-        self.Dataset11 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[8], self)
-        self.updateDatasetIconList(self.Dataset11)
-        i += 1
-        self.Dataset11.setEnabled(True)
+
+        dw10 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        """
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Dataset11.sizePolicy().hasHeightForWidth())
-        self.Dataset11.setSizePolicy(sizePolicy)
-        self.Dataset11.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset11.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset11.setObjectName("Dataset11")
-        self.gridLayout.addWidget(self.Dataset11, 0, 0, 1, 1)
-        self.Dataset12 = DatasetIcon(self.horizontalLayoutWidget, DatasetPopup.datasets[9], self)
-        self.updateDatasetIconList(self.Dataset12)
-        i += 1
-        self.Dataset12.setEnabled(True)
-        self.Dataset12.setMinimumSize(QtCore.QSize(100, 100))
-        self.Dataset12.setMaximumSize(QtCore.QSize(100, 100))
-        self.Dataset12.setObjectName("Dataset12")
-        self.gridLayout.addWidget(self.Dataset12, 0, 1, 1, 1)
+        sizePolicy.setHeightForWidth(dw10.sizePolicy().hasHeightForWidth())
+        dw10.setSizePolicy(sizePolicy)
+        """
+        self.gridLayout.addWidget(dw10, 0, 0, 1, 1)
+        dw11 = self.__createDatasetIcon(self.horizontalLayoutWidget)
+        self.gridLayout.addWidget(dw11, 0, 1, 1, 1)
+
         self.Slot_3 = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.Slot_3.setEnabled(False)
         self.Slot_3.setMinimumSize(QtCore.QSize(100, 100))
@@ -310,7 +244,6 @@ class DatasetPopup(QWidget):
         self.line.setObjectName("line")
         self.line.setStyleSheet(line_style_sheet)
         self.gridLayout_3.addWidget(self.line, 3, 0, 1, 1)
-
 
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
@@ -381,15 +314,23 @@ class DatasetPopup(QWidget):
         self.SplitName.setFont(font_info)
         self.NoiseName.setFont(font_info)
         info_stylesheet = "QToolTip { color: black; background: white; border: 0px; } QWidget {background:rgba(255,255,255,0);} "
+        slider_stylesheet = "QToolTip { color: black; background: white; border: 0px; } \
+                             QWidget {background:rgba(255,255,255,0);} \
+                             QSlider::groove:horizontal {background-color: rgb(98, 98, 98); height: 20px;  } \
+                             QSlider::handle:horizontal {background-color: rgb(141, 141, 166); \
+                             height: 30px;width: 20px;border: 2px solid white;} \
+                             QSlider::handle:!enabled {background-color: rgb(25, 25, 25);} \
+                             QSlider::handle:hover {background-color: rgb(208, 208, 254);} \
+                             QSlider::handle:pressed {background-color: rgb(96, 96, 120); border: 2px solid rgb(200,200,200);}"
         self.DatasetSelect.setStyleSheet(info_stylesheet)
         self.DatasetSelected.setStyleSheet(info_stylesheet)
         self.DatasetName.setStyleSheet(info_stylesheet)
         self.TaskType.setStyleSheet(info_stylesheet)
         self.Difficulty.setStyleSheet(info_stylesheet)
         self.SplitName.setStyleSheet(info_stylesheet)
-        self.Split.setStyleSheet(info_stylesheet)
+        self.Split.setStyleSheet(slider_stylesheet)
         self.NoiseName.setStyleSheet(info_stylesheet)
-        self.Noise.setStyleSheet(info_stylesheet)
+        self.Noise.setStyleSheet(slider_stylesheet)
         """
         self.DatasetName.setToolTip("Name of Dataset")
         self.TaskType.setToolTip("Machine Learning Task Type")

@@ -7,6 +7,7 @@ from ui.Message import Message
 from ui.PopUpGuideFactory import *
 from ui.DatasetLoader import *
 from ui.ToolBarWidget import *
+from ui.ResultDashBoard import *
 from nnbuilder.config import *
 from nnbuilder.scene import NNBScene
 
@@ -117,9 +118,9 @@ class BuilderUI():
         return
 
     def setupViewer(self):
-        size = QPoint(300, 200)
-        self.ui.inspector = QWidget(self.ui.page_draw)
-
+        size = QPoint(170, 500)
+        self.ui.inspector = ScrollableResultDashBoard(self.ui.page_draw)
+        self.ui.inspector.hide()
         def testEvent(checked):
             pos = self.ui.btn_inspector.mapTo(self.ui.page_draw, QPoint(0, 0))
             self.ui.inspector.setGeometry(pos.x() - size.x(), pos.y(), size.x(), size.y())

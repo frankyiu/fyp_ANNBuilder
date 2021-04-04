@@ -7,17 +7,22 @@ from ui.DatasetPopup import *
 from ui.DatasetIcon import *
 from dataset.DatasetObject import *
 
-#This is the widget attched to the main canvas
-#when click on this widget, it pop up another widget to select data set
-#get the data (ndarray, (N, n_features) for features, (N, ) for label) using obj.getFeature(), and obj.getLabel()
-#return None if data set is not found
+"""
+The QLabel shown on the main canvas
+when user click on this widget, it shows the widget pop up
+user can select the dataset on the pop up widget
+provide access to the dataset object through the static method
+    DatasetLoader.getDatasetObject()
+"""
 class DatasetLoader(DatasetIcon):
+    dataset_object = DatasetObject()
+    inTraining = False
     def __init__(self,parent, popUpParent, loaderQRect):
         default_dataset = 'bi_moon'
         super().__init__(parent, default_dataset)
         self.setGeometry(loaderQRect)
         self.setAcceptDrops(False)
-        self.dataset_object = DatasetObject()       #The dataset object this loader owns
+        #self.dataset_object = DatasetObject()       #The dataset object this loader owns
         self.selected_dataset_widget = None
         self.popup = DatasetPopup(popUpParent,self) #The popup this loader owns
         self.getPopupWidget().updateDatasetPlotPixmap()
@@ -45,7 +50,7 @@ class DatasetLoader(DatasetIcon):
         self.setCursor(Qt.ArrowCursor)
         if event.button() == Qt.LeftButton:
             self.showImage(press=True)
-
+        """
         #Sample use of saving and loading the setting
         import pickle
         path_to_save_folder = ""
@@ -59,76 +64,77 @@ class DatasetLoader(DatasetIcon):
                 setting = pickle.load(f)
             self.readSettingFromDict(setting)
             print("Setting Loaded")
+        """
 
     #override the DatasetIcon
     #When user release the button, it show/hide the popup panel
     #followed by the release effect
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.PointingHandCursor)
-        self.getPopupWidget().toggle()
+        if not DatasetLoader.inTraining:
+            self.getPopupWidget().toggle()
         self.showImage(hover=True)
 
     #load the image and csv file to the program
     #accept a DatasetIcon object
     #invoked only after click and release an icon on popup widget, and the first time the program runs
     def loadDataset(self, selected):
-        self.getPopupWidget().resetNoise()                              #this will trigger the redraw function, reset it first
+        self.getPopupWidget().resetNoise()    #this will trigger the redraw function, reset it first
         has_loaded_once = self.isDatasetLoaded()
         if has_loaded_once:
             self.getSelectedDatasetWidget().showImage(press=False)
-        path = DatasetIcon.dataset_directory
-        load_success = self.getDatasetObject().loadDataset(path, selected.getDatasetName())
+        load_success = DatasetLoader.getDatasetObject().loadDataset(dataset_name=selected.getDatasetName())
         if load_success:
-            self.setSelectedDatasetWidget(selected)
-            self.setSelectedDatasetName(selected.getDatasetName())          #set the selected dataset
-            self.setDatasetPixmap(selected.getDatasetPixmap())              #use the pixmap of the DatasetIcon object
-            self.setLastLoadedDatasetPixmap(self.getDatasetPixmap())        #keep a copy every time it load a pixmap
-            self.showImage(hover=has_loaded_once)                           #The loader wont show hovering effect the first time
+            self.__setLoadedDatasetFromWidget(selected)
             self.getSelectedDatasetWidget().showImage(press=True)
-            self.getPopupWidget().updateDatasetPlotPixmap()
-            self.getPopupWidget().showDatasetInfo()
+            self.__updateStateAfterLoad(hover=has_loaded_once)
         else:
             print("Load Dataset Failed:", selected.getDatasetName())
-            self.setSelectedDatasetWidget(None)
-            self.setSelectedDatasetName(None)
-            self.setDatasetPixmap(QPixmap(600,600))
-            self.setLastLoadedDatasetPixmap(self.getDatasetPixmap())
-            self.showImage(hover=True)
-            self.getPopupWidget().updateDatasetPlotPixmap()
-            self.getPopupWidget().showDatasetInfo()
+            self.__setLoadedDatasetFromWidget(None)
+            self.__updateStateAfterLoad()
 
+    def __setLoadedDatasetFromWidget(self, widget=None):
+        name = None if widget is None else widget.getDatasetName()
+        pixmap = DatasetIcon.getDefaultPixmap() if widget is None else widget.getDatasetPixmap()
+        self.__setSelectedDatasetWidget(widget)
+        self.__setSelectedDatasetName(name)
+        self._setDatasetPixmap(pixmap)
+        self.__setLastLoadedDatasetPixmap(pixmap)
+
+    def __updateStateAfterLoad(self, hover=True):
+        self.showImage(hover=hover)
+        self.getPopupWidget().updateDatasetPlotPixmap()
+        self.getPopupWidget().showDatasetInfo()
 
     #Set the icon image using the icon image in datasetIcon object
     #if the passed argument is itself, it change back the icon image to the previously loaded icon
+    #invoked when a dataset icon is clicked/hovered or leaving the popup widget
     def changeIconImg(self, datasetIcon, hover):
         if self != datasetIcon:
-            self.setDatasetPixmap(datasetIcon.getDatasetPixmap())
+            self._setDatasetPixmap(datasetIcon.getDatasetPixmap())
         else:
-            self.setDatasetPixmap(self.getLastLoadedDatasetPixmap())
+            self._setDatasetPixmap(self.last_loaded_piximg)
         self.getPopupWidget().updateDatasetPlotPixmap()
         self.showImage(hover=hover)
 
-    def plotData(self, isClassify=True):
+    #Set the icon image by
+    #either copy the icon from CNN dataset
+    #or plot the data with noised added to the math dataset
+    def plotData(self):
         tmpfile = "tmp"
-        filename = DatasetIcon.dataset_directory+'img/'+tmpfile+'.png'
-        self.getDatasetObject().plotData(filename, isClassify)
+        filename = DatasetMeta.dataset_directory+'img/'+tmpfile+'.png'
+        DatasetLoader.getDatasetObject().plotData(filename)
         self.loadDatasetImg(tmpfile)
+        self.__setLastLoadedDatasetPixmap(self.getDatasetPixmap())
         self.getPopupWidget().updateDatasetPlotPixmap()
         self.showImage(hover=True)
 
     def addNoiseToData(self, val):
-        if self.getDatasetObject().isCNNData():
-            self.getDatasetObject().doVariation(val)
-            self.plotData()
-        else:
-            dataset_name = self.getDatasetName()
-            is_gaussian = self.getPopupWidget().isGaussian(self.getDatasetName())
-            is_regression = self.getPopupWidget().isRegression(self.getDatasetName())
-            self.getDatasetObject().addNoiseToData(val, is_gaussian, is_regression)
-            self.plotData(not is_regression)
+        DatasetLoader.getDatasetObject().varyData(val)
+        self.plotData()
 
     def isDatasetLoaded(self):
-        return self.getSelectedDatasetWidget() != None and self.getDatasetObject().hasData()
+        return self.getSelectedDatasetWidget() != None and DatasetLoader.getDatasetObject().isLoadSuccess()
 
     def isDataLoader(self):
         return True
@@ -137,34 +143,36 @@ class DatasetLoader(DatasetIcon):
         return False
 
     def getTrainData(self):
-        return self.getDatasetObject().getTrainData()
+        return DatasetLoader.getDatasetObject().getTrainData()
 
     def getTestData(self):
-        return self.getDatasetObject().getTestData()
+        return DatasetLoader.getDatasetObject().getTestData()
 
     def getTrainingSetRatio(self):
-        return self.getDatasetObject().getTrainingSetRatio()
+        return DatasetLoader.getDatasetObject().getTrainingSetRatio()
 
-    def getDatasetObject(self):
-        return self.dataset_object
+    @staticmethod
+    def getDatasetObject():
+        return DatasetLoader.dataset_object
 
     def getPopupWidget(self):
         return self.popup
-
-    def getLastLoadedDatasetPixmap(self):
-        return self.last_loaded_piximg
 
     def getSelectedDatasetWidget(self):
         return self.selected_dataset_widget
 
     def setTrainingSetRatio(self, val):
-        self.getDatasetObject().setTrainingSetRatio(val)
+        DatasetLoader.getDatasetObject().setTrainingSetRatio(val)
 
-    def setLastLoadedDatasetPixmap(self, pixmap):
+    @staticmethod
+    def setTrainingSignal(state):
+        DatasetLoader.inTraining = state
+
+    def __setLastLoadedDatasetPixmap(self, pixmap):
         self.last_loaded_piximg = pixmap
 
-    def setSelectedDatasetName(self, name):
+    def __setSelectedDatasetName(self, name):
         self.dataset_name = name
 
-    def setSelectedDatasetWidget(self, widget):
+    def __setSelectedDatasetWidget(self, widget):
         self.selected_dataset_widget = widget
