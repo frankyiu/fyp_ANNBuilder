@@ -24,6 +24,7 @@ from .DraggableLabel import NNBRegularizerIcon
 from .DraggableLabel import NNBStacked1DAffLayerIcon
 from .DraggableLabel import NNBPoolingLayerIcon
 from .DraggableLabel import NNBFlattenLayerIcon
+from .ResultDashBoard import ScrollableResultDashBoard
 
 import files_rc
 
@@ -49,7 +50,9 @@ class Ui_MainWindow(object):
         font1.setFamily(u"Segoe UI")
         self.centralwidget.setFont(font1)
         self.centralwidget.setStyleSheet(u"color: rgb(210, 210, 210);\n"
-"background:transparent;")
+"background:transparent;\n"
+"font-family:Segoe UI;\n"
+"")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -64,7 +67,7 @@ class Ui_MainWindow(object):
 "    border: 1px solid #222222;\n"
 "    background-color: #3d3d3d;\n"
 "    height: 15px;\n"
-"    margin: 16px 0px 16px 0px;\n"
+"    margin: 0px 16px 0px 16px;\n"
 "\n"
 "}\n"
 "\n"
@@ -387,7 +390,6 @@ class Ui_MainWindow(object):
         self.frame_left_menu.setMaximumSize(QSize(60, 16777215))
         self.frame_left_menu.setLayoutDirection(Qt.LeftToRight)
         self.frame_left_menu.setStyleSheet(u"QFrame {\n"
-"	padding-top: 10px;\n"
 "	background-color: rgb(27, 31, 38);\n"
 "	box-shadow: 2px 0px 2px red;\n"
 "}\n"
@@ -416,12 +418,12 @@ class Ui_MainWindow(object):
         self.btn_expand.setObjectName(u"btn_expand")
         self.btn_expand.setMinimumSize(QSize(0, 40))
         self.btn_expand.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_expand.setStyleSheet(u"padding-left: 18px;\n"
+        self.btn_expand.setStyleSheet(u"padding-left: 19px;\n"
 "")
         icon4 = QIcon()
-        icon4.addFile(u":/basic/icons/basic/next-1.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon4.addFile(u":/basic/icons/basic/menu.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_expand.setIcon(icon4)
-        self.btn_expand.setIconSize(QSize(24, 24))
+        self.btn_expand.setIconSize(QSize(22, 22))
 
         self.verticalLayout_5.addWidget(self.btn_expand)
 
@@ -461,7 +463,7 @@ class Ui_MainWindow(object):
         icon7 = QIcon()
         icon7.addFile(u":/basic/icons/basic/edit.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_draw.setIcon(icon7)
-        self.btn_draw.setIconSize(QSize(30, 30))
+        self.btn_draw.setIconSize(QSize(30, 43))
 
         self.verticalLayout_5.addWidget(self.btn_draw)
 
@@ -502,28 +504,71 @@ class Ui_MainWindow(object):
         self.stackedWidget.setStyleSheet(u"background: transparent;")
         self.page_home = QWidget()
         self.page_home.setObjectName(u"page_home")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.page_home.sizePolicy().hasHeightForWidth())
+        self.page_home.setSizePolicy(sizePolicy4)
         self.verticalLayout_10 = QVBoxLayout(self.page_home)
+        self.verticalLayout_10.setSpacing(20)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.label_6 = QLabel(self.page_home)
+        self.verticalLayout_10.setContentsMargins(50, 50, 50, 50)
+        self.frame_20 = QFrame(self.page_home)
+        self.frame_20.setObjectName(u"frame_20")
+        sizePolicy4.setHeightForWidth(self.frame_20.sizePolicy().hasHeightForWidth())
+        self.frame_20.setSizePolicy(sizePolicy4)
+        self.frame_20.setStyleSheet(u"#frame_20{\n"
+"border-bottom: 2px solid;\n"
+"border-color: #3d3d3d;\n"
+"}")
+        self.frame_20.setFrameShape(QFrame.StyledPanel)
+        self.frame_20.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_21 = QHBoxLayout(self.frame_20)
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.label_24 = QLabel(self.frame_20)
+        self.label_24.setObjectName(u"label_24")
+        self.label_24.setMinimumSize(QSize(100, 100))
+        self.label_24.setMaximumSize(QSize(100, 100))
+        self.label_24.setPixmap(QPixmap(u":/basic/icons/basic/logo.png"))
+        self.label_24.setScaledContents(True)
+
+        self.horizontalLayout_21.addWidget(self.label_24)
+
+        self.label_6 = QLabel(self.frame_20)
         self.label_6.setObjectName(u"label_6")
+        self.label_6.setMaximumSize(QSize(16777215, 120))
         font3 = QFont()
         font3.setFamily(u"Segoe UI")
         font3.setPointSize(40)
         self.label_6.setFont(font3)
-        self.label_6.setStyleSheet(u"margin: 200px 0px 0px 0px  ;\n"
-"")
-        self.label_6.setAlignment(Qt.AlignCenter)
+        self.label_6.setTextFormat(Qt.AutoText)
+        self.label_6.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.label_6.setWordWrap(False)
 
-        self.verticalLayout_10.addWidget(self.label_6)
+        self.horizontalLayout_21.addWidget(self.label_6)
+
+
+        self.verticalLayout_10.addWidget(self.frame_20)
 
         self.frame_5 = QFrame(self.page_home)
         self.frame_5.setObjectName(u"frame_5")
+        self.frame_5.setMinimumSize(QSize(0, 0))
+        self.frame_5.setMaximumSize(QSize(16777215, 16777215))
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_8 = QHBoxLayout(self.frame_5)
+        self.horizontalLayout_8.setSpacing(6)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.horizontalLayout_8.setContentsMargins(150, 0, 150, 150)
-        self.btn_gotoTutorial = QPushButton(self.frame_5)
+        self.frame_14 = QFrame(self.frame_5)
+        self.frame_14.setObjectName(u"frame_14")
+        sizePolicy4.setHeightForWidth(self.frame_14.sizePolicy().hasHeightForWidth())
+        self.frame_14.setSizePolicy(sizePolicy4)
+        self.frame_14.setMaximumSize(QSize(350, 16777215))
+        self.frame_14.setFrameShape(QFrame.StyledPanel)
+        self.frame_14.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_17 = QVBoxLayout(self.frame_14)
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
+        self.btn_gotoTutorial = QToolButton(self.frame_14)
         self.btn_gotoTutorial.setObjectName(u"btn_gotoTutorial")
         sizePolicy.setHeightForWidth(self.btn_gotoTutorial.sizePolicy().hasHeightForWidth())
         self.btn_gotoTutorial.setSizePolicy(sizePolicy)
@@ -533,18 +578,122 @@ class Ui_MainWindow(object):
         font4.setPointSize(15)
         self.btn_gotoTutorial.setFont(font4)
         self.btn_gotoTutorial.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_gotoTutorial.setLayoutDirection(Qt.LeftToRight)
+        self.btn_gotoTutorial.setStyleSheet(u"color: rgb(235, 186, 22);")
+        self.btn_gotoTutorial.setIcon(icon6)
+        self.btn_gotoTutorial.setIconSize(QSize(100, 100))
+        self.btn_gotoTutorial.setAutoRepeat(False)
+        self.btn_gotoTutorial.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
-        self.horizontalLayout_8.addWidget(self.btn_gotoTutorial)
+        self.verticalLayout_17.addWidget(self.btn_gotoTutorial, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
-        self.btn_gotoBuilder = QPushButton(self.frame_5)
+        self.label_5 = QLabel(self.frame_14)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setMinimumSize(QSize(0, 0))
+        self.label_5.setFont(font)
+        self.label_5.setAlignment(Qt.AlignCenter)
+        self.label_5.setWordWrap(True)
+
+        self.verticalLayout_17.addWidget(self.label_5, 0, Qt.AlignHCenter|Qt.AlignTop)
+
+        self.frame_16 = QFrame(self.frame_14)
+        self.frame_16.setObjectName(u"frame_16")
+        self.frame_16.setMinimumSize(QSize(0, 205))
+        self.frame_16.setFrameShape(QFrame.StyledPanel)
+        self.frame_16.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_19 = QVBoxLayout(self.frame_16)
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.label_8 = QLabel(self.frame_16)
+        self.label_8.setObjectName(u"label_8")
+        sizePolicy.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
+        self.label_8.setSizePolicy(sizePolicy)
+        self.label_8.setMaximumSize(QSize(16777215, 39))
+        self.label_8.setFont(font4)
+        self.label_8.setStyleSheet(u"background-color: #3d3d3d;")
+        self.label_8.setMargin(10)
+
+        self.verticalLayout_19.addWidget(self.label_8, 0, Qt.AlignVCenter)
+
+        self.frame_17 = QFrame(self.frame_16)
+        self.frame_17.setObjectName(u"frame_17")
+        self.frame_17.setFrameShape(QFrame.StyledPanel)
+        self.frame_17.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_29 = QVBoxLayout(self.frame_17)
+        self.verticalLayout_29.setObjectName(u"verticalLayout_29")
+        self.btn_gotoBasicCon = QPushButton(self.frame_17)
+        self.btn_gotoBasicCon.setObjectName(u"btn_gotoBasicCon")
+        self.btn_gotoBasicCon.setFont(font)
+        self.btn_gotoBasicCon.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.verticalLayout_29.addWidget(self.btn_gotoBasicCon, 0, Qt.AlignLeft)
+
+        self.btn_gotoMLP = QPushButton(self.frame_17)
+        self.btn_gotoMLP.setObjectName(u"btn_gotoMLP")
+        self.btn_gotoMLP.setFont(font)
+        self.btn_gotoMLP.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.verticalLayout_29.addWidget(self.btn_gotoMLP, 0, Qt.AlignLeft)
+
+        self.btn_gotoCNN = QPushButton(self.frame_17)
+        self.btn_gotoCNN.setObjectName(u"btn_gotoCNN")
+        self.btn_gotoCNN.setFont(font)
+        self.btn_gotoCNN.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.verticalLayout_29.addWidget(self.btn_gotoCNN)
+
+
+        self.verticalLayout_19.addWidget(self.frame_17, 0, Qt.AlignLeft)
+
+
+        self.verticalLayout_17.addWidget(self.frame_16)
+
+
+        self.horizontalLayout_8.addWidget(self.frame_14)
+
+        self.frame_15 = QFrame(self.frame_5)
+        self.frame_15.setObjectName(u"frame_15")
+        sizePolicy4.setHeightForWidth(self.frame_15.sizePolicy().hasHeightForWidth())
+        self.frame_15.setSizePolicy(sizePolicy4)
+        self.frame_15.setMaximumSize(QSize(350, 16777215))
+        self.frame_15.setFrameShape(QFrame.StyledPanel)
+        self.frame_15.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_18 = QVBoxLayout(self.frame_15)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.btn_gotoBuilder = QToolButton(self.frame_15)
         self.btn_gotoBuilder.setObjectName(u"btn_gotoBuilder")
         sizePolicy.setHeightForWidth(self.btn_gotoBuilder.sizePolicy().hasHeightForWidth())
         self.btn_gotoBuilder.setSizePolicy(sizePolicy)
         self.btn_gotoBuilder.setMaximumSize(QSize(400, 16777215))
         self.btn_gotoBuilder.setFont(font4)
         self.btn_gotoBuilder.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_gotoBuilder.setStyleSheet(u"color: rgb(235, 186, 22);")
+        self.btn_gotoBuilder.setIcon(icon7)
+        self.btn_gotoBuilder.setIconSize(QSize(100, 100))
+        self.btn_gotoBuilder.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
-        self.horizontalLayout_8.addWidget(self.btn_gotoBuilder)
+        self.verticalLayout_18.addWidget(self.btn_gotoBuilder)
+
+        self.label_7 = QLabel(self.frame_15)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setMinimumSize(QSize(0, 0))
+        self.label_7.setFont(font)
+        self.label_7.setAlignment(Qt.AlignCenter)
+        self.label_7.setWordWrap(True)
+
+        self.verticalLayout_18.addWidget(self.label_7)
+
+        self.frame_18 = QFrame(self.frame_15)
+        self.frame_18.setObjectName(u"frame_18")
+        self.frame_18.setMinimumSize(QSize(0, 205))
+        self.frame_18.setFrameShape(QFrame.StyledPanel)
+        self.frame_18.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_30 = QVBoxLayout(self.frame_18)
+        self.verticalLayout_30.setObjectName(u"verticalLayout_30")
+
+        self.verticalLayout_18.addWidget(self.frame_18)
+
+
+        self.horizontalLayout_8.addWidget(self.frame_15)
 
 
         self.verticalLayout_10.addWidget(self.frame_5)
@@ -567,9 +716,7 @@ class Ui_MainWindow(object):
 
         self.widget_tutorial = Ui_tutorialsWindow(self.page_tutorial)
         self.widget_tutorial.setObjectName(u"widget_tutorial")
-        font6 = QFont()
-        font6.setFamily(u"Script")
-        self.widget_tutorial.setFont(font6)
+        self.widget_tutorial.setFont(font1)
 
         self.verticalLayout_6.addWidget(self.widget_tutorial)
 
@@ -591,10 +738,7 @@ class Ui_MainWindow(object):
 "	border-radius: 10px;\n"
 "	background-color: rgb(35, 36, 40);\n"
 "}\n"
-"#frame_control{\n"
-"	border-radius: 10px;\n"
-"	background-color: rgb(35, 36, 40);\n"
-"}\n"
+"\n"
 "")
         self.draw_left.setFrameShape(QFrame.StyledPanel)
         self.draw_left.setFrameShadow(QFrame.Raised)
@@ -604,9 +748,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setContentsMargins(0, 0, 10, 0)
         self.frame_dataset = QFrame(self.draw_left)
         self.frame_dataset.setObjectName(u"frame_dataset")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.frame_dataset.sizePolicy().hasHeightForWidth())
         self.frame_dataset.setSizePolicy(sizePolicy4)
         self.frame_dataset.setMaximumSize(QSize(16777215, 16777215))
@@ -678,6 +819,7 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "")
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
@@ -724,10 +866,10 @@ class Ui_MainWindow(object):
 
         self.label_9 = QLabel(self.widget_4)
         self.label_9.setObjectName(u"label_9")
-        font7 = QFont()
-        font7.setFamily(u"Segoe UI")
-        font7.setPointSize(8)
-        self.label_9.setFont(font7)
+        font6 = QFont()
+        font6.setFamily(u"Segoe UI")
+        font6.setPointSize(8)
+        self.label_9.setFont(font6)
         self.label_9.setTextFormat(Qt.AutoText)
         self.label_9.setAlignment(Qt.AlignCenter)
         self.label_9.setWordWrap(False)
@@ -755,7 +897,7 @@ class Ui_MainWindow(object):
 
         self.label_10 = QLabel(self.widget_5)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font7)
+        self.label_10.setFont(font6)
         self.label_10.setTextFormat(Qt.AutoText)
         self.label_10.setAlignment(Qt.AlignCenter)
         self.label_10.setWordWrap(False)
@@ -783,7 +925,7 @@ class Ui_MainWindow(object):
 
         self.label_11 = QLabel(self.widget_6)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font7)
+        self.label_11.setFont(font6)
         self.label_11.setTextFormat(Qt.AutoText)
         self.label_11.setAlignment(Qt.AlignCenter)
         self.label_11.setWordWrap(False)
@@ -811,7 +953,7 @@ class Ui_MainWindow(object):
 
         self.label_15 = QLabel(self.widget_8)
         self.label_15.setObjectName(u"label_15")
-        self.label_15.setFont(font7)
+        self.label_15.setFont(font6)
         self.label_15.setTextFormat(Qt.AutoText)
         self.label_15.setAlignment(Qt.AlignCenter)
         self.label_15.setWordWrap(False)
@@ -852,7 +994,7 @@ class Ui_MainWindow(object):
 
         self.label_16 = QLabel(self.widget_9)
         self.label_16.setObjectName(u"label_16")
-        self.label_16.setFont(font7)
+        self.label_16.setFont(font6)
         self.label_16.setTextFormat(Qt.AutoText)
         self.label_16.setAlignment(Qt.AlignCenter)
         self.label_16.setWordWrap(False)
@@ -880,7 +1022,7 @@ class Ui_MainWindow(object):
 
         self.label_17 = QLabel(self.widget_10)
         self.label_17.setObjectName(u"label_17")
-        self.label_17.setFont(font7)
+        self.label_17.setFont(font6)
         self.label_17.setTextFormat(Qt.AutoText)
         self.label_17.setAlignment(Qt.AlignCenter)
         self.label_17.setWordWrap(False)
@@ -908,7 +1050,7 @@ class Ui_MainWindow(object):
 
         self.label_19 = QLabel(self.widget_12)
         self.label_19.setObjectName(u"label_19")
-        self.label_19.setFont(font7)
+        self.label_19.setFont(font6)
         self.label_19.setTextFormat(Qt.AutoText)
         self.label_19.setAlignment(Qt.AlignCenter)
         self.label_19.setWordWrap(False)
@@ -936,7 +1078,7 @@ class Ui_MainWindow(object):
 
         self.label_18 = QLabel(self.widget_11)
         self.label_18.setObjectName(u"label_18")
-        self.label_18.setFont(font7)
+        self.label_18.setFont(font6)
         self.label_18.setTextFormat(Qt.AutoText)
         self.label_18.setAlignment(Qt.AlignCenter)
         self.label_18.setWordWrap(False)
@@ -964,7 +1106,7 @@ class Ui_MainWindow(object):
 
         self.label_21 = QLabel(self.widget_13)
         self.label_21.setObjectName(u"label_21")
-        self.label_21.setFont(font7)
+        self.label_21.setFont(font6)
         self.label_21.setTextFormat(Qt.AutoText)
         self.label_21.setAlignment(Qt.AlignCenter)
         self.label_21.setWordWrap(False)
@@ -1005,7 +1147,7 @@ class Ui_MainWindow(object):
 
         self.label_25 = QLabel(self.widget_16)
         self.label_25.setObjectName(u"label_25")
-        self.label_25.setFont(font7)
+        self.label_25.setFont(font6)
         self.label_25.setTextFormat(Qt.AutoText)
         self.label_25.setAlignment(Qt.AlignCenter)
         self.label_25.setWordWrap(False)
@@ -1033,7 +1175,7 @@ class Ui_MainWindow(object):
 
         self.label_27 = QLabel(self.widget_18)
         self.label_27.setObjectName(u"label_27")
-        self.label_27.setFont(font7)
+        self.label_27.setFont(font6)
         self.label_27.setTextFormat(Qt.AutoText)
         self.label_27.setAlignment(Qt.AlignCenter)
         self.label_27.setWordWrap(False)
@@ -1070,12 +1212,12 @@ class Ui_MainWindow(object):
         self.draw_content.setObjectName(u"draw_content")
         self.horizontalLayout_13 = QHBoxLayout(self.draw_content)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.horizontalLayout_13.setContentsMargins(-1, 0, -1, -1)
+        self.horizontalLayout_13.setContentsMargins(-1, 0, -1, 0)
         self.draw_build = QWidget(self.draw_content)
         self.draw_build.setObjectName(u"draw_build")
         self.verticalLayout_16 = QVBoxLayout(self.draw_build)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.verticalLayout_16.setContentsMargins(0, 0, -1, -1)
+        self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.frame_2 = QFrame(self.draw_build)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setMinimumSize(QSize(0, 30))
@@ -1084,7 +1226,7 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_7 = QHBoxLayout(self.frame_2)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_7.setContentsMargins(5, 0, 5, 0)
         self.label_3 = QLabel(self.frame_2)
         self.label_3.setObjectName(u"label_3")
         sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -1104,52 +1246,59 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.btn_message)
 
-        # self.widget_toolbar = QWidget(self.frame_2)
-        # self.widget_toolbar.setObjectName(u"widget_toolbar")
-        # sizePolicy.setHeightForWidth(self.widget_toolbar.sizePolicy().hasHeightForWidth())
-        # self.widget_toolbar.setSizePolicy(sizePolicy)
-        # self.widget_toolbar.setAutoFillBackground(False)
-        # self.widget_toolbar.setStyleSheet(u"background-color: rgb(255, 255, 255);")
-        #
-        # self.horizontalLayout_7.addWidget(self.widget_toolbar)
+        self.widget_toolbar = QWidget(self.frame_2)
+        self.widget_toolbar.setObjectName(u"widget_toolbar")
+        sizePolicy.setHeightForWidth(self.widget_toolbar.sizePolicy().hasHeightForWidth())
+        self.widget_toolbar.setSizePolicy(sizePolicy)
+        self.widget_toolbar.setAutoFillBackground(False)
+        self.widget_toolbar.setStyleSheet(u"background-color: rgb(255, 255, 255);")
+
+        self.horizontalLayout_7.addWidget(self.widget_toolbar)
 
 
         self.verticalLayout_16.addWidget(self.frame_2)
 
-        self.graphicsView = QGraphicsView(self.draw_build)
+        self.frame = QFrame(self.draw_build)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_20 = QHBoxLayout(self.frame)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
+        self.graphicsView = QGraphicsView(self.frame)
         self.graphicsView.setObjectName(u"graphicsView")
         self.graphicsView.setToolTipDuration(8)
-        self.graphicsView.setStyleSheet(u"\n"
+        self.graphicsView.setStyleSheet(u"QGraphicsView{\n"
 "border: 2px solid;\n"
 "border-radius: 10px;\n"
 "border-color: rgba(84, 84, 84, 200);\n"
-"")
+"}")
 
-        self.verticalLayout_16.addWidget(self.graphicsView)
+        self.horizontalLayout_20.addWidget(self.graphicsView)
+
+
+        self.verticalLayout_16.addWidget(self.frame)
 
 
         self.horizontalLayout_13.addWidget(self.draw_build)
 
-        self.draw_right = QFrame(self.draw_content)
-        self.draw_right.setObjectName(u"draw_right")
-        sizePolicy.setHeightForWidth(self.draw_right.sizePolicy().hasHeightForWidth())
-        self.draw_right.setSizePolicy(sizePolicy)
-        self.draw_right.setMinimumSize(QSize(0, 0))
-        self.draw_right.setMaximumSize(QSize(20, 16777215))
-        self.draw_right.setFrameShape(QFrame.StyledPanel)
-        self.draw_right.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.draw_right)
-        self.verticalLayout_15.setSpacing(3)
+        self.frame_3 = QFrame(self.draw_content)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setMinimumSize(QSize(180, 0))
+        self.frame_3.setMaximumSize(QSize(180, 16777215))
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_15 = QVBoxLayout(self.frame_3)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.verticalLayout_15.setContentsMargins(0, 0, 0, 9)
-        self.btn_guide = QPushButton(self.draw_right)
+        self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.btn_guide = QPushButton(self.frame_3)
         self.btn_guide.setObjectName(u"btn_guide")
         sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy6.setHorizontalStretch(0)
         sizePolicy6.setVerticalStretch(0)
         sizePolicy6.setHeightForWidth(self.btn_guide.sizePolicy().hasHeightForWidth())
         self.btn_guide.setSizePolicy(sizePolicy6)
-        self.btn_guide.setMinimumSize(QSize(0, 32))
+        self.btn_guide.setMinimumSize(QSize(0, 30))
         self.btn_guide.setMaximumSize(QSize(24, 16777215))
         self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
         icon9 = QIcon()
@@ -1157,50 +1306,40 @@ class Ui_MainWindow(object):
         self.btn_guide.setIcon(icon9)
         self.btn_guide.setIconSize(QSize(20, 20))
 
-        self.verticalLayout_15.addWidget(self.btn_guide)
+        self.verticalLayout_15.addWidget(self.btn_guide, 0, Qt.AlignRight)
 
-        self.btn_inspector = QPushButton(self.draw_right)
-        self.btn_inspector.setObjectName(u"btn_inspector")
-        sizePolicy4.setHeightForWidth(self.btn_inspector.sizePolicy().hasHeightForWidth())
-        self.btn_inspector.setSizePolicy(sizePolicy4)
-        self.btn_inspector.setMinimumSize(QSize(20, 120))
-        self.btn_inspector.setMaximumSize(QSize(16777215, 16777215))
-        self.btn_inspector.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_inspector.setStyleSheet(u"background-color: rgb(27, 31, 38);\n"
-"border: none;\n"
-"\n"
-"")
-        self.btn_inspector.setCheckable(True)
+        self.widget_dashboard = ScrollableResultDashBoard(self.frame_3)
+        self.widget_dashboard.setObjectName(u"widget_dashboard")
 
-        self.verticalLayout_15.addWidget(self.btn_inspector)
-
-        self.frame_3 = QFrame(self.draw_right)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
-
-        self.verticalLayout_15.addWidget(self.frame_3)
+        self.verticalLayout_15.addWidget(self.widget_dashboard)
 
 
-        self.horizontalLayout_13.addWidget(self.draw_right)
+        self.horizontalLayout_13.addWidget(self.frame_3)
 
 
         self.verticalLayout_8.addWidget(self.draw_content)
 
         self.draw_bottom = QWidget(self.draw_main)
         self.draw_bottom.setObjectName(u"draw_bottom")
-        self.draw_bottom.setMinimumSize(QSize(0, 120))
-        self.draw_bottom.setMaximumSize(QSize(16777215, 120))
+        self.draw_bottom.setMinimumSize(QSize(0, 100))
+        self.draw_bottom.setMaximumSize(QSize(16777215, 110))
         self.horizontalLayout_14 = QHBoxLayout(self.draw_bottom)
+        self.horizontalLayout_14.setSpacing(3)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(-1, 0, -1, -1)
         self.frame_optimi = QFrame(self.draw_bottom)
         self.frame_optimi.setObjectName(u"frame_optimi")
+        sizePolicy7 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.frame_optimi.sizePolicy().hasHeightForWidth())
+        self.frame_optimi.setSizePolicy(sizePolicy7)
+        self.frame_optimi.setMinimumSize(QSize(665, 0))
         self.frame_optimi.setFrameShape(QFrame.StyledPanel)
         self.frame_optimi.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_16 = QHBoxLayout(self.frame_optimi)
-        self.horizontalLayout_16.setSpacing(10)
+        self.horizontalLayout_16.setSpacing(6)
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.frame_11 = QFrame(self.frame_optimi)
         self.frame_11.setObjectName(u"frame_11")
         self.frame_11.setMinimumSize(QSize(300, 0))
@@ -1208,6 +1347,7 @@ class Ui_MainWindow(object):
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_19 = QHBoxLayout(self.frame_11)
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(-1, 0, -1, 0)
         self.label_12 = QLabel(self.frame_11)
         self.label_12.setObjectName(u"label_12")
         self.label_12.setMaximumSize(QSize(100, 16777215))
@@ -1224,54 +1364,41 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setHorizontalSpacing(10)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.radio_adaDelta = QRadioButton(self.frame_12)
-        self.radio_adaDelta.setObjectName(u"radio_adaDelta")
-        self.radio_adaDelta.setFont(font1)
-
-        self.gridLayout.addWidget(self.radio_adaDelta, 2, 0, 1, 1)
-
-        self.radio_adaGrad = QRadioButton(self.frame_12)
-        self.radio_adaGrad.setObjectName(u"radio_adaGrad")
-        self.radio_adaGrad.setFont(font1)
-
-        self.gridLayout.addWidget(self.radio_adaGrad, 2, 1, 1, 1)
-
-        self.radio_sgd = QRadioButton(self.frame_12)
-        self.radio_sgd.setObjectName(u"radio_sgd")
-        self.radio_sgd.setFont(font1)
-
-        self.gridLayout.addWidget(self.radio_sgd, 1, 0, 1, 1)
-
-        self.radio_fullbatch = QRadioButton(self.frame_12)
-        self.radio_fullbatch.setObjectName(u"radio_fullbatch")
-        self.radio_fullbatch.setFont(font1)
-        self.radio_fullbatch.setChecked(True)
-
-        self.gridLayout.addWidget(self.radio_fullbatch, 0, 0, 1, 1)
-
         self.radio_momentum = QRadioButton(self.frame_12)
         self.radio_momentum.setObjectName(u"radio_momentum")
         self.radio_momentum.setFont(font1)
 
-        self.gridLayout.addWidget(self.radio_momentum, 1, 1, 1, 1)
-
-        self.radio_minibatch = QRadioButton(self.frame_12)
-        self.radio_minibatch.setObjectName(u"radio_minibatch")
-        self.radio_minibatch.setFont(font1)
-
-        self.gridLayout.addWidget(self.radio_minibatch, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_momentum, 0, 1, 1, 1)
 
         self.radio_rmsProp = QRadioButton(self.frame_12)
         self.radio_rmsProp.setObjectName(u"radio_rmsProp")
         self.radio_rmsProp.setFont(font1)
 
-        self.gridLayout.addWidget(self.radio_rmsProp, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.radio_rmsProp, 2, 0, 1, 1)
 
         self.radio_adam = QRadioButton(self.frame_12)
         self.radio_adam.setObjectName(u"radio_adam")
         self.radio_adam.setFont(font1)
 
-        self.gridLayout.addWidget(self.radio_adam, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.radio_adam, 2, 1, 1, 1)
+
+        self.radio_adaDelta = QRadioButton(self.frame_12)
+        self.radio_adaDelta.setObjectName(u"radio_adaDelta")
+        self.radio_adaDelta.setFont(font1)
+
+        self.gridLayout.addWidget(self.radio_adaDelta, 1, 0, 1, 1)
+
+        self.radio_sgd = QRadioButton(self.frame_12)
+        self.radio_sgd.setObjectName(u"radio_sgd")
+        self.radio_sgd.setFont(font1)
+
+        self.gridLayout.addWidget(self.radio_sgd, 0, 0, 1, 1)
+
+        self.radio_adaGrad = QRadioButton(self.frame_12)
+        self.radio_adaGrad.setObjectName(u"radio_adaGrad")
+        self.radio_adaGrad.setFont(font1)
+
+        self.gridLayout.addWidget(self.radio_adaGrad, 1, 1, 1, 1)
 
 
         self.horizontalLayout_19.addWidget(self.frame_12)
@@ -1279,22 +1406,69 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_16.addWidget(self.frame_11)
 
-        self.frame_6 = QFrame(self.frame_optimi)
+        self.frame_22 = QFrame(self.frame_optimi)
+        self.frame_22.setObjectName(u"frame_22")
+        self.frame_22.setMinimumSize(QSize(150, 0))
+        self.frame_22.setFrameShape(QFrame.StyledPanel)
+        self.frame_22.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_23 = QHBoxLayout(self.frame_22)
+        self.horizontalLayout_23.setSpacing(6)
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.horizontalLayout_23.setContentsMargins(0, -1, 0, -1)
+        self.label_28 = QLabel(self.frame_22)
+        self.label_28.setObjectName(u"label_28")
+        self.label_28.setMaximumSize(QSize(80, 16777215))
+        self.label_28.setFont(font1)
+
+        self.horizontalLayout_23.addWidget(self.label_28)
+
+        self.spin_batchSize = QDoubleSpinBox(self.frame_22)
+        self.spin_batchSize.setObjectName(u"spin_batchSize")
+        self.spin_batchSize.setMinimumSize(QSize(0, 25))
+        self.spin_batchSize.setMaximumSize(QSize(100, 16777215))
+        self.spin_batchSize.setFont(font)
+        self.spin_batchSize.setStyleSheet(u"background-color: transparent;\n"
+"border:None\n"
+"")
+        self.spin_batchSize.setButtonSymbols(QAbstractSpinBox.PlusMinus)
+        self.spin_batchSize.setDecimals(0)
+        self.spin_batchSize.setMaximum(1000.000000000000000)
+        self.spin_batchSize.setSingleStep(1.000000000000000)
+        self.spin_batchSize.setValue(32.000000000000000)
+
+        self.horizontalLayout_23.addWidget(self.spin_batchSize)
+
+
+        self.horizontalLayout_16.addWidget(self.frame_22)
+
+        self.frame_21 = QFrame(self.frame_optimi)
+        self.frame_21.setObjectName(u"frame_21")
+        self.frame_21.setMinimumSize(QSize(0, 0))
+        self.frame_21.setFrameShape(QFrame.StyledPanel)
+        self.frame_21.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_34 = QVBoxLayout(self.frame_21)
+        self.verticalLayout_34.setObjectName(u"verticalLayout_34")
+        self.verticalLayout_34.setContentsMargins(0, 0, 0, 0)
+        self.frame_6 = QFrame(self.frame_21)
         self.frame_6.setObjectName(u"frame_6")
+        self.frame_6.setMinimumSize(QSize(160, 0))
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_17 = QHBoxLayout(self.frame_6)
         self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.horizontalLayout_17.setContentsMargins(0, -1, 0, -1)
+        self.horizontalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.frame_6)
         self.label.setObjectName(u"label")
         self.label.setMaximumSize(QSize(16777215, 16777215))
         self.label.setFont(font1)
+        self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.horizontalLayout_17.addWidget(self.label)
 
         self.spin_learningRate = QDoubleSpinBox(self.frame_6)
         self.spin_learningRate.setObjectName(u"spin_learningRate")
+        sizePolicy4.setHeightForWidth(self.spin_learningRate.sizePolicy().hasHeightForWidth())
+        self.spin_learningRate.setSizePolicy(sizePolicy4)
         self.spin_learningRate.setMinimumSize(QSize(0, 25))
         self.spin_learningRate.setMaximumSize(QSize(16777215, 16777215))
         self.spin_learningRate.setFont(font)
@@ -1304,26 +1478,28 @@ class Ui_MainWindow(object):
         self.spin_learningRate.setButtonSymbols(QAbstractSpinBox.PlusMinus)
         self.spin_learningRate.setDecimals(3)
         self.spin_learningRate.setMaximum(100.000000000000000)
-        self.spin_learningRate.setSingleStep(0.0010000000000000)
-        self.spin_learningRate.setValue(0.010000000000000)
+        self.spin_learningRate.setSingleStep(0.001000000000000)
+        self.spin_learningRate.setValue(0.000000000000000)
 
         self.horizontalLayout_17.addWidget(self.spin_learningRate)
 
 
-        self.horizontalLayout_16.addWidget(self.frame_6)
+        self.verticalLayout_34.addWidget(self.frame_6)
 
-        self.frame_10 = QFrame(self.frame_optimi)
+        self.frame_10 = QFrame(self.frame_21)
         self.frame_10.setObjectName(u"frame_10")
+        self.frame_10.setMinimumSize(QSize(150, 0))
         self.frame_10.setFrameShape(QFrame.StyledPanel)
         self.frame_10.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_18 = QHBoxLayout(self.frame_10)
         self.horizontalLayout_18.setSpacing(6)
         self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.horizontalLayout_18.setContentsMargins(0, -1, 0, -1)
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.label_4 = QLabel(self.frame_10)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setMaximumSize(QSize(80, 16777215))
         self.label_4.setFont(font1)
+        self.label_4.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.horizontalLayout_18.addWidget(self.label_4)
 
@@ -1338,21 +1514,24 @@ class Ui_MainWindow(object):
         self.spin_decayRate.setButtonSymbols(QAbstractSpinBox.PlusMinus)
         self.spin_decayRate.setDecimals(4)
         self.spin_decayRate.setMaximum(1.000000000000000)
-        self.spin_decayRate.setSingleStep(0.000100000000000000)
+        self.spin_decayRate.setSingleStep(0.000100000000000)
         self.spin_decayRate.setValue(0.900000000000000)
 
         self.horizontalLayout_18.addWidget(self.spin_decayRate)
 
 
-        self.horizontalLayout_16.addWidget(self.frame_10)
+        self.verticalLayout_34.addWidget(self.frame_10)
 
 
-        self.horizontalLayout_14.addWidget(self.frame_optimi)
+        self.horizontalLayout_16.addWidget(self.frame_21)
+
+
+        self.horizontalLayout_14.addWidget(self.frame_optimi, 0, Qt.AlignLeft)
 
         self.frame_control = QFrame(self.draw_bottom)
         self.frame_control.setObjectName(u"frame_control")
         self.frame_control.setMinimumSize(QSize(0, 0))
-        self.frame_control.setMaximumSize(QSize(308, 120))
+        self.frame_control.setMaximumSize(QSize(290, 120))
         self.frame_control.setFrameShape(QFrame.StyledPanel)
         self.frame_control.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_15 = QHBoxLayout(self.frame_control)
@@ -1361,17 +1540,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setContentsMargins(0, 0, 0, 0)
         self.frame_13 = QFrame(self.frame_control)
         self.frame_13.setObjectName(u"frame_13")
-        self.frame_13.setMinimumSize(QSize(120, 0))
+        self.frame_13.setMinimumSize(QSize(110, 0))
         self.frame_13.setFrameShape(QFrame.StyledPanel)
         self.frame_13.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.frame_13)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_11.setContentsMargins(0, -1, -1, -1)
         self.label_13 = QLabel(self.frame_13)
         self.label_13.setObjectName(u"label_13")
-        font8 = QFont()
-        font8.setFamily(u"Segoe UI")
-        font8.setPointSize(13)
-        self.label_13.setFont(font8)
+        font7 = QFont()
+        font7.setFamily(u"Segoe UI")
+        font7.setPointSize(13)
+        self.label_13.setFont(font7)
+        self.label_13.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_11.addWidget(self.label_13)
 
@@ -1386,9 +1567,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.btn_restart = QPushButton(self.frame_8)
         self.btn_restart.setObjectName(u"btn_restart")
-        self.btn_restart.setMinimumSize(QSize(32, 32))
+        self.btn_restart.setMinimumSize(QSize(40, 40))
         self.btn_restart.setMaximumSize(QSize(40, 40))
         self.btn_restart.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_restart.setStyleSheet(u":hover {\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton{border-radius: 20px;}\n"
+"")
         icon10 = QIcon()
         icon10.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_restart.setIcon(icon10)
@@ -1431,8 +1617,13 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.btn_feedfor = QPushButton(self.frame_4)
         self.btn_feedfor.setObjectName(u"btn_feedfor")
+        self.btn_feedfor.setMinimumSize(QSize(40, 40))
         self.btn_feedfor.setMaximumSize(QSize(40, 40))
         self.btn_feedfor.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_feedfor.setStyleSheet(u":hover {\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton{border-radius: 20px;}")
         icon12 = QIcon()
         icon12.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_feedfor.setIcon(icon12)
@@ -1442,8 +1633,13 @@ class Ui_MainWindow(object):
 
         self.btn_backprop = QPushButton(self.frame_4)
         self.btn_backprop.setObjectName(u"btn_backprop")
+        self.btn_backprop.setMinimumSize(QSize(40, 40))
         self.btn_backprop.setMaximumSize(QSize(40, 40))
         self.btn_backprop.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_backprop.setStyleSheet(u":hover {\n"
+"	background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton{border-radius: 20px;}")
         icon13 = QIcon()
         icon13.addFile(u":/basic/icons/basic/007-backward-arrows-couple.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_backprop.setIcon(icon13)
@@ -1519,11 +1715,16 @@ class Ui_MainWindow(object):
         self.btn_draw.setToolTip(QCoreApplication.translate("MainWindow", u"Builder", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_draw.setText(QCoreApplication.translate("MainWindow", u"     Builder", None))
+        self.label_24.setText("")
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Welcome to ANN Builder", None))
-        self.btn_gotoTutorial.setText(QCoreApplication.translate("MainWindow", u"If you are new to neural network,\n"
-"we suggest you to read tutorial here first", None))
-        self.btn_gotoBuilder.setText(QCoreApplication.translate("MainWindow", u"Click Here to start building your own \n"
-"Neural Network Model", None))
+        self.btn_gotoTutorial.setText(QCoreApplication.translate("MainWindow", u"Explore the Tutorial", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Check out our neural network tutorials, learn the curial concept, and pratise the exercise", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Tutorials", None))
+        self.btn_gotoBasicCon.setText(QCoreApplication.translate("MainWindow", u"Basic Concept", None))
+        self.btn_gotoMLP.setText(QCoreApplication.translate("MainWindow", u"Multi-Layer Perceptron", None))
+        self.btn_gotoCNN.setText(QCoreApplication.translate("MainWindow", u"Convolutional Neural Network", None))
+        self.btn_gotoBuilder.setText(QCoreApplication.translate("MainWindow", u"Create a new Model", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Create a neural network model from scatch, visualize and train the model", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Tutorial", None))
         self.label_dataset.setText(QCoreApplication.translate("MainWindow", u"Data", None))
         self.label_component.setText(QCoreApplication.translate("MainWindow", u"Component", None))
@@ -1594,16 +1795,14 @@ class Ui_MainWindow(object):
         self.btn_guide.setToolTip(QCoreApplication.translate("MainWindow", u"Helper", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_guide.setText("")
-        self.btn_inspector.setText("")
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Optrimization", None))
-        self.radio_adaDelta.setText(QCoreApplication.translate("MainWindow", u"AdaDelta", None))
-        self.radio_adaGrad.setText(QCoreApplication.translate("MainWindow", u"AdaGrad", None))
-        self.radio_sgd.setText(QCoreApplication.translate("MainWindow", u"SGD", None))
-        self.radio_fullbatch.setText(QCoreApplication.translate("MainWindow", u"Full-Batch", None))
         self.radio_momentum.setText(QCoreApplication.translate("MainWindow", u"Momentum", None))
-        self.radio_minibatch.setText(QCoreApplication.translate("MainWindow", u"Mini-Batch", None))
         self.radio_rmsProp.setText(QCoreApplication.translate("MainWindow", u"RMSProp", None))
         self.radio_adam.setText(QCoreApplication.translate("MainWindow", u"Adam", None))
+        self.radio_adaDelta.setText(QCoreApplication.translate("MainWindow", u"AdaDelta", None))
+        self.radio_sgd.setText(QCoreApplication.translate("MainWindow", u"SGD", None))
+        self.radio_adaGrad.setText(QCoreApplication.translate("MainWindow", u"AdaGrad", None))
+        self.label_28.setText(QCoreApplication.translate("MainWindow", u"Batch Size:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Learning Rate", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Decay Rate", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Epoch: 0", None))
@@ -1624,31 +1823,4 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.btn_backprop.setText("")
     # retranslateUi
-    # retranslateUi
 
-    """
-    accept a Training object
-    connect the GUI to training object
-    """
-    def connect(self, train):
-        self.spin_learningRate.valueChanged.connect(train.setLearningRate)
-        self.spin_decayRate.valueChanged.connect(train.setLearningRateDecay)
-        self.radio_adaDelta.toggled.connect(lambda: train.setOptimizer(self.radio_adaDelta))
-        self.radio_adaGrad.toggled.connect(lambda: train.setOptimizer(self.radio_adaGrad))
-        self.radio_sgd.toggled.connect(lambda: train.setOptimizer(self.radio_sgd))
-        self.radio_fullbatch.toggled.connect(lambda: train.setOptimizer(self.radio_fullbatch))
-        self.radio_momentum.toggled.connect(lambda: train.setOptimizer(self.radio_momentum))
-        self.radio_minibatch.toggled.connect(lambda: train.setOptimizer(self.radio_minibatch))
-        self.radio_rmsProp.toggled.connect(lambda: train.setOptimizer(self.radio_rmsProp))
-        self.radio_adam.toggled.connect(lambda: train.setOptimizer(self.radio_adam))
-        self.radio_adam.setChecked(True)
-        self.spin_learningRate.setValue(0.001)
-        self.spin_decayRate.setValue(1e-4)
-        train.connectEpochWidget(self.label_13)
-        self.btn_train.clicked.connect(train.run)
-        self.btn_restart.clicked.connect(train.reset)
-        self.btn_feedfor.clicked.connect(train.forward)
-        self.btn_backprop.clicked.connect(train.backward)
-        #convert the radio button states to a meaningful value (String, depends on real implementation)
-        #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
-        train.setBatchSize()    #please add back a batch size spin box just like the learning rate

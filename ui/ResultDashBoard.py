@@ -14,12 +14,13 @@ class ScrollableResultDashBoard(QtWidgets.QScrollArea):
         self.setWidgetResizable(True)
         self.setGeometry(QtCore.QRect(0, 0, WIDGET_WIDTH, 450))
         self.dashboard_widget = ResultDashBoard(self)
-        dashboard_stylesheet = "QScrollArea {background:rgb(56, 56, 66);} \
-                                QWidget {background:rgb(56, 56, 66);} \
-                                QScrollBar:vertical {background-color:white; margin: 0; width:11px} \
-                                QScrollBar::handle:vertical {background-color:rgb(56, 56, 66);} \
-                                QScrollBar::handle:vertical:hover {background-color:rgb(76, 76, 96);} \
-                                QScrollBar::handle:vertical:pressed {background-color:rgb(36, 36, 46);}"
+        dashboard_stylesheet = " \
+                                #widget_dashboard {" \
+                               "background:rgb(35, 36, 40);" \
+                               "border: 0px;"\
+                               "border-radius: 10px;"\
+                               "padding: 5px;"\
+                               "}"
         self.setStyleSheet(dashboard_stylesheet)
         self.setWidget(self.dashboard_widget)
 

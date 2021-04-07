@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="basic">
+    <file>icons/basic/edit-y.png</file>
+    <file>icons/basic/book-y.png</file>
+    <file>icons/basic/menu.png</file>
+    <file>icons/basic/next.png</file>
     <file>icons/basic/logo.png</file>
     <file>icons/basic/down-arrow.png</file>
     <file>icons/basic/left-arrow.png</file>
@@ -27,6 +31,9 @@
     <file>icons/basic/house.png</file>
     <file>icons/basic/edit.png</file>
     <file>icons/basic/next-1.png</file>
+  </qresource>
+  <qresource prefix="font">
+    <file>fonts/segoeui.ttf</file>
   </qresource>
   <qresource prefix="toolbar">
     <file>icons/toolbar/connecttool.png</file>

@@ -11,7 +11,7 @@ class ResultMetric(QLabel):
     def __init__(self, metric_type, parent=None):
         super(ResultMetric,self).__init__(parent)
         self.metric_type = metric_type
-        self.f_string = metric_type + ":\n{: 17.3%}"
+        self.f_string = metric_type + ": {:.3%}"
         self._setSize()
         self.setObjectName(metric_type)
         parent.verticalLayout.addWidget(self)

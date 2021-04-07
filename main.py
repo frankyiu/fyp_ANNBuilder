@@ -4,7 +4,6 @@ from PyQt5.QtGui import QIcon
 from ui.Ui_GuiMainWindow import *
 from ui.DatasetLoader import *
 from ui.PopUpGuideFactory import *
-from ml.Training import *
 from builderui import BuilderUI
 
 
@@ -23,8 +22,7 @@ class MainWindow(QMainWindow):
         self.setupHome()
         self.builder = BuilderUI(self.ui)
         self.ui.btn_home.animateClick()
-        self.ml = Training()
-        self.ui.connect(self.ml) #connect the GUI to training module
+
         self.show()
         self.resizeEvent(None)
 
@@ -45,6 +43,17 @@ class MainWindow(QMainWindow):
     def setupHome(self):
         self.ui.btn_gotoTutorial.clicked.connect(self.ui.btn_tutorial.animateClick)
         self.ui.btn_gotoBuilder.clicked.connect(self.ui.btn_draw.animateClick)
+
+        self.ui.btn_gotoBasicCon.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(0))
+        self.ui.btn_gotoBasicCon.clicked.connect(self.ui.btn_tutorial.animateClick)
+
+        self.ui.btn_gotoMLP.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(10))
+        self.ui.btn_gotoMLP.clicked.connect(self.ui.btn_tutorial.animateClick)
+
+        self.ui.btn_gotoCNN.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(15))
+        self.ui.btn_gotoCNN.clicked.connect(self.ui.btn_tutorial.animateClick)
+
+
 
     def resizeEvent(self, event):
         self.builder.resizeEvent(event)
@@ -74,11 +83,8 @@ class MainWindow(QMainWindow):
         width = self.ui.frame_left_menu.width()
         if width == maxWidth:
             targetWidth = self.expandOrgWidth
-            icon.addFile(u":/basic/icons/basic/next-1.png", QSize(), QIcon.Normal, QIcon.Off)
         else:
             targetWidth = maxWidth
-            icon.addFile(u":/basic/icons/basic/back.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.ui.btn_expand.setIcon(icon)
         self.animation = QPropertyAnimation(self.ui.frame_left_menu, b"minimumWidth")
         self.animation.setDuration(350)
         self.animation.setStartValue(width)
@@ -124,11 +130,10 @@ class MainWindow(QMainWindow):
             elif self.borderHit == 'top-right':
                 nGeo.setTopRight(event.globalPos())
             elif self.borderHit == 'bottom-left':
-                nGeo.setbottomLeft(event.globalPos())
+                nGeo.setBottomLeft(event.globalPos())
             elif self.borderHit == 'bottom-right':
                 nGeo.setBottomRight(event.globalPos())
-
-            if nGeo.width() >= self.minimumWidth() and nGeo.height() >= self.minimumHeight():
+            if  (nGeo.width() >= self.minimumWidth()) and (nGeo.height() >= self.minimumHeight()):
                 self.setGeometry(nGeo)
         else:
             # only move
@@ -162,16 +167,13 @@ class MainWindow(QMainWindow):
 
     def mousePressEvent(self,event):
         self.dragPos = event.globalPos()
-
     def mouseReleaseEvent(self, event):
         self.borderHit = None
 
     def moveWindowEvent(self,event):
-        print('Moving')
         if self.isMaxWindow:
             return
             self.maxOrRestore()
-
         if event.buttons() == Qt.LeftButton:
             self.move(self.pos() + event.globalPos()- self.dragPos)
             self.dragPos = event.globalPos()
