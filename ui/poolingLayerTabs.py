@@ -20,24 +20,39 @@ class PoolingLayerTabs(QTabWidget):
             background-color: rgb(40, 44, 52);
         }
         QLabel{
-            font-size: 16pt;
+            font-size: 12pt;
         }
         QPushButton{
             border: 2px solid black;
-            background-color: #F9F7ED;
+            background-color: lightgray;
             color: black;
             border-radius : 12px;
-            padding: 2px 4px 2px 4px;
-            font-size: 16pt;
+            padding: 5px;
+            font-size: 12pt;
         }
         QPushButton::hover
         {
-            background-color : #24a0ed;
+            background-color: gray;
             color: white;
         }
-        QLineEdit::hover
+        QLineEdit
         {
-            background-color : white;
+            background-color : rgb(40, 44, 52);
+            color: white;
+        }
+        QTabBar::tab{
+            background: lightgray;
+            color: black;
+            border: 3;
+            padding: 5px;
+            max-width: 300px;
+            height: 15px;
+            border-radius: 12px;
+            font-size: 12pt;
+        }
+        QTabBar::tab:selected {
+            background: gray;
+            color: white;
         }
         """
         self.setStyleSheet(style)

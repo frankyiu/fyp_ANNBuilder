@@ -11,12 +11,28 @@ class MLPRegressionTab(QTabWidget):
 
         self.addTab(self.tab1, 'MLP Regression')
         
+        self.tabBar().setAutoHide(True)
+
         style = """
         QWidget{
             background-color: rgb(40, 44, 52);
         }
         QLabel{
-            font-size: 16pt;
+            font-size: 12pt;
+        }
+        QTabBar::tab{
+            background: lightgray;
+            color: black;
+            border: 3;
+            padding: 5px;
+            max-width: 300px;
+            height: 15px;
+            border-radius: 12px;
+            font-size: 12pt;
+        }
+        QTabBar::tab:selected {
+            background: gray;
+            color: white;
         }
         """
         self.setStyleSheet(style)

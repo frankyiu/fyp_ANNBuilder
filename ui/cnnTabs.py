@@ -10,6 +10,9 @@ class CNNTabs(QTabWidget):
         self.tab1 = QWidget()
 
         self.addTab(self.tab1, 'Convolutional Neural Network')
+        
+        self.tabBar().setAutoHide(True)
+        
         self.setStyleSheet("background-color: rgb(40, 44, 52);")
 
         self.tab1UI()

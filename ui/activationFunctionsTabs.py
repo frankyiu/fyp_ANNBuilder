@@ -7,6 +7,9 @@ class ActivationFunctionsTabs(QTabWidget):
     def __init__(self, parent = None):
         super(ActivationFunctionsTabs, self).__init__(parent)
 
+        self.tabBar().setElideMode(Qt.ElideNone)
+        self.tabBar().setUsesScrollButtons(True)
+
         self.tab1 = QWidget()
         self.tab2 = QWidget()
         self.tab3 = QWidget()
@@ -30,13 +33,35 @@ class ActivationFunctionsTabs(QTabWidget):
         self.addTab(self.tab9, 'Softmax')
         self.addTab(self.tab10, 'Gaussian')
         self.addTab(self.tab11, 'Sine')
-        
+                
         style = """
         QWidget{
             background-color: rgb(40, 44, 52);
         }
         QLabel{
-            font-size: 16pt;
+            font-size: 12pt;
+        }
+        QTabBar::tab{
+            background: lightgray;
+            color: black;
+            border: 3;
+            padding: 5px;
+            max-width: 300px;
+            height: 15px;
+            border-radius: 12px;
+            font-size: 12pt;
+        }
+        QTabBar::tab:selected {
+            background: gray;
+            color: white;
+        }
+        QTabBar QToolButton{
+            background: rgb(40, 44, 52);
+            color: lightgray;
+            border-width: 5px;
+        }
+        QTabBar QToolButton:hover{
+            color: white;
         }
         """
         self.setStyleSheet(style)
