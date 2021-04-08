@@ -11,6 +11,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setupFont()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.isMaxWindow = False
@@ -25,6 +26,10 @@ class MainWindow(QMainWindow):
 
         self.show()
         self.resizeEvent(None)
+
+    def setupFont(self):
+        QFontDatabase.addApplicationFont(":/font/fonts/DroidSansMono.ttf")
+        QFontDatabase.addApplicationFont(":/font/fonts/SegoeUIMono.ttf")
 
     def setupWindow(self):
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -101,6 +106,7 @@ class MainWindow(QMainWindow):
             self.ui.horizontalLayout.setContentsMargins(0, 0, 0, 0)
             self.showMaximized()
             self.isMaxWindow = True
+        self.resizeEvent(None)
 
     def menuOnclickEvent(self, btn):
         if (btn.objectName() == 'btn_home'):
@@ -133,7 +139,16 @@ class MainWindow(QMainWindow):
                 nGeo.setBottomLeft(event.globalPos())
             elif self.borderHit == 'bottom-right':
                 nGeo.setBottomRight(event.globalPos())
-            if  (nGeo.width() >= self.minimumWidth()) and (nGeo.height() >= self.minimumHeight()):
+
+            condx = nGeo.x() > self.x() and nGeo.width() <= self.minimumWidth()
+            condy = nGeo.y() > self.y() and nGeo.height() <= self.minimumHeight()
+            if (condx and condy):
+                return
+            elif condx:
+                self.setGeometry(self.x(), nGeo.y(), self.width(), nGeo.height())
+            elif condy:
+                self.setGeometry(nGeo.x(), self.y(), nGeo.width(), self.height())
+            else:
                 self.setGeometry(nGeo)
         else:
             # only move
@@ -173,7 +188,6 @@ class MainWindow(QMainWindow):
     def moveWindowEvent(self,event):
         if self.isMaxWindow:
             return
-            self.maxOrRestore()
         if event.buttons() == Qt.LeftButton:
             self.move(self.pos() + event.globalPos()- self.dragPos)
             self.dragPos = event.globalPos()

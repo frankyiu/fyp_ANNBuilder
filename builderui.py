@@ -17,14 +17,14 @@ class BuilderUI():
 
     def __init__(self, ui):
         self.ui = ui
-        self.popUpGuide = PopUpGuideFactory(self.ui.page_draw)
+        self.popUpGuide = PopUpGuideFactory(self.ui.page_draw, self.popCloseEvent)
         self.setupData()
         self.setupViewer()
         self.train = Training()
         self.setupControl()
         self.setupBuilder()
-        self.setupGuide()
         self.setupMessage()
+        self.setupGuide()
         self.firstTimeGuide = True
 
     def setupData(self):
@@ -91,21 +91,21 @@ class BuilderUI():
 
     def setupGuide(self):
         self.popUpGuide.append(self.ui.frame_dataset, QPoint(150, 0),
-                               'This is the Data Panel\nYou can choose our prepared dataset here before building your own model')
+                               'This is the Data Panel\nYou can choose some prepared dataset for different tasks, select the ratio of train/test and set the noise here')
         self.popUpGuide.append(self.ui.frame_component, QPoint(150, 0),
                                'This is the Component Panel\nYou can drag and drop the components to the building panel to build your own model')
         self.popUpGuide.append(self.ui.graphicsView, QPoint(-200, 0),
                                'This is the Building Panel\nYou can modify the model by moving and connecting the components, details of the components can be setted by right click')
-        self.popUpGuide.append(self.ui.btn_message, QPoint(-250, 0),
-                               'A warning message will be prompted for any errors in constructing the model')
         self.popUpGuide.append(self.ui.widget_toolbar, QPoint(-250, 0),
-                               'You can change the mode in building by clicking these icons')
+                               'During the building process, you can select mode, connect mode and train mode in this toolbar')
+        self.popUpGuide.append(self.ui.message, QPoint(-250, -100),
+                               'A warning message will be prompted for any errors in constructing the model')
         self.popUpGuide.append(self.ui.frame_optimi, QPoint(-200, -120),
-                               'This is the Optimization Panel\nBe sure to set the optimization, learning rate, decay rate here before training the model')
+                               'This is the Optimization Panel\nBe sure to choose the optimizer, learning rate, decay rate and batch size here before training the model')
         self.popUpGuide.append(self.ui.frame_control, QPoint(-280, -50),
                                'This is the Control Panel\nYou can click the Play button to train the model, perform Feedforward or Backpropagation in once by clicking the buttons beside.')
         self.popUpGuide.append(self.ui.widget_dashboard, QPoint(-280, 0),
-                               'This is the Result dashboard\nYou can inspect the model metrics like accuracy, loss graph here')
+                               'This is the Result dashboard\nYou can inspect the real time model metrics here')
         self.popUpGuide.append(self.ui.btn_guide, QPoint(-250, 0),
                                'If you want to check this tour again, you can click this question button.\nEnjoy building!')
 
@@ -143,9 +143,13 @@ class BuilderUI():
 
     def guideOnclickEvent(self):
         self.popUpGuide.start()
+        self.ui.message.refreshUi()
+        self.ui.message.show()
         self.firstTimeGuide = False
         return
 
+    def popCloseEvent(self):
+        self.ui.message.hide()
     # def viewerOnclickEvent(self):
     #     icon = QIcon()
     #     if self.ui.tab_viewer.isHidden():
@@ -160,7 +164,6 @@ class BuilderUI():
 
 
     def resizeEvent(self, event):
-
         bound = self.scene.itemsBoundingRect()
         if bound.isNull():
             self.scene.setSceneRect(0,0,self.ui.graphicsView.width()-20, self.ui.graphicsView.height()-20)

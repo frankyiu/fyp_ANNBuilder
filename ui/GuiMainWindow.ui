@@ -928,7 +928,7 @@ QPushButton:checked {
                    <string notr="true">background: transparent;</string>
                   </property>
                   <property name="currentIndex">
-                   <number>2</number>
+                   <number>0</number>
                   </property>
                   <widget class="QWidget" name="page_home">
                    <property name="sizePolicy">
@@ -1711,6 +1711,9 @@ border:None;
                                       <verstretch>0</verstretch>
                                      </sizepolicy>
                                     </property>
+                                    <property name="styleSheet">
+                                     <string notr="true">color: rgb(235, 186, 22);</string>
+                                    </property>
                                     <layout class="QGridLayout" name="gridLayout_2">
                                      <item row="1" column="0">
                                       <widget class="QWidget" name="widget_4" native="true">
@@ -1742,7 +1745,7 @@ border:None;
                                            <string/>
                                           </property>
                                           <property name="pixmap">
-                                           <pixmap resource="../files.qrc">:/basic/icons/basic/004-circle.png</pixmap>
+                                           <pixmap resource="../files.qrc">:/component/icons/component/2D_Neuron.png</pixmap>
                                           </property>
                                           <property name="scaledContents">
                                            <bool>true</bool>
@@ -2024,6 +2027,9 @@ border:None;
                                       <horstretch>0</horstretch>
                                       <verstretch>0</verstretch>
                                      </sizepolicy>
+                                    </property>
+                                    <property name="styleSheet">
+                                     <string notr="true">color: rgb(235, 186, 22);</string>
                                     </property>
                                     <layout class="QGridLayout" name="gridLayout_3">
                                      <item row="1" column="0">
@@ -2406,6 +2412,9 @@ border:None;
                                       <horstretch>0</horstretch>
                                       <verstretch>0</verstretch>
                                      </sizepolicy>
+                                    </property>
+                                    <property name="styleSheet">
+                                     <string notr="true">color: rgb(235, 186, 22);</string>
                                     </property>
                                     <layout class="QGridLayout" name="gridLayout_4">
                                      <item row="0" column="1">
@@ -2839,6 +2848,12 @@ border-color: rgba(84, 84, 84, 200);
                            <height>110</height>
                           </size>
                          </property>
+                         <property name="styleSheet">
+                          <string notr="true">#draw_bottom{
+border-radius: 10px;
+background-color: rgb(35, 36, 40);
+}</string>
+                         </property>
                          <layout class="QHBoxLayout" name="horizontalLayout_14">
                           <property name="spacing">
                            <number>3</number>
@@ -2868,7 +2883,7 @@ border-color: rgba(84, 84, 84, 200);
                             </property>
                             <layout class="QHBoxLayout" name="horizontalLayout_16">
                              <property name="spacing">
-                              <number>6</number>
+                              <number>20</number>
                              </property>
                              <item>
                               <widget class="QFrame" name="frame_11">
@@ -2905,7 +2920,7 @@ border-color: rgba(84, 84, 84, 200);
                                    </font>
                                   </property>
                                   <property name="text">
-                                   <string>Optrimization</string>
+                                   <string>Optrimization :</string>
                                   </property>
                                  </widget>
                                 </item>
@@ -3054,7 +3069,7 @@ border-color: rgba(84, 84, 84, 200);
                                    </font>
                                   </property>
                                   <property name="text">
-                                   <string>Batch Size:</string>
+                                   <string>Batch Size :</string>
                                   </property>
                                  </widget>
                                 </item>
@@ -3171,7 +3186,7 @@ border:None
                                       </font>
                                      </property>
                                      <property name="text">
-                                      <string>Learning Rate</string>
+                                      <string>Learning Rate :</string>
                                      </property>
                                      <property name="alignment">
                                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3273,7 +3288,7 @@ border:None
                                       </font>
                                      </property>
                                      <property name="text">
-                                      <string>Decay Rate</string>
+                                      <string>Decay Rate :</string>
                                      </property>
                                      <property name="alignment">
                                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

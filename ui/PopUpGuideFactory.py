@@ -3,8 +3,9 @@ from ui.PopUpGuide import *
 
 class PopUpGuideFactory():
 
-    def __init__(self,  backWidget):
+    def __init__(self,  backWidget, callback):
         self.list =[]
+        self.callback = callback
         self.index = 0
         self.isStarted = False
         self.backWidget = backWidget
@@ -19,18 +20,18 @@ class PopUpGuideFactory():
         
     def next(self):
         self.index += 1
-        self.currentguide.close()
-        self.currentguide = None
         if self.index == len(self.list):
-            self.isStarted = False
+            self.skip()
             return
+        self.currentguide.close()
         self.currentguide = PopUpGuide(self.list[self.index], self.backWidget, self)
 
-    def append(self, item, offset, text):
+    def append(self, item, offset, text, size=None):
         obj = {
             'item': item,
             'offset': offset,
-            'text': text
+            'text': text,
+            'size': size
         }
         self.list.append(obj)
 
@@ -39,6 +40,7 @@ class PopUpGuideFactory():
         self.currentguide = None
         self.index = 0
         self.isStarted = False
+        self.callback()
 
     def refreshUI(self):
         self.currentguide.refresh()

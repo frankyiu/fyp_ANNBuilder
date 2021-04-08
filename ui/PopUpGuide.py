@@ -9,9 +9,10 @@ class PopUpGuide():
 
     def __init__(self, obj, backWidget, factory):
         self.targetWidget = obj['item']
+        self.offset = obj['offset']
+        self.size = PopUpGuide.size if obj['size'] is None else obj['size']
         self.backWidget = backWidget
         self.pos = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
-        self.offset = obj['offset']
         self.factory = factory
         self.setUpUI()
         self.setText(obj['text'])
@@ -36,8 +37,8 @@ class PopUpGuide():
         self.pos = self.targetWidget.mapTo(self.backWidget, QPoint(0, 0))
         self.transulateBack()
         self.guide.setGeometry(
-            QRect(self.pos.x() + self.offset.x(), self.pos.y() + self.offset.y(), PopUpGuide.size.x(),
-                  PopUpGuide.size.y()))
+            QRect(self.pos.x() + self.offset.x(), self.pos.y() + self.offset.y(), self.size.x(),
+                  self.size.y()))
 
     def setUpUI(self):
         # transulateBackground
@@ -48,8 +49,8 @@ class PopUpGuide():
         font.setFamily(u"Segoe UI")
         self.guide = QtWidgets.QWidget(self.backWidget)
         self.guide.setGeometry(
-            QRect(self.pos.x() + self.offset.x(), self.pos.y() + self.offset.y(), PopUpGuide.size.x(),
-                  PopUpGuide.size.y()))
+            QRect(self.pos.x() + self.offset.x(), self.pos.y() + self.offset.y(), self.size.x(),
+                  self.size.y()))
         self.guide.setObjectName('widget')
         self.guide.setStyleSheet("#widget{\n"
                                  "border: 1px solid;\n"

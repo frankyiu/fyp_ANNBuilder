@@ -15,12 +15,14 @@ class ScrollableResultDashBoard(QtWidgets.QScrollArea):
         self.setGeometry(QtCore.QRect(0, 0, WIDGET_WIDTH, 450))
         self.dashboard_widget = ResultDashBoard(self)
         dashboard_stylesheet = " \
-                                #widget_dashboard {" \
-                               "background:rgb(35, 36, 40);" \
-                               "border: 0px;"\
-                               "border-radius: 10px;"\
-                               "padding: 5px;"\
-                               "}"
+                                #widget_dashboard {\
+                                background:rgb(35, 36, 40); \
+                                border: 0px;\
+                                border-radius: 10px;\
+                                padding: 5px;\
+                                }\
+                                QWidget{font-family:SegoeUIMonoW01-Regular;\
+                                }"
         self.setStyleSheet(dashboard_stylesheet)
         self.setWidget(self.dashboard_widget)
 
@@ -51,7 +53,7 @@ class ResultDashBoard(QtWidgets.QWidget):
         self.Recall = ResultMetrics("Recall", self)
         self.F1Score = ResultMetrics("F1 Score", self)
         font = QtGui.QFont()
-        font.setFamily("Monospace") #Fixed width font family to render the result
+        font.setFamily("SegoeUIMonoW01-Regular") #Fixed width font family to render the result
         font.setStyleHint(QtGui.QFont.TypeWriter)
         font.setPointSize(TEXT_FONT_SIZE)
         self.TrainLoss.setFont(font)

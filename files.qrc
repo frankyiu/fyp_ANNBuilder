@@ -33,6 +33,8 @@
     <file>icons/basic/next-1.png</file>
   </qresource>
   <qresource prefix="font">
+    <file>fonts/SegoeUIMono.ttf</file>
+    <file>fonts/DroidSansMono.ttf</file>
     <file>fonts/segoeui.ttf</file>
   </qresource>
   <qresource prefix="toolbar">
@@ -41,6 +43,7 @@
     <file>icons/toolbar/traintool.png</file>
   </qresource>
   <qresource prefix="component">
+    <file>icons/component/neuron.png</file>
     <file>icons/component/1D_Bias.png</file>
     <file>icons/component/1D_Neuron.png</file>
     <file>icons/component/2D_Bias.png</file>
