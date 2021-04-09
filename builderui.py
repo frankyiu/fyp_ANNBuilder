@@ -28,20 +28,23 @@ class BuilderUI():
         self.firstTimeGuide = True
 
     def setupData(self):
+        #load dataset
         self.ui.dataloader = DatasetLoader(self.ui.frame_dataloader, self.ui.page_draw, QtCore.QRect(34, 15, 120, 120))
 
 
     def setupBuilder(self):
-
+        #set up scene
         self.scene = NNBScene()
         self.ui.graphicsView.setMouseTracking(True)
         self.ui.graphicsView.setRenderHints(QPainter.Antialiasing | QPainter.HighQualityAntialiasing)
         self.ui.graphicsView.setScene(self.scene)
+        #set up toolbar
         self.ui.widget_toolbar = ToolBarWidget(self.scene, parent=self.ui.frame_2)
         self.ui.horizontalLayout_7.addWidget(self.ui.widget_toolbar)
 
     def setupControl(self):
 
+        #train button ui effect
         def trainUIEvent(checked):
             icon = QIcon()
             if not checked:
@@ -50,16 +53,14 @@ class BuilderUI():
                 icon.addFile(u":/basic/icons/basic/011-pause.png", QSize(), QIcon.Normal, QIcon.Off)
             self.ui.btn_train.setIcon(icon)
 
-
+        #restart button ui efffect
         def restartUIEvent():
             if self.ui.btn_train.isChecked():
                 self.ui.btn_train.setChecked(False)
                 trainUIEvent(False)
 
-
+        #
         self.optimiBtns = QButtonGroup()
-        # self.optimiBtns.addButton(self.ui.radio_fullbatch)
-        # self.optimiBtns.addButton(self.ui.radio_minibatch)
         self.optimiBtns.addButton(self.ui.radio_adaDelta)
         self.optimiBtns.addButton(self.ui.radio_adaGrad)
         self.optimiBtns.addButton(self.ui.radio_adam)
@@ -90,14 +91,16 @@ class BuilderUI():
         return
 
     def setupGuide(self):
+        #insert Tour Content
         self.popUpGuide.append(self.ui.frame_dataset, QPoint(150, 0),
                                'This is the Data Panel\nYou can choose some prepared dataset for different tasks, select the ratio of train/test and set the noise here')
         self.popUpGuide.append(self.ui.frame_component, QPoint(150, 0),
                                'This is the Component Panel\nYou can drag and drop the components to the building panel to build your own model')
+        # TODO change content of building guide
         self.popUpGuide.append(self.ui.graphicsView, QPoint(-200, 0),
                                'This is the Building Panel\nYou can modify the model by moving and connecting the components, details of the components can be setted by right click')
         self.popUpGuide.append(self.ui.widget_toolbar, QPoint(-250, 0),
-                               'During the building process, you can select mode, connect mode and train mode in this toolbar')
+                               'During the building process, you can switch to select mode, connect mode and train mode in this toolbar')
         self.popUpGuide.append(self.ui.message, QPoint(-250, -100),
                                'A warning message will be prompted for any errors in constructing the model')
         self.popUpGuide.append(self.ui.frame_optimi, QPoint(-200, -120),
@@ -114,9 +117,38 @@ class BuilderUI():
 
     def setupMessage(self):
         size = QPoint(391, 61)
-        self.ui.message = Message(self.ui.graphicsView, size, 'This is sample warnning message', self.ui.page_draw)
+        self.ui.message = Message(self.ui.graphicsView, size, 'This is a sample warnning message', self.ui.page_draw)
         self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
         return
+
+
+
+    def menuclicked(self):
+        if self.firstTimeGuide:
+            self.guideOnclickEvent()
+
+    def guideOnclickEvent(self):
+        self.popUpGuide.start()
+        self.ui.message.refreshUi()
+        self.ui.message.show()
+        self.firstTimeGuide = False
+        return
+
+    def popCloseEvent(self):
+        self.ui.message.hide()
+
+
+    def resizeEvent(self, event):
+        bound = self.scene.itemsBoundingRect()
+        if bound.isNull():
+            self.scene.setSceneRect(0,0,self.ui.graphicsView.width()-20, self.ui.graphicsView.height()-20)
+        else:
+            bound.setWidth(bound.width()-20)
+            bound.setHeight(bound.height()-20)
+            self.scene.setSceneRect(bound)
+        if self.popUpGuide.isStarted:
+            self.popUpGuide.refreshUI()
+        self.ui.message.refreshUi()
 
     def setupViewer(self):
         # self.ui.widget_dashboard.setMaximumWidth(180)
@@ -136,60 +168,3 @@ class BuilderUI():
         # self.ui.btn_inspector.setStyleSheet('background-color: rgb(0,0,0);')
         # self.ui.btn_inspector.paintEvent = self.paintEvent
         return
-
-    def menuclicked(self):
-        if self.firstTimeGuide:
-            self.guideOnclickEvent()
-
-    def guideOnclickEvent(self):
-        self.popUpGuide.start()
-        self.ui.message.refreshUi()
-        self.ui.message.show()
-        self.firstTimeGuide = False
-        return
-
-    def popCloseEvent(self):
-        self.ui.message.hide()
-    # def viewerOnclickEvent(self):
-    #     icon = QIcon()
-    #     if self.ui.tab_viewer.isHidden():
-    #         self.ui.tab_viewer.show()
-    #         self.ui.draw_right.setMinimumWidth(200)
-    #         icon.addFile(u":/basic/icons/basic/next-1.png", QSize(), QIcon.Normal, QIcon.Off)
-    #     else:
-    #         self.ui.tab_viewer.hide()
-    #         self.ui.draw_right.setMinimumWidth(self.ui.btn_viewer.width() + 10)
-    #         icon.addFile(u":/basic/icons/basic/back.png", QSize(), QIcon.Normal, QIcon.Off)
-    #     self.ui.btn_viewer.setIcon(icon)
-
-
-    def resizeEvent(self, event):
-        bound = self.scene.itemsBoundingRect()
-        if bound.isNull():
-            self.scene.setSceneRect(0,0,self.ui.graphicsView.width()-20, self.ui.graphicsView.height()-20)
-        else:
-            bound.setWidth(bound.width()-20)
-            bound.setHeight(bound.height()-20)
-            self.scene.setSceneRect(bound)
-        if self.popUpGuide.isStarted:
-            self.popUpGuide.refreshUI()
-        self.ui.message.refreshUi()
-
-
-    # def connect(self, train):
-    #     self.ui.spin_learningRate.valueChanged.connect(train.setLearningRate)
-    #     self.ui.spin_decayRate.valueChanged.connect(train.setLearningRateDecay)
-    #     self.optimiBtns.buttonClicked.connect(train.setOptimizer)
-    #
-    #     self.ui.radio_adam.click()
-    #     self.ui.spin_learningRate.setValue(0.001)
-    #     self.ui.spin_decayRate.setValue(1e-4)
-    #     train.connectEpochWidget(self.ui.label_13)
-    #
-    #     self.ui.btn_train.clicked.connect(train.run)
-    #     self.ui.btn_restart.clicked.connect(train.reset)
-    #     self.ui.btn_feedfor.clicked.connect(train.forward)
-    #     self.ui.btn_backprop.clicked.connect(train.backward)
-    #     #convert the radio button states to a meaningful value (String, depends on real implementation)
-    #     #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
-    #     train.setBatchSize()    #please add back a batch size spin box just like the learning rate

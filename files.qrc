@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="basic">
+    <file>icons/basic/close-1.png</file>
     <file>icons/basic/edit-y.png</file>
     <file>icons/basic/book-y.png</file>
     <file>icons/basic/menu.png</file>

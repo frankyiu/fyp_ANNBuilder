@@ -928,7 +928,7 @@ QPushButton:checked {
                    <string notr="true">background: transparent;</string>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>2</number>
                   </property>
                   <widget class="QWidget" name="page_home">
                    <property name="sizePolicy">
@@ -1630,9 +1630,8 @@ border-top-right-radius: 10px;
 border:None;
 }
 
-QScrollBar:vertical{
-border:None;
-}
+
+
 
 </string>
                                </property>

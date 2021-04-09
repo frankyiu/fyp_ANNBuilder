@@ -814,9 +814,8 @@ class Ui_MainWindow(object):
 "border:None;\n"
 "}\n"
 "\n"
-"QScrollBar:vertical{\n"
-"border:None;\n"
-"}\n"
+"\n"
+"\n"
 "\n"
 "")
         self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -1688,7 +1687,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

@@ -6,6 +6,7 @@ from PyQt5.QtTest import QTest
 from PyQt5.QtCore import Qt
 
 from main import MainWindow
+from ui.DatasetPopup import DatasetPopup
 
 app = QtWidgets.QApplication(sys.argv)
 faulthandler.enable()
@@ -17,6 +18,7 @@ class MainWindowTest(unittest.TestCase):
 
     def tearDown(self):
         self.form.close()
+        DatasetPopup.num_of_datasets = 0
         self.form = None
 
     def test_defaults(self):
@@ -46,7 +48,7 @@ class MainWindowTest(unittest.TestCase):
         # click expand
         QTest.mouseClick(self.form.ui.btn_expand, Qt.LeftButton)
         QTest.qWait(1000)
-        self.assertEqual(self.form.ui.frame_left_menu.width(), 200)
+        self.assertEqual(self.form.ui.frame_left_menu.width(), 150)
         QTest.mouseClick(self.form.ui.btn_expand, Qt.LeftButton)
         QTest.qWait(1000)
         self.assertEqual(self.form.ui.frame_left_menu.width(), 60)
