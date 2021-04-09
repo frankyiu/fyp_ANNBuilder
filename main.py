@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
         self.setupWindow()
         self.setupHome()
         self.builder = BuilderUI(self.ui)
-        self.ui.btn_home.animateClick()
+        self.ui.stackedWidget.setCurrentWidget(self.ui.page_home)
 
         self.show()
         self.resizeEvent(None)
@@ -201,6 +201,6 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
-    # window = MainWindow()
+    window.show()
 
     sys.exit(app.exec_())

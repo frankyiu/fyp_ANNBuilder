@@ -1140,7 +1140,7 @@ border-color: #3d3d3d;
                              </font>
                             </property>
                             <property name="text">
-                             <string>Check out our neural network tutorials, learn the curial concept, and pratise the exercise</string>
+                             <string>Check out our neural network tutorials, learn the crucial concept, and practise the exercise</string>
                             </property>
                             <property name="alignment">
                              <set>Qt::AlignCenter</set>
@@ -1645,7 +1645,7 @@ border:None;
                                 <property name="geometry">
                                  <rect>
                                   <x>0</x>
-                                  <y>0</y>
+                                  <y>-14</y>
                                   <width>169</width>
                                   <height>718</height>
                                  </rect>
@@ -2666,31 +2666,6 @@ border:None;
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QPushButton" name="btn_message">
-                                  <property name="font">
-                                   <font>
-                                    <family>Segoe UI</family>
-                                   </font>
-                                  </property>
-                                  <property name="cursor">
-                                   <cursorShape>PointingHandCursor</cursorShape>
-                                  </property>
-                                  <property name="toolTip">
-                                   <string>Warning Message</string>
-                                  </property>
-                                  <property name="text">
-                                   <string>Warning: 0</string>
-                                  </property>
-                                  <property name="icon">
-                                   <iconset resource="../files.qrc">
-                                    <normaloff>:/basic/icons/basic/warning.png</normaloff>:/basic/icons/basic/warning.png</iconset>
-                                  </property>
-                                  <property name="checkable">
-                                   <bool>true</bool>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
                                  <widget class="QWidget" name="widget_toolbar" native="true">
                                   <property name="sizePolicy">
                                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -2919,7 +2894,7 @@ background-color: rgb(35, 36, 40);
                                    </font>
                                   </property>
                                   <property name="text">
-                                   <string>Optrimization :</string>
+                                   <string>Optimazation :</string>
                                   </property>
                                  </widget>
                                 </item>
@@ -3583,47 +3558,6 @@ QPushButton{border-radius: 20px;}</string>
                                    <size>
                                     <width>20</width>
                                     <height>20</height>
-                                   </size>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QPushButton" name="btn_backprop">
-                                  <property name="minimumSize">
-                                   <size>
-                                    <width>40</width>
-                                    <height>40</height>
-                                   </size>
-                                  </property>
-                                  <property name="maximumSize">
-                                   <size>
-                                    <width>40</width>
-                                    <height>40</height>
-                                   </size>
-                                  </property>
-                                  <property name="cursor">
-                                   <cursorShape>PointingHandCursor</cursorShape>
-                                  </property>
-                                  <property name="toolTip">
-                                   <string>Backpropagation</string>
-                                  </property>
-                                  <property name="styleSheet">
-                                   <string notr="true">:hover {
-	background-color: rgb(52, 59, 72);
-}
-QPushButton{border-radius: 20px;}</string>
-                                  </property>
-                                  <property name="text">
-                                   <string/>
-                                  </property>
-                                  <property name="icon">
-                                   <iconset resource="../files.qrc">
-                                    <normaloff>:/basic/icons/basic/007-backward-arrows-couple.png</normaloff>:/basic/icons/basic/007-backward-arrows-couple.png</iconset>
-                                  </property>
-                                  <property name="iconSize">
-                                   <size>
-                                    <width>24</width>
-                                    <height>24</height>
                                    </size>
                                   </property>
                                  </widget>

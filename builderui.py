@@ -84,7 +84,7 @@ class BuilderUI():
         self.ui.btn_train.clicked.connect(self.train.run)
         self.ui.btn_restart.clicked.connect(self.train.reset)
         self.ui.btn_feedfor.clicked.connect(self.train.forward)
-        self.ui.btn_backprop.clicked.connect(self.train.backward)
+        # self.ui.btn_backprop.clicked.connect(self.train.backward)
         #convert the radio button states to a meaningful value (String, depends on real implementation)
         #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
         self.train.setBatchSize()    #please add back a batch size spin box just like the learning rate
@@ -118,7 +118,7 @@ class BuilderUI():
     def setupMessage(self):
         size = QPoint(391, 61)
         self.ui.message = Message(self.ui.graphicsView, size, 'This is a sample warnning message', self.ui.page_draw)
-        self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
+        # self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
         return
 
 

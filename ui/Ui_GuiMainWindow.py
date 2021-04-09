@@ -822,7 +822,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 169, 718))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, -14, 169, 718))
         self.scrollAreaWidgetContents.setMaximumSize(QSize(169, 16777215))
         self.horizontalLayout_12 = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
@@ -944,7 +944,7 @@ class Ui_MainWindow(object):
         self.neuron_bias_2D.setObjectName(u"neuron_bias_2D")
         self.neuron_bias_2D.setCursor(QCursor(Qt.PointingHandCursor))
         self.neuron_bias_2D.setStyleSheet(u"")
-        self.neuron_bias_2D.setPixmap(QPixmap(u":/component/icons/component/1D_Bias.png"))
+        self.neuron_bias_2D.setPixmap(QPixmap(u":/component/icons/component/2D_Bias.png"))
         self.neuron_bias_2D.setScaledContents(True)
         self.neuron_bias_2D.setAlignment(Qt.AlignCenter)
         self.neuron_bias_2D.setMargin(7)
@@ -1237,17 +1237,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.label_3)
 
-        self.btn_message = QPushButton(self.frame_2)
-        self.btn_message.setObjectName(u"btn_message")
-        self.btn_message.setFont(font1)
-        self.btn_message.setCursor(QCursor(Qt.PointingHandCursor))
-        icon8 = QIcon()
-        icon8.addFile(u":/basic/icons/basic/warning.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_message.setIcon(icon8)
-        self.btn_message.setCheckable(True)
-
-        self.horizontalLayout_7.addWidget(self.btn_message)
-
         self.widget_toolbar = QWidget(self.frame_2)
         self.widget_toolbar.setObjectName(u"widget_toolbar")
         sizePolicy.setHeightForWidth(self.widget_toolbar.sizePolicy().hasHeightForWidth())
@@ -1303,9 +1292,9 @@ class Ui_MainWindow(object):
         self.btn_guide.setMinimumSize(QSize(0, 30))
         self.btn_guide.setMaximumSize(QSize(24, 16777215))
         self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
-        icon9 = QIcon()
-        icon9.addFile(u":/basic/icons/basic/suggestion.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_guide.setIcon(icon9)
+        icon8 = QIcon()
+        icon8.addFile(u":/basic/icons/basic/suggestion.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_guide.setIcon(icon8)
         self.btn_guide.setIconSize(QSize(20, 20))
 
         self.verticalLayout_15.addWidget(self.btn_guide, 0, Qt.AlignRight)
@@ -1581,9 +1570,9 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton{border-radius: 20px;}\n"
 "")
-        icon10 = QIcon()
-        icon10.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_restart.setIcon(icon10)
+        icon9 = QIcon()
+        icon9.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_restart.setIcon(icon9)
         self.btn_restart.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_11.addWidget(self.btn_restart)
@@ -1604,9 +1593,9 @@ class Ui_MainWindow(object):
         self.btn_train.setMaximumSize(QSize(70, 16777215))
         self.btn_train.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_train.setMouseTracking(False)
-        icon11 = QIcon()
-        icon11.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_train.setIcon(icon11)
+        icon10 = QIcon()
+        icon10.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_train.setIcon(icon10)
         self.btn_train.setIconSize(QSize(60, 60))
         self.btn_train.setCheckable(True)
 
@@ -1630,28 +1619,12 @@ class Ui_MainWindow(object):
 "	background-color: rgb(52, 59, 72);\n"
 "}\n"
 "QPushButton{border-radius: 20px;}")
-        icon12 = QIcon()
-        icon12.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_feedfor.setIcon(icon12)
+        icon11 = QIcon()
+        icon11.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_feedfor.setIcon(icon11)
         self.btn_feedfor.setIconSize(QSize(20, 20))
 
         self.verticalLayout_3.addWidget(self.btn_feedfor)
-
-        self.btn_backprop = QPushButton(self.frame_4)
-        self.btn_backprop.setObjectName(u"btn_backprop")
-        self.btn_backprop.setMinimumSize(QSize(40, 40))
-        self.btn_backprop.setMaximumSize(QSize(40, 40))
-        self.btn_backprop.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_backprop.setStyleSheet(u":hover {\n"
-"	background-color: rgb(52, 59, 72);\n"
-"}\n"
-"QPushButton{border-radius: 20px;}")
-        icon13 = QIcon()
-        icon13.addFile(u":/basic/icons/basic/007-backward-arrows-couple.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_backprop.setIcon(icon13)
-        self.btn_backprop.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_3.addWidget(self.btn_backprop)
 
 
         self.horizontalLayout_15.addWidget(self.frame_4)
@@ -1724,7 +1697,7 @@ class Ui_MainWindow(object):
         self.label_24.setText("")
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Welcome to ANN Builder", None))
         self.btn_gotoTutorial.setText(QCoreApplication.translate("MainWindow", u"Explore the Tutorial", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Check out our neural network tutorials, learn the curial concept, and pratise the exercise", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Check out our neural network tutorials, learn the crucial concept, and practise the exercise", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Tutorials", None))
         self.btn_gotoBasicCon.setText(QCoreApplication.translate("MainWindow", u"Basic Concept", None))
         self.btn_gotoMLP.setText(QCoreApplication.translate("MainWindow", u"Multi-Layer Perceptron", None))
@@ -1794,14 +1767,10 @@ class Ui_MainWindow(object):
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"Regularizer", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Building Panel", None))
 #if QT_CONFIG(tooltip)
-        self.btn_message.setToolTip(QCoreApplication.translate("MainWindow", u"Warning Message", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Warning: 0", None))
-#if QT_CONFIG(tooltip)
         self.btn_guide.setToolTip(QCoreApplication.translate("MainWindow", u"Helper", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_guide.setText("")
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Optrimization :", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Optimazation :", None))
         self.radio_momentum.setText(QCoreApplication.translate("MainWindow", u"Momentum", None))
         self.radio_rmsProp.setText(QCoreApplication.translate("MainWindow", u"RMSProp", None))
         self.radio_adam.setText(QCoreApplication.translate("MainWindow", u"Adam", None))
@@ -1824,9 +1793,5 @@ class Ui_MainWindow(object):
         self.btn_feedfor.setToolTip(QCoreApplication.translate("MainWindow", u"Feed Forward", None))
 #endif // QT_CONFIG(tooltip)
         self.btn_feedfor.setText("")
-#if QT_CONFIG(tooltip)
-        self.btn_backprop.setToolTip(QCoreApplication.translate("MainWindow", u"Backpropagation", None))
-#endif // QT_CONFIG(tooltip)
-        self.btn_backprop.setText("")
     # retranslateUi
 
