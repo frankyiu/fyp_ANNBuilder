@@ -1948,7 +1948,7 @@ border:None;
                                            <string/>
                                           </property>
                                           <property name="pixmap">
-                                           <pixmap resource="../files.qrc">:/component/icons/component/1D_Bias.png</pixmap>
+                                           <pixmap resource="../files.qrc">:/component/icons/component/2D_Bias.png</pixmap>
                                           </property>
                                           <property name="scaledContents">
                                            <bool>true</bool>

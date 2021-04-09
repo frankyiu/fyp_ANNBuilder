@@ -3,8 +3,10 @@ import faulthandler
 import unittest
 
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QCursor
 from PyQt5.QtTest import QTest
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtWidgets import QApplication
 
 from main import MainWindow
 from nnbuilder.config import *
@@ -31,14 +33,23 @@ class BuilderUITest(unittest.TestCase):
         self.assertEqual(self.form.ui.radio_adam.isChecked(), True)
         self.assertEqual(self.form.ui.spin_learningRate.value(), 0.001)
         self.assertEqual(self.form.ui.spin_decayRate.value(), 0.0001)
-        QTest.mouseClick(self.builder.popUpGuide.currentguide.guide.btn_skip, Qt.LeftButton)
+
+    ## no built-in function for simulate drag and Drop
+
+    # def test_dragAndDrop(self):
+    #     test_obj = [self.form.ui.neuron_1D]
+    #     drop_obj = self.form.ui.graphicsView
+    #     for obj in test_obj:
+    #         QTest.mouseMove(obj, delay=200)
+    #         QTest.mousePress(obj, Qt.LeftButton)
+    #         QTest.mouseMove(drop_obj,delay=200)
+    #         QTest.mouseRelease(drop_obj, Qt.LeftButton, delay=200)
 
     def test_control(self):
         return
 
     def test_toolbarsbutton(self):
         #toolbarbutton
-        print (self.form.ui.widget_toolbar)
         QTest.mouseClick(self.form.ui.widget_toolbar.toolbar_dict['select'],Qt.LeftButton)
         self.assertEqual(self.builder.scene.sceneMode, SceneMode.SelectMode)
         QTest.mouseClick(self.form.ui.widget_toolbar.toolbar_dict['connect'],Qt.LeftButton)
@@ -50,6 +61,13 @@ class BuilderUITest(unittest.TestCase):
     def test_guidePopUp(self):
         #case first popup
         self.assertEqual(self.builder.popUpGuide.isStarted, True)
+        self.assertEqual(self.builder.popUpGuide.currentguide.shadow.isVisible(), True)
+        self.assertEqual(self.builder.popUpGuide.currentguide.guide.isVisible(), True)
+        ##save current guide for next test
+        previousGuide = self.builder.popUpGuide.currentguide
+        #next to vist
+        QTest.mouseClick(self.builder.popUpGuide.currentguide.guide.btn_next, Qt.LeftButton)
+        self.assertNotEqual(previousGuide, self.builder.popUpGuide.currentguide)
         self.assertEqual(self.builder.popUpGuide.currentguide.shadow.isVisible(), True)
         self.assertEqual(self.builder.popUpGuide.currentguide.guide.isVisible(), True)
         #skip to exit

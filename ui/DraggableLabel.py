@@ -22,6 +22,7 @@ class DraggableLabel(QLabel):
 
 
     def mouseMoveEvent(self, event):
+        print(event)
         if not (event.buttons() & Qt.LeftButton):
             return
         if (event.pos() - self.st_pos).manhattanLength() < QApplication.startDragDistance():
