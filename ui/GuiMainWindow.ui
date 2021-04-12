@@ -1645,7 +1645,7 @@ border:None;
                                 <property name="geometry">
                                  <rect>
                                   <x>0</x>
-                                  <y>-14</y>
+                                  <y>0</y>
                                   <width>169</width>
                                   <height>718</height>
                                  </rect>
@@ -3009,7 +3009,7 @@ background-color: rgb(35, 36, 40);
                               <widget class="QFrame" name="frame_22">
                                <property name="minimumSize">
                                 <size>
-                                 <width>150</width>
+                                 <width>144</width>
                                  <height>0</height>
                                 </size>
                                </property>
@@ -3077,6 +3077,9 @@ border:None
                                   </property>
                                   <property name="decimals">
                                    <number>0</number>
+                                  </property>
+                                  <property name="minimum">
+                                   <double>1.000000000000000</double>
                                   </property>
                                   <property name="maximum">
                                    <double>1000.000000000000000</double>
@@ -3202,7 +3205,10 @@ border:None
                                       <enum>QAbstractSpinBox::PlusMinus</enum>
                                      </property>
                                      <property name="decimals">
-                                      <number>3</number>
+                                      <number>5</number>
+                                     </property>
+                                     <property name="minimum">
+                                      <double>0.000010000000000</double>
                                      </property>
                                      <property name="maximum">
                                       <double>100.000000000000000</double>
@@ -3211,7 +3217,7 @@ border:None
                                       <double>0.001000000000000</double>
                                      </property>
                                      <property name="value">
-                                      <double>0.000000000000000</double>
+                                      <double>0.000010000000000</double>
                                      </property>
                                     </widget>
                                    </item>

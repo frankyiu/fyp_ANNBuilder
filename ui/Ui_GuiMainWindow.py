@@ -391,7 +391,6 @@ class Ui_MainWindow(object):
         self.frame_left_menu.setLayoutDirection(Qt.LeftToRight)
         self.frame_left_menu.setStyleSheet(u"QFrame {\n"
 "	background-color: rgb(27, 31, 38);\n"
-"	box-shadow: 2px 0px 2px red;\n"
 "}\n"
 "QPushButton {	\n"
 "	border: none;\n"
@@ -822,7 +821,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, -14, 169, 718))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 169, 718))
         self.scrollAreaWidgetContents.setMaximumSize(QSize(169, 16777215))
         self.horizontalLayout_12 = QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
@@ -1403,7 +1402,7 @@ class Ui_MainWindow(object):
 
         self.frame_22 = QFrame(self.frame_optimi)
         self.frame_22.setObjectName(u"frame_22")
-        self.frame_22.setMinimumSize(QSize(150, 0))
+        self.frame_22.setMinimumSize(QSize(144, 0))
         self.frame_22.setFrameShape(QFrame.StyledPanel)
         self.frame_22.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_23 = QHBoxLayout(self.frame_22)
@@ -1427,6 +1426,7 @@ class Ui_MainWindow(object):
 "")
         self.spin_batchSize.setButtonSymbols(QAbstractSpinBox.PlusMinus)
         self.spin_batchSize.setDecimals(0)
+        self.spin_batchSize.setMinimum(1.000000000000000)
         self.spin_batchSize.setMaximum(1000.000000000000000)
         self.spin_batchSize.setSingleStep(1.000000000000000)
         self.spin_batchSize.setValue(32.000000000000000)
@@ -1471,10 +1471,11 @@ class Ui_MainWindow(object):
 "border:None\n"
 "")
         self.spin_learningRate.setButtonSymbols(QAbstractSpinBox.PlusMinus)
-        self.spin_learningRate.setDecimals(3)
+        self.spin_learningRate.setDecimals(5)
+        self.spin_learningRate.setMinimum(0.000010000000000)
         self.spin_learningRate.setMaximum(100.000000000000000)
         self.spin_learningRate.setSingleStep(0.001000000000000)
-        self.spin_learningRate.setValue(0.000000000000000)
+        self.spin_learningRate.setValue(0.000010000000000)
 
         self.horizontalLayout_17.addWidget(self.spin_learningRate)
 

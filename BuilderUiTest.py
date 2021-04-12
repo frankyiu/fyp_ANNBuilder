@@ -54,11 +54,19 @@ class BuilderUITest(unittest.TestCase):
 
     def test_defaults(self):
         self.assertEqual(self.form.ui.radio_adam.isChecked(), True)
+        self.assertEqual(self.form.ui.spin_batchSize.value(), 32)
+        self.assertEqual(self.form.ui.spin_batchSize.minimum(), 1)
+        self.assertEqual(self.form.ui.spin_batchSize.maximum(), 1000)
+
         self.assertEqual(self.form.ui.spin_learningRate.value(), 0.001)
+        self.assertEqual(self.form.ui.spin_learningRate.minimum(), 0.000010)
+        self.assertEqual(self.form.ui.spin_learningRate.maximum(), 100)
+
         self.assertEqual(self.form.ui.spin_decayRate.value(), 0.0001)
+        self.assertEqual(self.form.ui.spin_decayRate.minimum(), 0)
+        self.assertEqual(self.form.ui.spin_decayRate.maximum(), 1)
 
     ## no built-in function for simulate drag and Drop
-
     #TODO assert component
     def test_dragAndDrop(self):
         self.form.show()
@@ -89,13 +97,12 @@ class BuilderUITest(unittest.TestCase):
             while dragThread.is_alive():
                 QTest.qWait(1000)
 
-        '''No use Method'''
-        # def dropIt():
-        #     QTest.mouseMove(drop_obj)
-        #     QTest.mouseRelease(drop_obj, QtCore.Qt.LeftButton, delay=15)
-        #
-        # QtCore.QTimer.singleShot(100, dropIt)
-        # QTest.mousePress(test_obj[0], QtCore.Qt.LeftButton)
+    def test_message(self):
+        #test popUp
+        self.form.ui.message.setMessage('A')
+        self.assertEqual(self.form.ui.message.isVisible(), True)
+        self.assertEqual(self.form.ui.message.textbrowser.toPlainText(), 'A')
+
 
     def test_control(self):
         return

@@ -46,17 +46,17 @@ class MainWindow(QMainWindow):
         self.setAttribute(Qt.WA_TranslucentBackground)
 
     def setupHome(self):
-        self.ui.btn_gotoTutorial.clicked.connect(self.ui.btn_tutorial.animateClick)
-        self.ui.btn_gotoBuilder.clicked.connect(self.ui.btn_draw.animateClick)
+        self.ui.btn_gotoTutorial.clicked.connect(self.ui.btn_tutorial.click)
+        self.ui.btn_gotoBuilder.clicked.connect(self.ui.btn_draw.click)
 
         self.ui.btn_gotoBasicCon.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(0))
-        self.ui.btn_gotoBasicCon.clicked.connect(self.ui.btn_tutorial.animateClick)
+        self.ui.btn_gotoBasicCon.clicked.connect(self.ui.btn_tutorial.click)
 
         self.ui.btn_gotoMLP.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(10))
-        self.ui.btn_gotoMLP.clicked.connect(self.ui.btn_tutorial.animateClick)
+        self.ui.btn_gotoMLP.clicked.connect(self.ui.btn_tutorial.click)
 
         self.ui.btn_gotoCNN.clicked.connect(lambda: self.ui.widget_tutorial.leftlist.setCurrentRow(15))
-        self.ui.btn_gotoCNN.clicked.connect(self.ui.btn_tutorial.animateClick)
+        self.ui.btn_gotoCNN.clicked.connect(self.ui.btn_tutorial.click)
 
 
 

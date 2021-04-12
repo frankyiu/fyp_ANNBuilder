@@ -21,10 +21,28 @@ class MainWindowTest(unittest.TestCase):
         DatasetPopup.num_of_datasets = 0
         self.form = None
 
+    #test the default setting
     def test_defaults(self):
         self.assertEqual(self.form.ui.frame_main.width(), 1280)
         self.assertEqual(self.form.ui.frame_main.height(), 720)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_home)
 
+
+    def test_home(self):
+        QTest.mouseClick(self.form.ui.btn_gotoTutorial, Qt.LeftButton)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_tutorial)
+
+        QTest.mouseClick(self.form.ui.btn_gotoBuilder, Qt.LeftButton)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_draw)
+
+        QTest.mouseClick(self.form.ui.btn_gotoBasicCon, Qt.LeftButton)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_tutorial)
+
+        QTest.mouseClick(self.form.ui.btn_gotoMLP, Qt.LeftButton)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_tutorial)
+
+        QTest.mouseClick(self.form.ui.btn_gotoCNN, Qt.LeftButton)
+        self.assertEqual(self.form.ui.stackedWidget.currentWidget(), self.form.ui.page_tutorial)
     def test_menu(self):
 
         # click home
