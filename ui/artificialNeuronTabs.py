@@ -14,7 +14,7 @@ class ArtificialNeuronTabs(QTabWidget):
         self.tab5 = QWidget()
 
         self.addTab(self.tab1, 'Introduction')
-        self.addTab(self.tab2, 'The Weight Of Each Line')
+        self.addTab(self.tab2, 'The Weight of Each Line')
         self.addTab(self.tab3, 'The Processing Unit')
         self.addTab(self.tab4, 'The Bias')
         self.addTab(self.tab5, 'Conclusion')

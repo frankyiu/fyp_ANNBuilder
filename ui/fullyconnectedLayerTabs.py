@@ -10,8 +10,8 @@ class FullyconnectedLayerTabs(QTabWidget):
         self.tab1 = QWidget()
         self.tab2 = QWidget()        
 
-        self.addTab(self.tab1, 'The Definition Of A Fully-connected Layer')
-        self.addTab(self.tab2, 'The Purpose Of Having A Fully-connected Layer')
+        self.addTab(self.tab1, 'The Definition of A Fully-connected Layer')
+        self.addTab(self.tab2, 'The Purpose of Having A Fully-connected Layer')
         
         style = """
         QWidget{

@@ -139,11 +139,11 @@ class PoolingLayerTabs(QTabWidget):
         qna_layout.addWidget(QLabel('What is X?'))
         
         le = QLineEdit()
-        le.setObjectName('ans')
+        le.setObjectName('averagePoolingExerciseAnswer')
         qna_layout.addWidget(le)
         
         pb = QPushButton('Submit')
-        pb.setObjectName('submit_btn')
+        pb.setObjectName('averagePoolingExcerciseSubmitButton')
         pb.clicked.connect(self.check_ans)
         qna_layout.addWidget(pb)
         
@@ -154,14 +154,14 @@ class PoolingLayerTabs(QTabWidget):
         
         output_lb = QLabel()
         output_lb.setAlignment(Qt.AlignCenter)
-        output_lb.setObjectName('output_lb')
+        output_lb.setObjectName('averagePoolingExerciseResult')
         
         layout.addWidget(output_lb)
         
         self.tab3.setLayout(layout)
         
     def check_ans(self):
-        if self.tab3.findChild(QLineEdit, 'ans').text() == '7':
-            self.tab3.findChild(QLabel, 'output_lb').setText('True! You now have a basic understanding of how pooling works!')
+        if self.tab3.findChild(QLineEdit, 'averagePoolingExerciseAnswer').text() == '7':
+            self.tab3.findChild(QLabel, 'averagePoolingExerciseResult').setText('True! You now have a basic understanding of how pooling works!')
         else:
-            self.tab3.findChild(QLabel, 'output_lb').setText('False, please try again!')
+            self.tab3.findChild(QLabel, 'averagePoolingExerciseResult').setText('False, please try again!')

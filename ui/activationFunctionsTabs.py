@@ -170,7 +170,7 @@ class ActivationFunctionsTabs(QTabWidget):
         ReLU_graph.setPixmap(QPixmap('./png/ActivationFunctions/ReLU/ReLU.png'))
         layout.addWidget(ReLU_graph)
         
-        label = QLabel('x: (-∞, ∞)\nRange: [0, ∞)\nPros: quickly converges, low cost of computation, would not saturate, efficient backpropagation\nCons: will lead to dead ReLU, i.e. gradient = 0, if the input is negative or equal to 0')
+        label = QLabel('x: (-∞, ∞)\nRange: [0, ∞)\nPros: quickly converges, low cost of computation, would not saturate, efficient backpropagation\nCons: could lead to dead ReLU, i.e. gradient = 0, if the input is negative or equal to 0')
         label.setWordWrap(True)
         layout.addWidget(label)
         
@@ -246,7 +246,7 @@ class ActivationFunctionsTabs(QTabWidget):
         
         self.tab10.setLayout(layout)
     
-    def tab11UI(self):          # Varsity Tutors
+    def tab11UI(self):         
         layout = QVBoxLayout()
      
         sine_graph = QLabel()
@@ -254,7 +254,7 @@ class ActivationFunctionsTabs(QTabWidget):
         sine_graph.setPixmap(QPixmap('./png/ActivationFunctions/Sine/sinGraph.png'))
         layout.addWidget(sine_graph)
         
-        label = QLabel('Sine function is a periodic function with a period = 2π radian, ie. sin(x) = sin(2nπ + x) where n is an integer.\nx: (-∞, ∞)\nRange: [-1, 1]\nApart from the simple sine function, there are some other activation functions derived from sin(x), eg. sin(x)/x.')
+        label = QLabel('Sine function is a periodic function with a period = 2π radian, ie. sin(x) = sin(2nπ + x) where n is an integer.\nx: (-∞, ∞)\nRange: [-1, 1]')
         label.setWordWrap(True)
         layout.addWidget(label)
         

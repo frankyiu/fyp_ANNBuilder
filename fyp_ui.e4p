@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project fyp_ui -->
-<!-- Saved: 2021-03-17, 15:44:09 -->
+<!-- Saved: 2021-04-08, 14:25:07 -->
 <!-- Copyright (C) 2021 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -17,6 +17,7 @@
     <Source>builder.py</Source>
     <Source>files_rc.py</Source>
     <Source>main.py</Source>
+    <Source>tutorialTest.py</Source>
     <Source>ui/DatasetIcon.py</Source>
     <Source>ui/DatasetLoader.py</Source>
     <Source>ui/DraggableLabel.py</Source>

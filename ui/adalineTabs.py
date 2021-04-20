@@ -43,7 +43,7 @@ class AdalineTabs(QTabWidget):
     def tab1UI(self):
         layout = QVBoxLayout()
         
-        label1 = QLabel('Adaptive Linear Element, namely Adaline, contains a single layer of adjustable weights on the lines connecting the input nodes and the processing unit.')
+        label1 = QLabel('Adaptive Linear Element, namely Adaline, contains a single layer of input nodes and each line connecting the input nodes and the processing unit has an adjustable weight.')
         label1.setWordWrap(True)
         layout.addWidget(label1)
         

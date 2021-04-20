@@ -73,17 +73,17 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         label1.setWordWrap(True)
         layout.addWidget(label1)
         
-        label2 = QLabel('In supervised learning, a loss function is defined to compute the accuracy of each prediction based on the corresponding gruth truth.')
+        label2 = QLabel('In supervised learning, a loss function is defined to compute the accuracy of each prediction based on the corresponding ground truth.')
         label2.setWordWrap(True)
         layout.addWidget(label2)
         
-        label3 = QLabel('Backpropagation is the process of adjusting the weights of a neural network according to the loss given by the loss function. The weight updates in the process are guided by the application of the chain rule of differentiation, starting from the loss given by the loss function and traversing the network in a reverse orde back to the input layer.')
+        label3 = QLabel('Backpropagation is the process of adjusting the weights of a neural network according to the loss given by the loss function. The weight updates in the process are guided by the application of the chain rule of differentiation, starting from the loss given by the loss function and traversing the network in a reverse order back to the input layer.')
         label3.setWordWrap(True)
         layout.addWidget(label3)
         
         self.tab1.setLayout(layout)
 
-    def tab2UI(self):
+    def tab2UI(self):       # Stanford
         layout = QVBoxLayout()
         
         label1 = QLabel('The application of the chain rule of differentiation on an arbitrary node of a neural network is illustrated as below:')
@@ -104,7 +104,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         
         self.tab2.setLayout(layout)
 
-    def tab3UI(self):
+    def tab3UI(self):           # Stanford
         layout = QVBoxLayout()
         
         label1 = QLabel('A simple illustration of backpropagation:')
@@ -121,7 +121,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
 
         self.tab3.setLayout(layout)
     
-    def tab4UI(self):
+    def tab4UI(self):       # Stanford
         layout = QVBoxLayout()
                 
         label1 = QLabel('A more complicated illustration of backpropagation:')
@@ -142,7 +142,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         
         self.tab4.setLayout(layout)
 
-    def tab5UI(self):
+    def tab5UI(self):           # Stanford
         layout = QVBoxLayout()
      
         exercise_graph = QLabel()
@@ -153,7 +153,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         qna_layout1 = QHBoxLayout()
         qna_layout1.addWidget(QLabel('Please Input the Value of X:'))
         qna_case1_lineedit = QLineEdit()
-        qna_case1_lineedit.setObjectName('Line1')
+        qna_case1_lineedit.setObjectName('feedForwardAndBackpropagationLine1')
         qna_layout1.addWidget(qna_case1_lineedit)
         qna_layout1_widget = QWidget()
         qna_layout1_widget.setLayout(qna_layout1)
@@ -162,7 +162,7 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         qna_layout2 = QHBoxLayout()
         qna_layout2.addWidget(QLabel('Please Input the Value of Y:'))
         qna_case2_lineedit = QLineEdit()
-        qna_case2_lineedit.setObjectName('Line2')
+        qna_case2_lineedit.setObjectName('feedForwardAndBackpropagationLine2')
         qna_layout2.addWidget(qna_case2_lineedit)
         qna_layout2_widget = QWidget()
         qna_layout2_widget.setLayout(qna_layout2)
@@ -171,11 +171,12 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         snr_layout = QHBoxLayout()
         
         btn_sub = QPushButton('Submit')
+        btn_sub.setObjectName('feedForwardAndBackpropagationSubmitButton')
         btn_sub.clicked.connect(self.submission)
         snr_layout.addWidget(btn_sub)
         
         lb_result = QLabel('')
-        lb_result.setObjectName('lb_result')
+        lb_result.setObjectName('feedForwardAndBackpropagationResult')
         lb_result.setAlignment(Qt.AlignCenter)
         snr_layout.addWidget(lb_result)
         
@@ -186,9 +187,9 @@ class FeedforwardAndBackpropagationTabs(QTabWidget):
         self.tab5.setLayout(layout)
         
     def submission(self):
-        input_X = self.tab5.findChild(QLineEdit, 'Line1').text()
-        input_Y = self.tab5.findChild(QLineEdit, 'Line2').text()
+        input_X = self.tab5.findChild(QLineEdit, 'feedForwardAndBackpropagationLine1').text()
+        input_Y = self.tab5.findChild(QLineEdit, 'feedForwardAndBackpropagationLine2').text()
         if ((input_X == '-0.4' or input_X == '-0.40') and (input_Y == '-0.6' or input_Y == '-0.60')):
-            self.tab5.findChild(QLabel, 'lb_result').setText('True!\nYou now have at least a basic understanding of backpropagation!')
+            self.tab5.findChild(QLabel, 'feedForwardAndBackpropagationResult').setText('True!\nYou now have at least a basic understanding of backpropagation!')
         else:
-            self.tab5.findChild(QLabel, 'lb_result').setText('False! Please try again!')
+            self.tab5.findChild(QLabel, 'feedForwardAndBackpropagationResult').setText('False! Please try again!')

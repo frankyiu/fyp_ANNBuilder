@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.org
+class UnderfittingAndOverfittingTabs(QTabWidget):               # https://www.geeksforgeeks.org/underfitting-and-overfitting-in-machine-learning/
     def __init__(self, parent = None):
         super(UnderfittingAndOverfittingTabs, self).__init__(parent)
 
@@ -15,9 +15,9 @@ class UnderfittingAndOverfittingTabs(QTabWidget):               # geeksforgeeks.
 
         self.addTab(self.tab1, 'Overview')
         self.addTab(self.tab2, 'Why Underfitting')
-        self.addTab(self.tab3, 'Solutions To Underfitting')
+        self.addTab(self.tab3, 'Solutions to Underfitting')
         self.addTab(self.tab4, 'Why Overfitting')
-        self.addTab(self.tab5, 'Solutions To Overfitting')
+        self.addTab(self.tab5, 'Solutions to Overfitting')
         
         style = """
         QWidget{

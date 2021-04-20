@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-class LossFunctionsTabs(QTabWidget):                # towardsdatascience
+class LossFunctionsTabs(QTabWidget):                # https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
     def __init__(self, parent = None):
         super(LossFunctionsTabs, self).__init__(parent)
 

@@ -174,6 +174,7 @@ class Ui_tutorialsWindow(QWidget):
         layout = QHBoxLayout()
         
         perceptronTabs = PerceptronTabs()
+        perceptronTabs.setObjectName('perceptronTabs')
         layout.addWidget(perceptronTabs)
 
         self.stack3.setLayout(layout)

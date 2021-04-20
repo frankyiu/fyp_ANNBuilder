@@ -23,8 +23,8 @@ class ConvolutionalLayerTabs(QTabWidget):
         self.addTab(self.tab3, 'Different Types of Filters')
         self.addTab(self.tab4, 'Stride')
         self.addTab(self.tab5, 'Padding')
-        self.addTab(self.tab6, 'A Convolutional Layer In A Neural Network')
-        self.addTab(self.tab7, '2D Convolution On Multiple-channel Input Feature Maps')
+        self.addTab(self.tab6, 'A Convolutional Layer in A Neural Network')
+        self.addTab(self.tab7, '2D Convolution on Multiple-channel Input Feature Maps')
         
         style = """
         QWidget{
@@ -115,7 +115,7 @@ class ConvolutionalLayerTabs(QTabWidget):
         
         self.tab2.setLayout(layout)
         
-    def tab3UI(self):               # Jame's Notes
+    def tab3UI(self):               
         layout = QVBoxLayout()
         
         label4 = QLabel('The parameters of a kernel matrix, aka filter, determines how its ouput feature maps look like.')
@@ -189,7 +189,7 @@ class ConvolutionalLayerTabs(QTabWidget):
         
         setup_graph = QLabel()
         setup_graph.setAlignment(Qt.AlignCenter)
-        setup_graph.setObjectName('setup_graph')
+        setup_graph.setObjectName('Convolutional_Layer_Stride_QLabel')
         setup_graph.setPixmap(QPixmap('./png/ConvolutionalLayer/Stride/setup.png'))
         layout.addWidget(setup_graph)
         
@@ -200,10 +200,12 @@ class ConvolutionalLayerTabs(QTabWidget):
         btn_layout = QHBoxLayout()
         
         btn_stride1 = QPushButton('Case 1: Stride = 1')
+        btn_stride1.setObjectName('Convolutional_Layer_Stride_PushButton1')
         btn_layout.addWidget(btn_stride1)
         btn_stride1.clicked.connect(self.switch_to_stride1_gif)
         
         btn_stride2 = QPushButton('Case 2: Stride = 2')
+        btn_stride2.setObjectName('Convolutional_Layer_Stride_PushButton2')
         btn_layout.addWidget(btn_stride2)
         btn_stride2.clicked.connect(self.switch_to_stride2_gif)
         
@@ -220,12 +222,12 @@ class ConvolutionalLayerTabs(QTabWidget):
         
     def switch_to_stride1_gif(self):
         stride1_movie = QMovie('./gifs/ConvolutionalLayer/Stride/stride1.gif')
-        self.tab4.findChild(QLabel, 'setup_graph').setMovie(stride1_movie)
+        self.tab4.findChild(QLabel, 'Convolutional_Layer_Stride_QLabel').setMovie(stride1_movie)
         stride1_movie.start()
         
     def switch_to_stride2_gif(self):
         stride2_movie = QMovie('./gifs/ConvolutionalLayer/Stride/stride2.gif')
-        self.tab4.findChild(QLabel, 'setup_graph').setMovie(stride2_movie)
+        self.tab4.findChild(QLabel, 'Convolutional_Layer_Stride_QLabel').setMovie(stride2_movie)
         stride2_movie.start()
         
     def tab5UI(self):
@@ -294,7 +296,7 @@ class ConvolutionalLayerTabs(QTabWidget):
         
         self.tab6.setLayout(layout)
         
-    def tab7UI(self):               # predictiveprogrammer.com
+    def tab7UI(self):               # https://predictiveprogrammer.com/famous-convolutional-neural-network-architectures-1/ 
         layout = QVBoxLayout()
      
         label1 = QLabel('Let see how a kernel performs 2D convolution on a RGB input image and generates a corresponding output feature map:')

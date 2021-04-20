@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
+class RegularizationTabs(QTabWidget):         
     def __init__(self, parent = None):
         super(RegularizationTabs, self).__init__(parent)
 
@@ -76,7 +76,7 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         
         self.tab1.setLayout(layout)
 
-    def tab2UI(self):
+    def tab2UI(self):       # https://ml-cheatsheet.readthedocs.io/en/latest/regularization.html#l1-regularization
         layout = QVBoxLayout()
         
         label1 = QLabel('L1 Regularization, namely Lasso Regression, puts a constraint on the summation of the absolute values of the weights by adding the penalty term below to Error(y, ŷ):')
@@ -105,7 +105,7 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
         
         self.tab2.setLayout(layout)
 
-    def tab3UI(self):
+    def tab3UI(self):          # https://ml-cheatsheet.readthedocs.io/en/latest/regularization.html#l1-regularization
         layout = QVBoxLayout()
         
         label1 = QLabel('L2 Regularization,  namely Ridge Regression, puts a constraint on the summation of the square of the weights by adding the penalty term below to Error(y, ŷ):')
@@ -221,7 +221,7 @@ class RegularizationTabs(QTabWidget):           # ml-cheatsheet.readthedocs.io
 
         self.tab6.setLayout(layout)    
     
-    def tab7UI(self):
+    def tab7UI(self):               # https://bradleyboehmke.github.io/HOML/regularized-regression.html#ref-zou2005regularization
         layout = QVBoxLayout()
         
         label1 = QLabel('Elastic Net Regularization is a combination of L1 and L2 regularization by adding the 2 penalty terms below to Error(y, ŷ):')
