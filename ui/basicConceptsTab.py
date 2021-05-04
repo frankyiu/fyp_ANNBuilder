@@ -9,8 +9,32 @@ class BasicConceptsTab(QTabWidget):
 
         self.tab1 = QWidget()
 
-        self.addTab(self.tab1, '')
-        self.setStyleSheet("background-color: rgb(40, 44, 52);")
+        self.addTab(self.tab1, 'Basic Concepts')
+        
+        style = """
+        QWidget{
+            background-color: rgb(40, 44, 52);
+        }
+        QLabel{
+            font-size: 12pt;
+        }
+        QTabBar::tab{
+            background: lightgray;
+            color: black;
+            border: 3;
+            padding: 5px;
+            max-width: 300px;
+            height: 15px;
+            border: 1px solid;
+        }
+        QTabBar::tab:selected {
+            background: gray;
+            color: white;
+        }
+        """
+        self.setStyleSheet(style)
+        
+        self.tabBar().setAutoHide(True)
 
         self.tab1UI()
 

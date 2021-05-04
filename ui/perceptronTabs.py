@@ -22,19 +22,32 @@ class PerceptronTabs(QTabWidget):
             background-color: rgb(40, 44, 52);
         }
         QLabel{
-            font-size: 16pt;
+            font-size: 12pt;
         }
         QPushButton{
             border: 2px solid black;
-            background-color: #F9F7ED;
+            background-color: lightgray;
             color: black;
-            border-radius : 12px;
-            padding: 2px 4px 2px 4px;
-            font-size: 13pt;
+            border-radius: 12px;
+            padding: 5px;
+            font-size: 12pt;
         }
         QPushButton::hover
         {
-            background-color : #24a0ed;
+            background-color : gray;
+            color: white;
+        }
+        QTabBar::tab{
+            background: lightgray;
+            color: black;
+            border: 3;
+            padding: 5px;
+            max-width: 300px;
+            height: 15px;
+            border: 1px solid;
+        }
+        QTabBar::tab:selected {
+            background: gray;
             color: white;
         }
         """

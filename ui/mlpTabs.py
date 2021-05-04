@@ -11,6 +11,7 @@ class MLPTabs(QTabWidget):
 
         self.addTab(self.tab1, '')
         self.setStyleSheet("background-color: rgb(40, 44, 52);")
+        self.tabBar().setAutoHide(True)
 
         self.tab1UI()
 
