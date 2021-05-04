@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QPen, QBrush, QColor
 from PyQt5.QtCore import Qt
 import math
+import os
 
 ##################
 WINDOW_DEFAULT_WIDTH = 800
@@ -45,6 +46,7 @@ LFB_CONNECTION_DEFAULT_NAME = "LBF Connection-{}-{}"
 REG_CONNECTION_DEFAULT_NAME = "Reg. Connection-{}-{}"
 FLATTEN_2D_CONNECTION_DEFAULT_NAME = "Flatten Connection-{}-{}"
 POOLING_2D_CONNECTION_DEFAULT_NAME = "2D Pooling Connection-{}-{}"
+DEFAULT_INIT_METHOD = "zero"
 
 # Layer Settings
 LAYER_CORNER_RADIUS = 5
@@ -67,8 +69,8 @@ FLATTEN_2D_LAYER_DEFAULT_NAME = "Flatten Layer-{}"
 FLATTEN_2D_LAYER_DEFAULT_NAME_REGEX = "^Flatten Layer-([\\d]+)$"
 STACKED_AFF_1D_LAYER_SPACE = 3
 STACKED_AFF_1D_SKIP_DOT_SIZE = 3
-LAYER_MIN_WIDTH = NEURON_1D_DIAMETER + 10
-LAYER_MIN_HEIGHT = LAYER_HEADER_HEIGHT + NEURON_1D_DIAMETER * 3 + STACKED_AFF_1D_LAYER_SPACE * 4 + 10
+LAYER_MIN_WIDTH = max(NEURON_2D_SIZE, NEURON_1D_DIAMETER) + 10
+LAYER_MIN_HEIGHT = LAYER_HEADER_HEIGHT + NEURON_1D_DIAMETER * 4 + STACKED_AFF_1D_LAYER_SPACE * 5 + 10
 
 # Cost Function Block
 LFB_WIDTH = 50
@@ -84,10 +86,6 @@ REGULARIZER_BODY_COLOR = QColor(178, 102, 255, 128)
 REGULARIZER_DEFAULT_NAME = "regularizer-{}"
 REGULARIZER_DEFAULT_NAME_REGEX = "^regularizer-([\\d]+)$"
 
-# TO BE DEL
-ICON_OFFSET_X = 10
-ICON_OFFSET_Y = 15
-
 # Animation Settings
 ANIMATION_ARROWHEAD_LENGTH = 12
 ANIMATION_ARROWHEAD_FACTOR = 0.2
@@ -98,8 +96,12 @@ WHITE_TRANSPARENT = QColor(255, 255, 255, 0)
 WHITE_HALF_TRANSPARENT = QColor(255, 255, 255, 128)
 
 #
-ACTIVATION_FUNC_LIST = ["Linear", "Sigmoid", "Tanh", "ReLu", "ELU",
-                        "Leaky ReLu", "Softmax", "Gaussian", "Sine"]
+DIR = os.path.dirname(__file__)
+RES_ACT_FUNC_PATH = DIR + '/res/act_func/'
+RES_LOSS_FUNC_PATH = DIR + '/res/loss_func/'
+RES_REG_FUNC_PATH = DIR + '/res/reg_func/'
+ACTIVATION_FUNC_LIST = ["linear", "sigmoid", "softmax", "tanh", "relu", "elu",
+                        "leaky relu", "softmax", "gaussian", "sine"]
 LOSS_FUNC_LIST = ["MAE", "MSE", "CE"]
 REGULARIZATION_LIST = ["L1", "L2", "L3", "L0.5", "Lp", "Elastic Net"]
 
@@ -112,6 +114,8 @@ class SceneMode:
 
 
 # TO BE DEL
+ICON_OFFSET_X = 10
+ICON_OFFSET_Y = 15
 NEURON_1D_ICON_SIZE = NEURON_1D_RADIUS * 1.5
 NEURON_2D_ICON_SIZE = NEURON_2D_SIZE // 2
 AFFINE_LAYER_ICON_WIDTH = LAYER_WIDTH // 4
@@ -122,6 +126,36 @@ REGULARIZER_ICON_WIDTH = REGULARIZER_WIDTH // 1.5
 REGULARIZER_ICON_HEIGHT = REGULARIZER_HEIGHT // 1.5
 LFB_ICON_WIDTH = LFB_WIDTH // 1.6
 LFB_ICON_HEIGHT = LFB_HEIGHT // 1.6
+TEST_DATA_DIM = (3, 2)
+
+fooOptimizerConfigs = {
+    'optimizerType': 'sgd',
+    'learning_rate': 0.01,
+    'momentum': 0.9,
+    'decaryRate': 0.99,
+}
+
+def getData():
+    import numpy as np
+
+    def softmax(x):
+        exp = np.exp(x - np.max(x, axis=1, keepdims=True))
+        return exp / np.sum(exp, axis=1, keepdims=True)
+
+    nData = 1000
+    nTrainData = int(0.9 * nData)
+    x = np.random.rand(nData, 2)
+    W1 = [[1.1, 0.2, 1.2], [1.4, 1.2, 3.1]]
+    b1 = [3.2, 3.4, 2.3]
+    z1 = x @ W1 + b1
+    ySoft = softmax(z1)
+    y = np.argmax(ySoft, 1)
+    X_train = x[:nTrainData]
+    y_train = y[:nTrainData]
+    X_val = x[nTrainData:]
+    y_val = y[nTrainData:]
+    return X_train, y_train, X_val, y_val
 
 
-
+fooXTrain, fooYTrain, fooXVal, fooYVal = getData()
+fooBatchSize = 100

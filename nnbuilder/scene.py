@@ -9,9 +9,10 @@ http://www.windel.nl/?section=pyqtdiagrameditor
 """
 import re
 from PyQt5.QtGui import QTransform
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsItem, QGraphicsLineItem, QGraphicsRectItem, QGraphicsEllipseItem
-import numpy as np
+from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsItem, QGraphicsLineItem, \
+    QGraphicsRectItem, QGraphicsEllipseItem
 
+from ml import Training
 from .layer import NNB1DAffineLayer, NNB1DStackedAffineLayer, NNB2DConvLayer, \
     NNB2DPoolingLayer, NNB2DFlattenLayer
 from .neuron import NNB1DInputNeuron, NNB1DBiasNeuron, NNB1DStackedNeuron, NNB2DInputNeuron, NNB2DBiasNeuron
@@ -19,7 +20,7 @@ from .connection import NNB1DLinearConnection, NNB1DStackedLinConnection, \
     NNB2DConvConnection, NNBRegConnection, NNBLFBConnection, \
     NNB2DFlattenConnection, NNB2DPoolingConnection
 from .block import NNBLossFuncBlock, NNBRegularizer
-from .animation import NNTrainArrowFlowAnimation
+from .animation import NNBPathTrainArrowFlowAnimation, NNBCurveTrainArrowFlowAnimation
 from .base import _NNBNeuron, _NNB1DNeuron, _NNB2DNeuron,\
     _NNB1DInputNeuron, _NNB1DStackedNeuron, _NNB2DInputNeuron, \
     _NNB1DBiasNeuron, _NNB2DBiasNeuron, \
@@ -29,7 +30,7 @@ from .base import _NNBNeuron, _NNB1DNeuron, _NNB2DNeuron,\
     _NNB2DConvConnection, _NNB2DPoolingConnection, \
     _NNB2DFlattenConnection, _NNBLFBConnection, _NNBRegConnection, \
     _NNBLossFuncBlock, _NNBRegularizer, NNBController
-
+from .modelUtils import *
 from .config import *
 
 
@@ -111,11 +112,11 @@ class NNBScene(QGraphicsScene):
         self.itemSelected = []
 
         # For compiling into a NN model
-        # For now, we force the user to specify the layer type.
         self.inputLayer = None
         self.outputLayer = None
-        self.costFuncBlock = None
+        self.lossFuncBlock = None
         self.layers = []
+        self.initMethod = DEFAULT_INIT_METHOD  # can be changed
 
         # For animation
         self.animations = []
@@ -124,6 +125,10 @@ class NNBScene(QGraphicsScene):
         self.ffFlowing = True
 
     def switchMode(self, mode):
+        if self.sceneMode == SceneMode.TrainMode and mode != SceneMode.SelectMode:
+            return
+        if self.sceneMode == SceneMode.ConnectMode and mode == SceneMode.DragDrogMode:
+            return
         if mode == SceneMode.ConnectMode:
             for item in self.items():
                 self.views()[0].setCursor(Qt.CrossCursor)
@@ -170,7 +175,6 @@ class NNBScene(QGraphicsScene):
         self.registerComponent(component)  # register the component to the environment
         if not isinstance(component, _NNBNeuron):  # since we called setParentItem, no need to add it to scene again
             self.addItem(component)  # add the component to the scene
-        print(component.name + " is created." + " " + str(component))
 
     def createNeuron(self, x, y, neuronType, layer):
         layerName = layer.name
@@ -245,11 +249,6 @@ class NNBScene(QGraphicsScene):
             elif isinstance(selectedItem, _NNBRegularizer):
                 regularizersToBeRemoved.add(selectedItem)
         for layerToBeRemoved in layersToBeRemoved:
-            # if isinstance(layerToBeRemoved, _NNBTrainableLayer):
-            #     if layerToBeRemoved.layerType == "input":
-            #         self.inputLayer = None
-            #     elif layerToBeRemoved.layerType == "output":
-            #         self.outputLayer = None
             for connection in layerToBeRemoved.connectionsTo.values():  # regularizer or loss function block
                 try:
                     connectionsToBeRemoved.remove(connection)
@@ -260,22 +259,23 @@ class NNBScene(QGraphicsScene):
                     connectionsToBeRemoved.remove(connection)
                 except KeyError:
                     componentsToBeRemovedFromBuilder.add(connection)
-            for neuron in layerToBeRemoved.neurons:
-                try:
-                    neuronsToBeRemoved.remove(neuron)
-                except KeyError:
-                    componentsToBeRemovedFromBuilder.add(neuron)
-                neuron.setParentItem(None)
-                for connection in neuron.connectionsFrom.values():
+            if isinstance(layerToBeRemoved, _NNBTrainableLayer):
+                for neuron in layerToBeRemoved.neurons:
                     try:
-                        connectionsToBeRemoved.remove(connection)
+                        neuronsToBeRemoved.remove(neuron)
                     except KeyError:
-                        componentsToBeRemovedFromBuilder.add(connection)
-                for connection in neuron.connectionsTo.values():
-                    try:
-                        connectionsToBeRemoved.remove(connection)
-                    except KeyError:
-                        componentsToBeRemovedFromBuilder.add(connection)
+                        componentsToBeRemovedFromBuilder.add(neuron)
+                    neuron.setParentItem(None)
+                    for connection in neuron.connectionsFrom.values():
+                        try:
+                            connectionsToBeRemoved.remove(connection)
+                        except KeyError:
+                            componentsToBeRemovedFromBuilder.add(connection)
+                    for connection in neuron.connectionsTo.values():
+                        try:
+                            connectionsToBeRemoved.remove(connection)
+                        except KeyError:
+                            componentsToBeRemovedFromBuilder.add(connection)
             layerToBeRemoved.remove()
 
         for neuronToBeRemoved in neuronsToBeRemoved:
@@ -298,7 +298,7 @@ class NNBScene(QGraphicsScene):
             for connection in lfbToBeRemoved.connectionsFrom.values():  # an output layer or a regularizer
                 try:
                     connectionsToBeRemoved.remove(connection)
-                except ValueError:
+                except KeyError:
                     componentsToBeRemovedFromBuilder.add(connection)
             lfbToBeRemoved.remove()
 
@@ -329,17 +329,6 @@ class NNBScene(QGraphicsScene):
             del componentToBeRemovedFromBuilder  # delete the object
 
         self.update()
-    # -------------------------------------------------#
-    # dealing with the saving and loading the builder #
-    # -------------------------------------------------#
-
-    def saveEnv(self):  # return a json object
-        # TO-DO
-        pass
-
-    def loadEnv(self, json):
-        # TO-DO
-        pass
 
     # ------------------------------------------------- #
     #        dealing with the connecting blocks         #
@@ -400,7 +389,7 @@ class NNBScene(QGraphicsScene):
         neuronFromName = self.extractBlockName(neuronFrom)
         connectionType = NNBScene.determineConnectionType(neuronFrom, layerTo)
         for neuronTo in layerTo.neurons:
-            if neuronTo in neuronFrom.connectionsTo:
+            if isinstance(neuronTo, _NNB1DBiasNeuron) or neuronTo in neuronFrom.connectionsTo:
                 continue
             neuronToName = self.extractBlockName(neuronTo)
             self.createConnection(neuronFrom, neuronTo, neuronFromName, neuronToName, connectionType)
@@ -410,14 +399,14 @@ class NNBScene(QGraphicsScene):
         neuronToName = self.extractBlockName(neuronTo)
         connectionType = NNBScene.determineConnectionType(layerFrom, neuronTo)
         if isinstance(layerFrom, _NNB2DFlattenLayer):
-            if neuronTo in layerFrom.connectionsTo:
+            if isinstance(neuronTo, _NNB1DBiasNeuron) or neuronTo in layerFrom.connectionsTo:
                 return
             layerFromName = self.extractBlockName(layerFrom)
             self.createConnection(layerFrom, neuronTo, layerFromName, neuronToName, connectionType)
             layerFrom.connectToNeuron(neuronTo)
         else:
             for neuronFrom in layerFrom.neurons:
-                if neuronTo in neuronFrom.connectionsTo:
+                if isinstance(neuronTo, _NNB1DBiasNeuron) or neuronTo in neuronFrom.connectionsTo:
                     continue
                 neuronFromName = self.extractBlockName(neuronFrom)
                 self.createConnection(neuronFrom, neuronTo, neuronFromName, neuronToName, connectionType)
@@ -436,7 +425,7 @@ class NNBScene(QGraphicsScene):
             elif isinstance(layerFrom, NNB2DFlattenLayer):
                 layerFromName = self.extractBlockName(layerFrom)
                 for neuronTo in layerTo.neurons:
-                    if layerFrom in neuronTo.connectionsFrom:
+                    if isinstance(neuronTo, _NNB1DBiasNeuron) or layerFrom in neuronTo.connectionsFrom:
                         continue
                     neuronToName = self.extractBlockName(neuronTo)
                     self.createConnection(layerFrom, neuronTo, layerFromName, neuronToName, NNB2DFlattenConnection)
@@ -444,7 +433,8 @@ class NNBScene(QGraphicsScene):
         for neuronFrom in layerFrom.neurons:
             neuronFromName = self.extractBlockName(neuronFrom)
             for neuronTo in layerTo.neurons:
-                if neuronTo in neuronFrom.connectionsTo:
+                if isinstance(neuronTo, _NNB1DBiasNeuron) or isinstance(neuronTo, _NNB2DBiasNeuron) or \
+                        neuronTo in neuronFrom.connectionsTo:
                     continue
                 neuronToName = self.extractBlockName(neuronTo)
                 self.createConnection(neuronFrom, neuronTo, neuronFromName, neuronToName, connectionType)
@@ -513,8 +503,6 @@ class NNBScene(QGraphicsScene):
                 connectionFunc = self.connectRegToLFB
         if connectionFunc:
             connectionFunc(blockFrom, blockTo)
-        else:
-            print("what's going on?")
 
     # ------------------------------------------------- #
     #              dealing with animation               #
@@ -532,34 +520,49 @@ class NNBScene(QGraphicsScene):
             for j, neuron in enumerate(layer.neurons):
                 self.animations[0][i].append([])
                 self.animations[1][i].append([])
-                for connection in neuron.connections.values():
+                for connection in neuron.connectionsTo.values():
                     allowAnimation = False
                     if i == 0:
                         allowAnimation = True
-                    elif i == len(self.layers) - 1 and (connection.neuronLeft == self.costFuncBlock or
-                                                        connection.neuronRight == self.costFuncBlock):
+                    elif i == len(self.layers) - 1 and (connection.blockFrom == self.lossFuncBlock or
+                                                        connection.blockTo == self.lossFuncBlock):
                         allowAnimation = True
-                    elif connection.neuronLeft.layer != self.layers[i - 1] and \
-                            connection.neuronRight.layer != self.layers[i - 1]:
+                    elif connection.blockFrom.layer != self.layers[i - 1] and \
+                            connection.blockTo.layer != self.layers[i - 1]:
                         allowAnimation = True
                     if allowAnimation:
-                        forward = (connection.neuronLeft == neuron)
-                        fAnimation = NNTrainArrowFlowAnimation(connection, forward=forward)
-                        bAnimation = NNTrainArrowFlowAnimation(connection, forward=not forward)
+                        fAnimation = NNBPathTrainArrowFlowAnimation(connection)
+                        bAnimation = NNBPathTrainArrowFlowAnimation(connection, forward=False)
                         if firstAnimation:
-                            fAnimation.fAnimation.finished.connect(fAnimation.onAnimationFinished)
-                            bAnimation.fAnimation.finished.connect(bAnimation.onAnimationFinished)
+                            fAnimation.finishedConnect()
+                            bAnimation.finishedConnect()
                             firstAnimation = False
                         self.animations[0][i][j].append(bAnimation)
                         self.animations[1][i][j].append(fAnimation)
+
+            for regularizer, regConnection in layer.connectionsTo.items():
+                if i != len(self.layers) - 1:
+                    fAnimation = NNBCurveTrainArrowFlowAnimation(regConnection)
+                    bAnimation = NNBCurveTrainArrowFlowAnimation(regConnection, forward=False)
+                    self.animations[0][i].append([])
+                    self.animations[1][i].append([])
+                    self.animations[0][i][-1].append(bAnimation)
+                    self.animations[1][i][-1].append(fAnimation)
+
+        if len(self.layers) > 1:
+            for regularizer, regConnection in self.lossFuncBlock.connectionsFrom.items():
+                if isinstance(regConnection, NNBRegConnection):
+                    fAnimation = NNBCurveTrainArrowFlowAnimation(regConnection)
+                    bAnimation = NNBCurveTrainArrowFlowAnimation(regConnection, forward=False)
+                    self.animations[0][-1].append([])
+                    self.animations[1][-1].append([])
+                    self.animations[0][-1][-1].append(bAnimation)
+                    self.animations[1][-1][-1].append(fAnimation)
+
         self.inTrainingAnimation = True
         self.ffFlowing = True
         self.currAnimationLayerIdx = 0
         self.startOneLayerFlowAnimation()
-        # ...
-        # connection details
-        # num of neuron details...
-        # return layers #for now
 
     # TO-DO Animation
     def finishOneLayerFlowAnimation(self):
@@ -570,13 +573,22 @@ class NNBScene(QGraphicsScene):
 
         if self.ffFlowing:
             if self.currAnimationLayerIdx == len(self.layers) - 1:
+                # if done
                 self.ffFlowing = False
             else:
+                # TO-DO: update neuron's value
                 self.currAnimationLayerIdx = self.currAnimationLayerIdx + 1
         else:
             if self.currAnimationLayerIdx == 0:
                 self.ffFlowing = True
+                # ...
+                history = self.actModel.fit(fooXTrain, fooYTrain, batch_size=fooBatchSize, epochs=1,
+                                            validation_data=(fooXVal, fooYVal), )
+                self.updateParams()
             else:
+                if isinstance(self.layers[self.currAnimationLayerIdx-1], _NNBTrainableLayer):
+                    self.layers[self.currAnimationLayerIdx - 1].updateParams(
+                        self.layerNewParams[self.currAnimationLayerIdx - 1])
                 self.currAnimationLayerIdx = self.currAnimationLayerIdx - 1
 
         self.startOneLayerFlowAnimation()
@@ -586,83 +598,208 @@ class NNBScene(QGraphicsScene):
             for animation in layerAnimations:
                 animation.start()
         for neuron in self.layers[self.currAnimationLayerIdx].neurons:
-            for connection in neuron.connections.values():
-                connection.weight += 0.1
+            for connection in neuron.connectionsTo.values():
                 connection.onWeightChangedOnTrainMode()
+
+    def stopAnimations(self):
+        for layerAnimations in self.animations[self.ffFlowing][self.currAnimationLayerIdx]:
+            for animation in layerAnimations:
+                animation.vanish()
+                animation.stop()
+
+        for i in range(len(self.layers)):
+            for layerAnimations in self.animations[self.ffFlowing][i]:
+                for animation in layerAnimations:
+                    animation.destroy()
+            for layerAnimations in self.animations[not self.ffFlowing][i]:
+                for animation in layerAnimations:
+                    animation.destroy()
+
+    def trainUntilStop(self, shouldStop):
+        if shouldStop:
+            pass
 
     # ------------------------------------------------- #
     #          dealing with model conversion            #
     # ------------------------------------------------- #
 
+    def checkNNModelValid(self, dataset=None):
+        # TO-DO: make sure the dim fit the dataset
+        datasetInputDim = 2  # for 1D data, it should be a scalar; for 2D data, it should be in the triple of (C, H, W)
+        datasetOutputDim = 3
+        warningMessage = None
+        layersInBuilder = []
+        self.layers = None
+        self.inputLayer = None
+        self.outputLayer = None
+        for component in self.items():
+            if isinstance(component, _NNBLayer):
+                layersInBuilder.append(component)
+                if component.prevLayer is None:
+                    if component.nextLayer is None:
+                        warningMessage = 'model error: there is at least one isolate layer in the builder.'
+                        return warningMessage
+                    if self.inputLayer:
+                        warningMessage = 'model error: there are at least two input layers in the builder.'
+                        return warningMessage
+                    else:
+                        if not isinstance(component, _NNBTrainableLayer):
+                            warningMessage = 'model error: the input layer should be a trainable layer.'
+                            return warningMessage
+                        if component.containsBias():
+                            warningMessage = 'model error: the input layer shouldn\'t contain a bias.'
+                            return warningMessage
+                        self.inputLayer = component
+                elif component.nextLayer is None:
+                    warningMessage = 'model error: the output layer should be connected to a loss function block.'
+                    return warningMessage
+
+                elif isinstance(component.nextLayer, NNBLossFuncBlock):
+                    if self.outputLayer:
+                        warningMessage = 'model error: there are at least two output layers in the builder.'
+                        return warningMessage
+                    else:
+                        self.outputLayer = component
+
+        if self.outputLayer is None:
+            warningMessage = 'model error: there should be at least two layers in the model.'
+            return warningMessage
+
+        if isinstance(self.inputLayer, _NNB1DStackedLayer) and self.inputLayer.numNeurons == -1:
+            self.inputLayer.changeNumNeurons(datasetInputDim)
+        elif isinstance(self.inputLayer, _NNB2DConvLayer):
+            if type(datasetInputDim) == int:
+                warningMessage = 'model error: the dimension of the input layer does not match that of the dataset.'
+                return warningMessage
+            if datasetInputDim[0] != self.inputLayer.numOfNeurons():
+                warningMessage = 'model error: the channel number of the input layer ' \
+                                 'does not match that of the dataset.'
+                return warningMessage
+            self.inputLayer.inputSize = datasetInputDim[1:]
+        elif self.inputLayer.numOfNeurons() != datasetInputDim:
+            warningMessage = 'model error: the dimension of the input layer does not match that of the dataset.'
+            return warningMessage
+        # Problem: if the input layer is a 1DStackedLayer and the validation fails here,
+        if isinstance(self.outputLayer, _NNB1DStackedLayer) and self.outputLayer.numNeurons == -1:
+            self.outputLayer.changeNumNeurons(datasetOutputDim)
+        elif self.outputLayer.numOfNeurons() != datasetOutputDim:
+            warningMessage = 'model error: the dimension of the output layer does not match that of the dataset.'
+            return warningMessage
+        self.layers = self.inputLayer.getChainOfLayers()
+        if len(self.layers) != len(layersInBuilder):
+            warningMessage = 'model error: there are at least one isolate layer in the builder.'
+            return warningMessage
+
+        # confirm all the size of all layers have been deduced
+        for layer in layersInBuilder[1:-1]:
+            if isinstance(layer, _NNB1DStackedLayer):
+                if layer.prevLayer and layer.numNeurons == -1:
+                    warningMessage = 'model error: the number of neurons in \"{}\" must ' \
+                                     'be specified.'.format(layer.name)
+                    return warningMessage
+            elif isinstance(layer, _NNB2DConvLayer):
+                layer.deduceOutputSize()
+            elif isinstance(layer, _NNB2DFlattenLayer):
+                layer.nextLayer.deduceNumOfNeurons()
+
+        # initialize all the layers if necessary
+        # for layer in layersInBuilder:
+
+        self.lossFuncBlock = self.layers[-1].nextLayer
+        if self.lossFuncBlock is None:
+            warningMessage = 'model error: there is no loss function block.'
+            return warningMessage
+        return warningMessage
+
     def compileIntoNNModel(self):
-        # CURR
-        # CAN only be called when there is a model
-        nLayers = len(self.layers)
-        CFB = self.costFuncBlock.costFunc
-        modelConfig = {}
+        # can ONLY be called when there is a model
+        LFB = self.lossFuncBlock
+        modelConfigs = {}
+        layersConfigs = []
+        modelConfigs["layers"] = layersConfigs
         lastIdx = len(self.layers) - 1
         for i, layer in enumerate(self.layers):
-            if i == lastIdx:
-                modelConfig[lastIdx] = {}
-                modelConfig[lastIdx]['numNeuron'] = len(self.layers[-1].neurons)
-                modelConfig[lastIdx]['connectMat'] = np.zeros((len(layer.neurons), 1))
-                modelConfig[i]['weightMat'] = None
-                modelConfig[i]['actFunc'] = None
-                for j, neuronLeft in enumerate(self.layers[-1].neurons):
-                    if CFB in neuronLeft.connections:
-                        modelConfig[lastIdx]['connectMat'][j, 0] = 1.0
+            if isinstance(layer, _NNBTrainableLayer):
+                layerConfigs = {}
+                if isinstance(layer, _NNB1DAffineLayer) or isinstance(layer, _NNB1DStackedLayer):
+                    layerConfigs['layerType'] = "1DLayer"
+                    if i != lastIdx:
+                        layerConfigs['size'] = layer.nextLayer.numOfNeurons() - \
+                                               (1 if layer.nextLayer.containsBias() else 0)
+                    else:
+                        layerConfigs['size'] = 0
+                elif isinstance(layer, _NNB2DConvLayer):
+                    layerConfigs['layerType'] = "2DLayer"
+                    layerConfigs['convParams'] = layer.getConvParams()
+                    if not isinstance(layer.nextLayer, _NNB2DFlattenLayer):
+                        layerConfigs['size'] = layer.nextLayer.numOfNeurons() - \
+                                               (1 if layer.nextLayer.containsBias() else 0)
+                layerConfigs['WC'], layerConfigs['bC'] = layer.getConnectivity()
+                layerConfigs['W'], layerConfigs['b'] = layer.getParams()
+                layerConfigs['regConfigs'] = None
+                layerConfigs['actFunc'] = layer.actFunc
+                if i != lastIdx:
+                    regularizer = layer.getRegularizer()
+                    if regularizer:
+                        layerConfigs['regConfigs'] = regularizer.getConfigs()
+
+                layersConfigs.append(layerConfigs)
             else:
-                modelConfig[i] = {}
-                modelConfig[i]['numNeuron'] = len(layer.neurons)
-                modelConfig[i]['connectMat'] = np.zeros((len(layer.neurons), len(self.layers[i + 1].neurons)))
-                modelConfig[i]['weightMat'] = np.zeros((len(layer.neurons), len(self.layers[i + 1].neurons)))
-                modelConfig[i]['actFunc'] = layer.actFunc
-                # has bias?
-                for j, neuronLeft in enumerate(layer.neurons):
-                    for k, neuronRight in enumerate(self.layers[i + 1].neurons):
-                        if neuronRight in neuronLeft.connections:
-                            modelConfig[i]['connectMat'][j, k] = 1.0
-                            modelConfig[i]['weightMat'][j, k] = neuronLeft.connections[neuronRight].weight
+                if isinstance(layer, _NNB2DFlattenLayer):
+                    layersConfigs.append({'layerType': 'flattenLayer'})
 
-        print('+--------------------------------------+')
-        print("number of layers: {}".format(nLayers))
-        print("cost function: {}".format(CFB))
-        for i, layerConfig in modelConfig.items():
-            print("#L{}:".format(i + 1))
-            print("number of neurons: {}".format(modelConfig[i]['numNeuron']))
-            print("connection matrix: {}".format(modelConfig[i]['connectMat']))
-            print("weight matrix: {}".format(modelConfig[i]['weightMat']))
-            print("activation function: {}".format(modelConfig[i]['actFunc']))
-        print('+--------------------------------------+')
-
-    def toModel(self, numNeurons, weightMats, actFuncs, connectMats):
-        """
-        Only available when the train mode is on
-        1. There is one input layer and one output layer.
-        2. There is one loss function block connected.
-        3. No isolate components/models.
-        """
-        pass
+        modelConfigs['lossFunc'] = LFB.lossFunc
+        modelConfigs['inputSize'] = self.layers[0].numOfNeurons()
+        self.modelConfigs = modelConfigs
 
     def trainModel(self):
-        pass
+        self.actModel = NNBTransformer.transferToKerasModel(self.modelConfigs, fooOptimizerConfigs, 'accuracy')
+
+    def updateParams(self):
+        self.layerNewParams = NNBTransformer.getParamsFromKerasModel(self.actModel)
 
     # ------------------------------------------------- #
     #                 Event handlers                    #
     # ------------------------------------------------- #
 
+    def reset(self):
+        # clear all selectionRect
+        if self.selectionRect:
+            # find items selected
+            itemsSelected = self.collidingItems(self.selectionRect)
+            for itemSelected in itemsSelected:
+                itemSelected.setSelected(True)
+                itemSelected.update()
+            self.removeItem(self.selectionRect)
+            del self.selectionRect
+            self.selectionRect = None
+        self.origPos = None
+        # reset the handlers of the selected layer
+
+    def trainModeAct(self):
+        if self.sceneMode == SceneMode.TrainMode:
+            self.switchMode(SceneMode.SelectMode)
+            self.stopAnimations()
+            self.inTrainingAnimation = False
+        else:
+            message = self.checkNNModelValid()
+            if message:
+                QApplication.activeWindow().builder.setupMessage(message=message)
+                QApplication.activeWindow().ui.message.show()
+                return
+            self.switchMode(SceneMode.TrainMode)
+            self.compileIntoNNModel()
+            self.makeTrainingAnimation()
+            self.trainModel()
+            history = self.actModel.fit(fooXTrain, fooYTrain, batch_size=fooBatchSize, epochs=1,
+                                        validation_data=(fooXVal, fooYVal), )
+            self.updateParams()
+
     def keyPressEvent(self, event):
-        if event.key() == 16777219:
+        if event.key() == 16777219 or event.key() == Qt.Key_Delete:
             self.removeSelectedComponents()
         elif event.key() == Qt.Key_Space:
-            if self.sceneMode == SceneMode.TrainMode:
-                self.switchMode(SceneMode.SelectMode)
-            else:
-                if not self.checkNNModelValid():
-                    return
-                self.switchMode(SceneMode.TrainMode)
-                self._compileIntoNNModel()
-                self.makeTrainingAnimation()
+            self.trainModeAct()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.RightButton:
@@ -765,25 +902,14 @@ class NNBScene(QGraphicsScene):
                 self.hoveredItemOnConnectMode.update()
                 self.hoveredItemOnConnectMode = None
         elif self.sceneMode == SceneMode.SelectMode:
-            if self.selectionRect:
-                # find items selected
-                itemsSelected = self.collidingItems(self.selectionRect)
-                for itemSelected in itemsSelected:
-                    itemSelected.setSelected(True)
-                    itemSelected.update()
-                self.removeItem(self.selectionRect)
-                del self.selectionRect
-                self.selectionRect = None
-            self.origPos = None
+            self.reset()
         super().mouseReleaseEvent(event)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasText() and self.sceneMode == SceneMode.SelectMode:
             event.accept()
             # switch into drag-drop mode
-            self.sceneMode = SceneMode.DragDrogMode
-            self.selectionRect = None
-            self.origPos = None
+            self.reset()
         else:
             event.ignore()
 
@@ -809,6 +935,7 @@ class NNBScene(QGraphicsScene):
         iconType = event.mimeData().text()
         x = event.scenePos().x() - ICON_OFFSET_X
         y = event.scenePos().y() - ICON_OFFSET_Y
+        message = None
         if iconType == "affine_layer":
             self.createLayer(x, y, NNB1DAffineLayer)
         elif iconType == "stacked_affine_layer":
@@ -822,45 +949,77 @@ class NNBScene(QGraphicsScene):
         elif iconType == "neuron_1D":
             # TO-DO: CAN Highlight
             layer = self.itemAt(event.scenePos().x(), event.scenePos().y(), QTransform())
-            if layer and isinstance(layer, NNB1DAffineLayer):
-                self.createNeuron(x - layer.scenePos().x(),
-                                  y - layer.scenePos().y(),
-                                  NNB1DInputNeuron,
-                                  layer)
+            if layer:
+                if isinstance(layer, NNB1DAffineLayer):
+                    self.createNeuron(x - layer.scenePos().x(),
+                                      y - layer.scenePos().y(),
+                                      NNB1DInputNeuron,
+                                      layer)
+                elif isinstance(layer, NNB2DConvLayer):
+                    message = "creation failure: can't create an 1D neuron in a 2D layer."
+                else:
+                    message = "creation failure: can't create an 1D neuron in the layer."
             else:
-                print("can't create an 1D neuron.")
+                message = "creation failure: can't create an 1D neuron."
         elif iconType == "neuron_bias_1D":
             # TO-DO: CAN Highlight
             layer = self.itemAt(event.scenePos().x(), event.scenePos().y(), QTransform())
-            if layer and isinstance(layer, NNB1DAffineLayer):
-                self.createNeuron(x - layer.scenePos().x(),
-                                  y - layer.scenePos().y(),
-                                  NNB1DBiasNeuron,
-                                  layer)
+            if layer:
+                if isinstance(layer, NNB1DAffineLayer):
+                    if layer.containsBias():
+                        message = "creation failure: the layer already has a bias!"
+                    elif isinstance(layer.nextLayer, _NNBLossFuncBlock):
+                        message = "creation failure: can't create a bias in a layer supposed to be an output layer"
+                    else:
+                        self.createNeuron(x - layer.scenePos().x(),
+                                          y - layer.scenePos().y(),
+                                          NNB1DBiasNeuron,
+                                          layer)
+                elif isinstance(layer, NNB2DConvLayer):
+                    message = "creation failure: can't create an 1D bias in a 2D layer."
+                else:
+                    message = "creation failure: can't create an 1D bias in the layer."
             else:
-                print("can't create an 1D bias neuron.")
+                message = "creation failure: can't create a 1D bias."
         elif iconType == "neuron_2D":
             layer = self.itemAt(event.scenePos().x(), event.scenePos().y(), QTransform())
-            if layer and isinstance(layer, NNB2DConvLayer):
-                self.createNeuron(x - layer.scenePos().x(),
-                                  y - layer.scenePos().y(),
-                                  NNB2DInputNeuron,
-                                  layer)
+            if layer:
+                if isinstance(layer, NNB2DConvLayer):
+                    self.createNeuron(x - layer.scenePos().x(),
+                                      y - layer.scenePos().y(),
+                                      NNB2DInputNeuron,
+                                      layer)
+                elif isinstance(layer, NNB1DAffineLayer):
+                    message = "creation failure: can't create an 2D neuron in a 1D layer."
+                else:
+                    message = "creation failure: can't create an 2D neuron in the layer."
             else:
-                print("can't create an 2D neuron.")
+                message = "creation failure: can't create an 2D neuron."
         elif iconType == "neuron_bias_2D":
             layer = self.itemAt(event.scenePos().x(), event.scenePos().y(), QTransform())
-            if layer and isinstance(layer, NNB2DConvLayer):
-                self.createNeuron(x - layer.scenePos().x(),
-                                  y - layer.scenePos().y(),
-                                  NNB2DBiasNeuron,
-                                  layer)
+            if layer:
+                if isinstance(layer, NNB2DConvLayer):
+                    if layer.containsBias():
+                        message = "creation failure: the layer already has a bias!"
+                    else:
+                        self.createNeuron(x - layer.scenePos().x(),
+                                          y - layer.scenePos().y(),
+                                          NNB2DBiasNeuron,
+                                          layer)
+                elif isinstance(layer, NNB1DAffineLayer):
+                    message = "creation failure: can't create an 2D bias in a 1D layer."
+                else:
+                    message = "creation failure: can't create an 2D bias in the layer."
             else:
-                print("can't create an 2D neuron.")
+                message = "creation failure: can't create an 2D neuron."
         elif iconType == "loss_func_block":
             self.createLossFuncBlock(x, y)
         elif iconType == "regularizer":
             self.createRegularizer(x, y)
+
+        if message:
+            QApplication.activeWindow().ui.message.setMessage(message=message)
+            QApplication.activeWindow().ui.message.show()
 
         # upon finish and creation (if possible)
         self.sceneMode = SceneMode.SelectMode

@@ -20,11 +20,10 @@ def drawPlusOne(painter, rect):
     fontHeight = fontMetrics.height()
     rectMidX = rect.x() + rect.width() / 2
     rectMidY = rect.y() + rect.height() / 2
-    painter.drawText(int(rectMidX - fontWidth / 2),
-                    int(rectMidY + fontHeight / 3), plusOneText)
+    painter.drawText(int(rectMidX - fontWidth / 2), int(rectMidY + fontHeight / 3), plusOneText)
 
 
-def draw1DNeuron(painter, rect, layer, isSelected=False, isConnectedTo=False, isBias=False, hasSyn=True):
+def draw1DNeuron(painter, rect, isSelected=False, isConnectedTo=False, isBias=False, hasSyn=True):
     if isSelected:
         painter.setBrush(NNB_FOCUS_BRUSH)
         painter.setPen(NNB_FOCUS_PEN)
@@ -34,22 +33,13 @@ def draw1DNeuron(painter, rect, layer, isSelected=False, isConnectedTo=False, is
         x = rect.x()
         y = rect.y()
         if hasSyn:
-            if layer.toRight:
-                startPt = QPointF(x + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_X,
-                                  y + NEURON_1D_RADIUS - NEURON_1D_SYN_OFFSET_Y)
-                midPt = QPointF(x + NEURON_1D_DIAMETER + NEURON_1D_SYN_LENGTH,
-                                y + NEURON_1D_RADIUS)
-                endPt = QPointF(x + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_X,
-                                y + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_Y)
-                startingAngle = - NEURON_1D_SYN_THETA
-            else:
-                startPt = QPointF(x + NEURON_1D_RADIUS - NEURON_1D_SYN_OFFSET_X,
-                                  y + NEURON_1D_RADIUS - NEURON_1D_SYN_OFFSET_Y)
-                midPt = QPointF(x - NEURON_1D_SYN_LENGTH,
-                                y + NEURON_1D_RADIUS)
-                endPt = QPointF(x + NEURON_1D_RADIUS - NEURON_1D_SYN_OFFSET_X,
-                                y + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_Y)
-                startingAngle = 180 - NEURON_1D_SYN_THETA
+            startPt = QPointF(x + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_X,
+                              y + NEURON_1D_RADIUS - NEURON_1D_SYN_OFFSET_Y)
+            midPt = QPointF(x + NEURON_1D_DIAMETER + NEURON_1D_SYN_LENGTH,
+                            y + NEURON_1D_RADIUS)
+            endPt = QPointF(x + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_X,
+                            y + NEURON_1D_RADIUS + NEURON_1D_SYN_OFFSET_Y)
+            startingAngle = - NEURON_1D_SYN_THETA
             path = QPainterPath()
             path.moveTo(startPt)
             path.lineTo(midPt)
@@ -72,18 +62,16 @@ class NNB1DNeuron(QGraphicsEllipseItem):
         self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable |
                       QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemSendsGeometryChanges)
 
-    def createForm(self, window):
-        return NNB1DNeuronForm(self, window)
+    def createForm(self):
+        return NNB1DNeuronForm(self, self.scene().activeWindow())
 
     def boundingRect(self):
         if self.connectionsTo:
-            if self.layer.toRight:
-                return self.rect().adjusted(0, 0, NEURON_1D_SYN_LENGTH, 0)
-            return self.rect().adjusted(-NEURON_1D_SYN_LENGTH, 0, NEURON_1D_SYN_LENGTH, 0)
+            return self.rect().adjusted(0, 0, NEURON_1D_SYN_LENGTH, 0)
         return self.rect()
 
     def paint(self, painter, option, widget=None):
-        draw1DNeuron(painter, self.rect(), self.layer,
+        draw1DNeuron(painter, self.rect(),
                      self.isSelected() or self.hoveredOnConnectMode,
                      self.connectionsTo, hasSyn=not isinstance(self.layer.nextLayer, _NNBLossFuncBlock))
 
@@ -122,7 +110,7 @@ class NNB1DBiasNeuron(_NNB1DBiasNeuron, NNB1DNeuron):
         NNB1DNeuron.__init__(self, x, y)
 
     def paint(self, painter, option, widget=None):
-        draw1DNeuron(painter, self.rect(), self.layer,
+        draw1DNeuron(painter, self.rect(),
                      self.isSelected() or self.hoveredOnConnectMode,
                      self.connectionsTo, hasSyn=not isinstance(self.layer.nextLayer, _NNBLossFuncBlock), isBias=True)
 
@@ -133,6 +121,9 @@ class NNB1DStackedNeuron(_NNB1DStackedNeuron, QGraphicsRectItem):
         QGraphicsItem.__init__(self)
         self.setFlags(QGraphicsItem.ItemIsSelectable |
                       QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemSendsGeometryChanges)
+
+    def createForm(self):
+        return NNB1DNeuronForm(self, self.scene().activeWindow())
 
     def shape(self):
         path = QPainterPath()
@@ -145,8 +136,6 @@ class NNB1DStackedNeuron(_NNB1DStackedNeuron, QGraphicsRectItem):
     def boundingRect(self):
         rect = QRectF(self.layer.neuronStartX, self.layer.neuronStartY, NEURON_1D_DIAMETER, self.layer.neuronHeight)
         if self.connectionsTo:
-            if self.layer.toRight:
-                return rect.adjusted(0, 0, NEURON_1D_SYN_LENGTH, 0)
             return rect.adjusted(-NEURON_1D_SYN_LENGTH, 0, NEURON_1D_SYN_LENGTH, 0)
         return rect
 
@@ -158,7 +147,6 @@ class NNB1DStackedNeuron(_NNB1DStackedNeuron, QGraphicsRectItem):
         for i, neuronLayout in enumerate(self.layer.neuronLayouts):
             draw1DNeuron(painter,
                          QRect(*neuronLayout, NEURON_1D_DIAMETER, NEURON_1D_DIAMETER),
-                         self.layer,
                          self.isSelected() or self.hoveredOnConnectMode,
                          isConnectedTo=self.connectionsTo,
                          isBias=self.layer.hasBias and i == len(self.layer.neuronLayouts) - 1,
@@ -179,6 +167,9 @@ class NNB2DNeuron(QGraphicsRectItem):
         QGraphicsRectItem.__init__(self, x, y, NEURON_2D_SIZE, NEURON_2D_SIZE)
         self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable |
                       QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemSendsGeometryChanges)
+
+    def createForm(self):
+        return NNB1DNeuronForm(self, self.scene().activeWindow())
 
     def kernelSize(self):
         return NEURON_2D_SIZE // 4

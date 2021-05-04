@@ -13,8 +13,8 @@ class NNBLossFuncBlock(_NNBLossFuncBlock, QGraphicsRectItem):
         self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable |
                       QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemSendsGeometryChanges)
 
-    def createForm(self, window):
-        return NNBLFBForm(self, window)
+    def createForm(self):
+        return NNBLFBForm(self, self.scene().activeWindow())
 
     def paint(self, painter, option, widget=None):
         if self.isSelected() or self.hoveredOnConnectMode:
@@ -50,8 +50,8 @@ class NNBRegularizer(_NNBRegularizer, QGraphicsPolygonItem):
         self.romb = QPolygonF([p1, p2, p3, p4])
         self.setPolygon(self.romb)
 
-    def createForm(self, window):
-        return NNBRegularizerForm(self, window)
+    def createForm(self):
+        return NNBRegularizerForm(self, self.scene().activeWindow())
 
     def paint(self, painter, option, widget=None):
         if self.isSelected() or self.hoveredOnConnectMode:

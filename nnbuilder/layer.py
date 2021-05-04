@@ -56,7 +56,6 @@ class NNBContainableLayer(QGraphicsRectItem):
         self.setFlags(QGraphicsItem.ItemIsMovable | QGraphicsItem.ItemIsSelectable |
                       QGraphicsItem.ItemSendsGeometryChanges | QGraphicsItem.ItemIsFocusable)
 
-        self.toRight = True
         self.updateHandlesPos()
 
     def handleAt(self, point):
@@ -75,7 +74,8 @@ class NNBContainableLayer(QGraphicsRectItem):
 
     def mouseMoveEvent(self, event):
         if self.state == NNBContainableLayer.State.Normal:
-            if (self.mousePressPos - event.pos()).manhattanLength() >= QApplication.startDragDistance():
+            if self.mousePressPos and \
+                    (self.mousePressPos - event.pos()).manhattanLength() >= QApplication.startDragDistance():
                 self.state = NNBContainableLayer.State.Moving
         elif self.state == NNBContainableLayer.State.ShowingHandles:
             if self.handleSelected:
@@ -88,6 +88,9 @@ class NNBContainableLayer(QGraphicsRectItem):
         super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
+        if event.button() == Qt.RightButton:
+            super().mouseReleaseEvent(event)
+            return
         if self.state == NNBContainableLayer.State.Normal:
             self.state = NNBContainableLayer.State.ShowingHandles
         elif self.state == NNBContainableLayer.State.ShowingHandles:
@@ -132,49 +135,55 @@ class NNBContainableLayer(QGraphicsRectItem):
         return float('inf'), -float('inf'), float('inf'), -float('inf')
 
     def interactiveResize(self, mousePos):
-        offset =LAYER_HANDLE_SIZE + LAYER_HANDLE_SPACE
+        offset = LAYER_HANDLE_SIZE + LAYER_HANDLE_SPACE
         boundingRect = self.boundingRect()
         rect = self.rect()
         self.prepareGeometryChange()
         # TO-DO
         neuronHighestPos, neuronLowestPos, neuronLeftmostPos, neuronRightmostPos = self.findResizeScope()
-
+        dY = self.sceneBoundingRect().y() - boundingRect.y()
+        dX = self.sceneBoundingRect().x() - boundingRect.x()
         if self.handleSelected == NNBContainableLayer.Handle.handleTopMiddle or \
                 self.handleSelected == NNBContainableLayer.Handle.handleTopLeft or \
                 self.handleSelected == NNBContainableLayer.Handle.handleTopRight:
             toY = self.mousePressRect.top() + mousePos.y() - self.mousePressPos.y()
-            if toY > neuronHighestPos:
-                toY = neuronHighestPos
-            boundingRect.setTop(toY)
-            rect.setTop(boundingRect.top() + offset)
+            if boundingRect.bottom() - toY < LAYER_MIN_HEIGHT:
+                toY = boundingRect.bottom() - LAYER_MIN_HEIGHT
+            if toY + dY > neuronHighestPos:
+                toY = neuronHighestPos - dY
+            rect.setTop(toY + offset)
         elif self.handleSelected == NNBContainableLayer.Handle.handleBottomMiddle or \
                 self.handleSelected == NNBContainableLayer.Handle.handleBottomLeft or \
                 self.handleSelected == NNBContainableLayer.Handle.handleBottomRight:
             toY = self.mousePressRect.bottom() + mousePos.y() - self.mousePressPos.y()
-            if toY < neuronLowestPos:
-                toY = neuronLowestPos
-            boundingRect.setBottom(toY)
-            rect.setBottom(boundingRect.bottom() - offset)
+            if toY - boundingRect.top() < LAYER_MIN_HEIGHT:
+                toY = boundingRect.top() + LAYER_MIN_HEIGHT
+            if toY + dY < neuronLowestPos:
+                toY = neuronLowestPos - dY
+            rect.setBottom(toY - offset)
 
         if self.handleSelected == NNBContainableLayer.Handle.handleMiddleLeft or \
                 self.handleSelected == NNBContainableLayer.Handle.handleBottomLeft or \
                 self.handleSelected == NNBContainableLayer.Handle.handleTopLeft:
             toX = self.mousePressRect.left() + mousePos.x() - self.mousePressPos.x()
-            if toX > neuronLeftmostPos:
-                toX = neuronLeftmostPos
-            boundingRect.setLeft(toX)
-            rect.setLeft(boundingRect.left() + offset)
+            if boundingRect.right() - toX < LAYER_MIN_WIDTH:
+                toX = boundingRect.right() - LAYER_MIN_WIDTH
+            if toX + dX > neuronLeftmostPos:
+                toX = neuronLeftmostPos - dX
+            rect.setLeft(toX + offset)
         elif self.handleSelected == NNBContainableLayer.Handle.handleMiddleRight or \
                 self.handleSelected == NNBContainableLayer.Handle.handleBottomRight or \
                 self.handleSelected == NNBContainableLayer.Handle.handleTopRight:
             toX = self.mousePressRect.right() + mousePos.x() - self.mousePressPos.x()
-            if toX < neuronRightmostPos:
-                toX = neuronRightmostPos
-            boundingRect.setRight(toX)
-            rect.setRight(boundingRect.right() - offset)
+            if toX - boundingRect.left() < LAYER_MIN_WIDTH:
+                toX = boundingRect.left() + LAYER_MIN_WIDTH
+            if toX + dX < neuronRightmostPos:
+                toX = neuronRightmostPos - dX
+            rect.setRight(toX - offset)
 
         self.setRect(rect)
         self.updateHandlesPos()
+        self.handleItemChanged()
 
     def shape(self):
         path = QPainterPath()
@@ -252,38 +261,18 @@ class NNB1DLayer(NNBContainableLayer):
         NNBContainableLayer.__init__(self, name, x, y)
 
     def findResizeScope(self):
-        neuronHighestPos = float('inf')
-        neuronLowestPos = -float('inf')
-        neuronLeftmostPos = float('inf')
-        neuronRightmostPos = -float('inf')
+        neuronHighestPos, neuronLowestPos, neuronLeftmostPos, neuronRightmostPos = super().findResizeScope()
         for neuron in self.neurons:
-            if neuron.sceneBoundingRect().y() < neuronHighestPos:
-                neuronHighestPos = neuron.sceneBoundingRect().y() - LAYER_HEADER_HEIGHT - 5
-            if neuron.sceneBoundingRect().y() > neuronLowestPos:
-                neuronLowestPos = neuron.sceneBoundingRect().y() + NEURON_1D_DIAMETER + 5
-            if neuron.sceneBoundingRect().x() < neuronLeftmostPos:
-                neuronLeftmostPos = neuron.sceneBoundingRect().x() - 5
-            if neuron.sceneBoundingRect().x() > neuronRightmostPos:
-                neuronRightmostPos = neuron.sceneBoundingRect().x() + NEURON_1D_DIAMETER + 5
+            neuronBR = neuron.sceneBoundingRect()
+            if neuronBR.y() - 5 < neuronHighestPos:
+                neuronHighestPos = neuronBR.y() - LAYER_HEADER_HEIGHT - 5
+            if neuronBR.y() + 5 + NEURON_1D_DIAMETER > neuronLowestPos:
+                neuronLowestPos = neuronBR.y() + NEURON_1D_DIAMETER + 5
+            if neuronBR.x() - 5 < neuronLeftmostPos:
+                neuronLeftmostPos = neuronBR.x() - 5
+            if neuronBR.x() + NEURON_1D_DIAMETER + 5 > neuronRightmostPos:
+                neuronRightmostPos = neuronBR.x() + NEURON_1D_DIAMETER + 5
         return neuronHighestPos, neuronLowestPos, neuronLeftmostPos, neuronRightmostPos
-
-    def itemChange(self, change, value):
-        if change == QGraphicsItem.ItemPositionChange:
-            if self.nextLayer:
-                if self.nextLayer.sceneBoundingRect().x() < self.sceneBoundingRect().x():
-                    self.toRight = False
-                else:
-                    self.toRight = True
-            elif self.prevLayer:
-                currPrevLayerDir = self.prevLayer.toRight
-                if self.prevLayer.sceneBoundingRect().x() >= self.sceneBoundingRect().x():
-                    self.prevLayer.toRight = False
-                else:
-                    self.prevLayer.toRight = True
-                if currPrevLayerDir != self.prevLayer.toRight:
-                    self.prevLayer.update()
-            self.handleItemChanged()
-        return super().itemChange(change, value)
 
 
 class NNB1DAffineLayer(_NNB1DAffineLayer, NNB1DLayer):
@@ -291,45 +280,14 @@ class NNB1DAffineLayer(_NNB1DAffineLayer, NNB1DLayer):
         _NNB1DAffineLayer.__init__(self, name)
         NNB1DLayer.__init__(self, name, x, y)
 
-    # def setLayerType(self, layerType = "hidden"):
-    #     if self.scene().sceneMode != SceneMode.SelectMode:
-    #         return
-    #     if self.layerType == layerType:
-    #         return
-    #     # we only allow one input and output layer in the scene.
-    #     # when there is two adj. layers, can't set to "input" or "output"
-    #     if self.layerType == "output":
-    #         for adjBlock in self.adjBlocks:
-    #             if isinstance(adjBlock, NNBCostFuncBlock):
-    #                 # already connected to a loss function block, can't switch into any other type
-    #                 return
-    #     if layerType == "input":
-    #         if self.scene().inputLayer or len(self.adjBlocks) == 2:
-    #             return
-    #         self.scene().inputLayer = self
-    #     elif layerType == "output":
-    #         if self.scene().outputLayer or len(self.adjBlocks) == 2:
-    #             return
-    #         self.scene().outputLayer = self
-    #
-    #     # on succeeded in changing the layer type
-    #     if self.layerType == "input":
-    #         self.scene().inputLayer = None
-    #     elif self.layerType == "output":
-    #         self.scene().outputLayer = None
-    #     self.layerType = layerType
-    #     self.update()
-
-    def createForm(self, window):
-        return NNB1DAffineLayerForm(self, window)
+    def createForm(self):
+        return NNB1DAffineLayerForm(self, self.scene().activeWindow())
 
 
 class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
-    def __init__(self, name, x, y, numNeurons=10):
-        _NNB1DAffineLayer.__init__(self, name)
+    def __init__(self, name, x, y, numNeurons=-1):
+        _NNB1DStackedLayer.__init__(self, name, numNeurons)
         NNB1DLayer.__init__(self, name, x, y)
-        self.numNeurons = numNeurons
-        self.hasBias = True
         self.neuronHeight = 0
         self.neuronStartX = 0
         self.neuronStartY = 0
@@ -337,14 +295,22 @@ class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
         self.skipDotLayouts = None
         self.findNeuronLayout()
 
-    def createForm(self, window):
-        return NNB1DAffineLayerForm(self, window)
+    def createForm(self):
+        return NNB1DAffineLayerForm(self, self.scene().activeWindow())
 
     def changeNumNeurons(self, numNeurons):
         if numNeurons == self.numNeurons:
             return
         self.numNeurons = numNeurons
         self.findNeuronLayout()
+        for connection in self.neurons[0].connectionsFrom.values():
+            connection.updateConnectionPos()
+            if isinstance(connection, _NNBTrainableConnection):
+                connection.initializeWeight()
+        for connection in self.neurons[0].connectionsTo.values():
+            connection.updateConnectionPos()
+            if isinstance(connection, _NNBTrainableConnection):
+                connection.initializeWeight()
         self.update()
 
     def findNeuronLayout(self):
@@ -352,6 +318,8 @@ class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
         skipDotLayouts = []
         rect = self.rect()
         n = self.numNeurons
+        if n == -1:
+            n = 10000
         maxNumNeurons = int((rect.height() - LAYER_HEADER_HEIGHT - STACKED_AFF_1D_LAYER_SPACE) /
                             (STACKED_AFF_1D_LAYER_SPACE + NEURON_1D_DIAMETER))
         if n > maxNumNeurons:
@@ -361,7 +329,7 @@ class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
             numNeuronsExceeded = False
 
         s = (rect.height() - LAYER_HEADER_HEIGHT - n * NEURON_1D_DIAMETER) / (n + 1)
-
+        dotS = 0
         if numNeuronsExceeded:
             dotS = (2 * s + NEURON_1D_DIAMETER - 3 * STACKED_AFF_1D_SKIP_DOT_SIZE) / 4
         x = rect.x() + (rect.width() - NEURON_1D_DIAMETER) / 2
@@ -372,7 +340,7 @@ class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
 
         if numNeuronsExceeded:
             for i in range(n):
-                if i == n - 2:
+                if i == n - 3:
                     xDot = x + NEURON_1D_RADIUS - STACKED_AFF_1D_SKIP_DOT_SIZE / 2
                     yDot = y + dotS
                     for j in range(3):
@@ -403,35 +371,28 @@ class NNB1DStackedAffineLayer(_NNB1DStackedLayer, NNB1DLayer):
             for connectionFrom in stackedNeuron.connectionsFrom.values():
                 connectionFrom.updateConnectionPos()
 
-    def itemChange(self, change, value):
-        super().itemChange(change, value)
-        if change == QGraphicsItem.ItemPositionChange:
-            pass
-        return super().itemChange(change, value)
-
 
 class NNB2DConvLayer(_NNB2DConvLayer, NNBContainableLayer):
     def __init__(self, name, x, y):
         _NNB2DConvLayer.__init__(self, name)
         NNBContainableLayer.__init__(self, name, x, y)
 
-    # def createForm(self, window):
-    #     return NNB2DConvLayerForm(self, window)
+    def createForm(self):
+        return NNB1DAffineLayerForm(self, self.scene().activeWindow())
+        # return NNB2DConvLayerForm(self)
 
     def findResizeScope(self):
-        neuronHighestPos = float('inf')
-        neuronLowestPos = -float('inf')
-        neuronLeftmostPos = float('inf')
-        neuronRightmostPos = -float('inf')
+        neuronHighestPos, neuronLowestPos, neuronLeftmostPos, neuronRightmostPos = super().findResizeScope()
         for neuron in self.neurons:
-            if neuron.sceneBoundingRect().y() < neuronHighestPos:
-                neuronHighestPos = neuron.sceneBoundingRect().y() - NEURON_2D_SIZE - 5
-            if neuron.sceneBoundingRect().y() > neuronLowestPos:
-                neuronLowestPos = neuron.sceneBoundingRect().y() + NEURON_2D_SIZE + 5
-            if neuron.sceneBoundingRect().x() < neuronLeftmostPos:
-                neuronLeftmostPos = neuron.sceneBoundingRect().x() - 5
-            if neuron.sceneBoundingRect().x() > neuronRightmostPos:
-                neuronRightmostPos = neuron.sceneBoundingRect().x() + NEURON_2D_SIZE + 5
+            neuronBR = neuron.sceneBoundingRect()
+            if neuronBR.y() < neuronHighestPos:
+                neuronHighestPos = neuronBR.y() - NEURON_2D_SIZE - 5
+            if neuronBR.y() > neuronLowestPos:
+                neuronLowestPos = neuronBR.y() + NEURON_2D_SIZE + 5
+            if neuronBR.x() < neuronLeftmostPos:
+                neuronLeftmostPos = neuronBR.x() - 5
+            if neuronBR.x() > neuronRightmostPos:
+                neuronRightmostPos = neuronBR.x() + NEURON_2D_SIZE + 5
         return neuronHighestPos, neuronLowestPos, neuronLeftmostPos, neuronRightmostPos
 
     def itemChange(self, change, value):
@@ -445,8 +406,8 @@ class NNB2DPoolingLayer(_NNB2DPoolingLayer, NNBContainableLayer):
         _NNB2DPoolingLayer.__init__(self, name)
         NNBContainableLayer.__init__(self, name, x, y)
 
-    def createForm(self, window):
-        return NNB1DAffineLayerForm(self, window)
+    def createForm(self):
+        return NNB1DAffineLayerForm(self, self.scene().activeWindow())
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
@@ -459,8 +420,8 @@ class NNB2DFlattenLayer(_NNB2DFlattenLayer, NNBContainableLayer):
         _NNB2DFlattenLayer.__init__(self, name)
         NNBContainableLayer.__init__(self, name, x, y)
 
-    def createForm(self, window):
-        return NNB1DAffineLayerForm(self, window)
+    def createForm(self):
+        return NNB1DAffineLayerForm(self, self.scene().activeWindow())
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:

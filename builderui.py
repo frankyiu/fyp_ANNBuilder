@@ -105,11 +105,11 @@ class BuilderUI():
         self.popUpGuide.append(self.ui.frame_optimi, QPoint(-200, -120),
                                'This is the Optimization Panel\nBe sure to choose the optimizer, learning rate, decay rate and batch size here before training the model.')
         self.popUpGuide.append(self.ui.frame_control, QPoint(-280, -50),
-                               'This is the Control Panel\nYou can click the Play button to train the model, perform Feedforward or Backpropagation in once by clicking the buttons beside.')
+                               'This is the Control Panel\nYou can click the Play button to start or suspend the training, restart or step forward the training.')
         self.popUpGuide.append(self.ui.widget_dashboard, QPoint(-280, 0),
-                               'This is the Result dashboard\nYou can inspect the real time model metrics here.')
+                               'This is the Result dashboard\nYou can inspect the real-time model metrics here.')
         self.popUpGuide.append(self.ui.btn_guide, QPoint(-250, 0),
-                               'If you want to check this tour again, you can click this question button.\nEnjoy building!')
+                               'If you want to check this tour again, you can click this button.\nEnjoy building!')
 
         self.ui.btn_guide.clicked.connect(self.guideOnclickEvent)
         return

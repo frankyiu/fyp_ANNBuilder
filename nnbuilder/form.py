@@ -2,18 +2,20 @@ from PyQt5.QtGui import QIcon, QPalette, QDoubleValidator
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QLineEdit, QPushButton, QComboBox, QHBoxLayout, QVBoxLayout, \
                             QStylePainter, QStyleOptionComboBox, QStyle
+from .base import _NNB1DBiasNeuron
 from .config import *
+
 
 class NNBForm(QDialog):
     class NNBComboBox(QComboBox):
-        def __init__(self, values, defaultValue, parent=None):
+        def __init__(self, resPath, values, defaultValue, parent=None):
             super().__init__(parent)
             self.values = values
             self.iconSize = 32
             self.setFixedSize(300, 30)
             self.setIconSize(QSize(self.iconSize, self.iconSize))
             for value in self.values:
-                icon = QIcon("{}.png".format(value))
+                icon = QIcon(resPath + "{}.png".format(value))
                 self.addItem(icon, value)
 
             self.setCurrentIndex(self.values.index(defaultValue))
@@ -21,7 +23,7 @@ class NNBForm(QDialog):
             self.setChoosable(True)
             self.setStyleSheet('''
             QComboBox {
-                font: Helvetica, sans-serif; color: gray;
+                font: Helvetica; color: gray;
                 border-radius: 0px; border-bottom:1px solid black;
                 background-color: none;
                 padding: 3px 0px 0px 2px;
@@ -74,14 +76,14 @@ class NNBForm(QDialog):
     def createTitleLabel(self, title):
         titleLabel = QLabel()
         titleLabel.setText(title)
-        titleLabel.setStyleSheet("font: 20px Helvetica, sans-serif;")
+        titleLabel.setStyleSheet("font: 20px Helvetica;")
         return titleLabel
 
     def createFieldLabel(self, labelName):
         label = QLabel()
         label.setFixedSize(150, 30)
         label.setText(labelName)
-        label.setStyleSheet("font: bold Helvetica, sans-serif; padding-top: 2px; padding-bottom: 2px")
+        label.setStyleSheet("font: bold Helvetica; padding-top: 2px; padding-bottom: 2px")
         return label
 
     def createLineEdit(self, lineEditDefaultValues, lineEditReadOnly):
@@ -92,7 +94,7 @@ class NNBForm(QDialog):
         if lineEditReadOnly:
             lineEdit.setReadOnly(True)
             lineEdit.setStyleSheet('''
-                font: Helvetica, sans-serif; color: gray;
+                font: Helvetica; color: gray;
                 border-radius: 0px; 
                 border-bottom:1px solid gray;
                 background-color: lightgray;
@@ -101,7 +103,7 @@ class NNBForm(QDialog):
             lineEdit.setValidator(QDoubleValidator(-1, 1, 10))
             lineEdit.setStyleSheet('''
             QLineEdit {
-                font: Helvetica, sans-serif; color: gray;
+                font: Helvetica; color: gray;
                 border-radius: 0px; border-bottom:1px solid gray;
             }
             QLineEdit:hover {
@@ -123,7 +125,7 @@ class NNBForm(QDialog):
         okBtn.setFixedSize(120, 30)
         okBtn.setStyleSheet('''
         QPushButton {
-            font: bold Helvetica, sans-serif; border-radius: 5px; background: BlueViolet; color: white;
+            font: bold Helvetica; border-radius: 5px; background: BlueViolet; color: white;
         }
         QPushButton:hover {
             color: black;
@@ -139,7 +141,7 @@ class NNBForm(QDialog):
             font: cambria; color: gray; border: 0px;
         }
         QPushButton:hover {
-            border-radius: 5px; border:1px solid rgba(224, 224, 224); background-color: rgba(224, 224, 224, 0.2);
+            border-radius: 5px; border:1px solid rgb(224, 224, 224); background-color: rgba(224, 224, 224, 0.2);
         }
         '''
                                 )
@@ -170,6 +172,7 @@ class NNBForm(QDialog):
         if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             return
         super().keyPressEvent(event)
+
 
 class NNB1DLinearConnectionForm(NNBForm):
     def __init__(self, connection, parent=None):
@@ -217,15 +220,11 @@ class NNB1DLinearConnectionForm(NNBForm):
         self.weightLineEdit.setText(str(self.block.weight))
         super().update()
 
+
 class NNB1DNeuronForm(NNBForm):
     def __init__(self, neuron, parent=None):
         super().__init__(neuron, parent)
-        if neuron.layer.layerType == "input":
-            labelName = "Input Value"
-        elif neuron.layer.layerType == "output":
-            labelName = "Output Value"
-        else:
-            labelName = "Activation Value"
+        labelName = "Activation Value"
 
         layout = QVBoxLayout()
         actHLayout = QHBoxLayout()
@@ -247,17 +246,14 @@ class NNB1DNeuronForm(NNBForm):
         btnHLayout.addStretch()
         btnHLayout.addWidget(self.createOkBtn())
 
-        titleName = "Neuron"
-        if neuron.isBias:
-            titleName = "Bias " + titleName
-
-        layout.addWidget(self.createTitleLabel(titleName))
+        layout.addWidget(self.createTitleLabel(self.block.name))
         layout.addStretch()
         layout.addLayout(actHLayout)
         layout.addLayout(deltaHLayout)
         layout.addLayout(daHLayout)
         layout.addLayout(btnHLayout)
         self.setLayout(layout)
+
 
 class NNB1DAffineLayerForm(NNBForm):
     def __init__(self, layer, parent=None):
@@ -266,7 +262,7 @@ class NNB1DAffineLayerForm(NNBForm):
         # input layer
         layout = QVBoxLayout()
         actHLayout = QHBoxLayout()
-        self.actFuncComboBox = NNBForm.NNBComboBox(ACTIVATION_FUNC_LIST, self.prevActFunc, self)
+        self.actFuncComboBox = NNBForm.NNBComboBox(RES_ACT_FUNC_PATH, ACTIVATION_FUNC_LIST, self.prevActFunc, self)
         actHLayout.addWidget(self.createFieldLabel("Activation Function"))
         actHLayout.addWidget(self.actFuncComboBox)
 
@@ -278,7 +274,7 @@ class NNB1DAffineLayerForm(NNBForm):
         hasBiasHLayout = QHBoxLayout()
         hasBiasText = "NO"
         for neuron in layer.neurons:
-            if neuron.isBias:
+            if isinstance(neuron, _NNB1DBiasNeuron):
                 hasBiasText = "YES"
         self.hasBiasLineEdit = self.createLineEdit(hasBiasText, True)
         hasBiasHLayout.addWidget(self.createFieldLabel("Has a bias"))
@@ -289,11 +285,7 @@ class NNB1DAffineLayerForm(NNBForm):
         btnHLayout.addWidget(self.createCancelBtn())
         btnHLayout.addWidget(self.createOkBtn())
 
-        layerType = "Hidden Layer"
-        if layer.layerType == "input":
-            layerType = "Input Layer"
-        elif layer.layerType == "output":
-            layerType = "Output Layer"
+        layerType = layer.name
 
         layout.addWidget(self.createTitleLabel(layerType))
         layout.addStretch()
@@ -320,19 +312,25 @@ class NNB1DAffineLayerForm(NNBForm):
     def update(self):
         # num of neurons and has bias
         self.nNeuronLineEdit.setText(str(len(self.block.neurons)))
+        hasBiasText = "NO"
+        for neuron in self.block.neurons:
+            if isinstance(neuron, _NNB1DBiasNeuron):
+                hasBiasText = "YES"
+        self.hasBiasLineEdit.setText(hasBiasText)
         super().update()
 
+
 class NNBLFBForm(NNBForm):
-    def __init__(self, costFuncBlock, parent=None):
-        super().__init__(costFuncBlock, parent)
-        self.prevCostFunc = costFuncBlock.costFunc
+    def __init__(self, lossFuncBlock, parent=None):
+        super().__init__(lossFuncBlock, parent)
+        self.prevLossFunc = lossFuncBlock.lossFunc
 
         layout = QVBoxLayout()
-        costFuncHLayout = QHBoxLayout()
+        lossFuncHLayout = QHBoxLayout()
         # TO-DO: set a global constant
-        self.costFuncComboBox = NNBForm.NNBComboBox(LOSS_FUNC_LIST, self.prevCostFunc, self)
-        costFuncHLayout.addWidget(self.createFieldLabel("Activation Function"))
-        costFuncHLayout.addWidget(self.costFuncComboBox)
+        self.lossFuncComboBox = NNBForm.NNBComboBox(RES_LOSS_FUNC_PATH, LOSS_FUNC_LIST, self.prevLossFunc, self)
+        lossFuncHLayout.addWidget(self.createFieldLabel("Activation Function"))
+        lossFuncHLayout.addWidget(self.lossFuncComboBox)
 
         lossValueHLayout = QHBoxLayout()
         self.lossValueLineEdit = self.createLineEdit("NULL", True)
@@ -351,25 +349,26 @@ class NNBLFBForm(NNBForm):
 
         layout.addWidget(self.createTitleLabel("Loss Function Block"))
         layout.addStretch()
-        layout.addLayout(costFuncHLayout)
+        layout.addLayout(lossFuncHLayout)
         layout.addLayout(lossValueHLayout)
         layout.addLayout(dJHLayout)
         layout.addLayout(btnHLayout)
         self.setLayout(layout)
 
     def cancel(self):
-        currCostFunc = self.costFuncComboBox.currentText()
-        if self.prevCostFunc != currCostFunc:
-            self.costFuncComboBox.setCurrentIndex(self.costFuncComboBox.values.index(self.prevCostFunc))
+        currLossFunc = self.lossFuncComboBox.currentText()
+        if self.prevLossFunc != currLossFunc:
+            self.lossFuncComboBox.setCurrentIndex(self.lossFuncComboBox.values.index(self.prevLossFunc))
         self.block.isFormOn = False
         super().cancel()
 
     def confirm(self):
-        currCostFunc = self.costFuncComboBox.currentText()
-        if self.prevCostFunc != currCostFunc:
-            self.block.costFunc = currCostFunc
-            self.prevCostFunc = currCostFunc
+        currLossFunc = self.lossFuncComboBox.currentText()
+        if self.prevLossFunc != currLossFunc:
+            self.block.lossFunc = currLossFunc
+            self.prevLossFunc = currLossFunc
         super().confirm()
+
 
 class NNBRegularizerForm(NNBForm):
     def __init__(self, regularizer, parent=None):
@@ -378,7 +377,7 @@ class NNBRegularizerForm(NNBForm):
 
         layout = QVBoxLayout()
         regHLayout = QHBoxLayout()
-        self.regComboBox = NNBForm.NNBComboBox(REGULARIZATION_LIST, self.prevReg, self)
+        self.regComboBox = NNBForm.NNBComboBox(RES_REG_FUNC_PATH, REGULARIZATION_LIST, self.prevReg, self)
         regHLayout.addWidget(self.createFieldLabel("Regularization"))
         regHLayout.addWidget(self.regComboBox)
 

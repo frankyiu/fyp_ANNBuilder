@@ -45,9 +45,9 @@ border: none;\
         self.setupEvent()
         self.hide()
 
-    def setMessage(self, nMessage=None):
-        if nMessage is not None:
-            self.message = nMessage
+    def setMessage(self, message=None):
+        if message is not None:
+            self.message = message
         self.textbrowser.setText(self.message)
         self.show()
 

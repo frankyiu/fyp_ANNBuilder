@@ -120,6 +120,13 @@ class Ui_tutorialsWindow(QWidget):
         self.stack24UI()
 
         self.stack = QStackedWidget(self)
+        self.stack.setStyleSheet('QTabWidget::pane {\
+    background: transparent;\
+}\
+QTabBar::tab {\
+    background: transparent;\
+}')
+        self.leftlist.setStyleSheet('border:0;')
 
         self.stack.addWidget(self.stack1)
         self.stack.addWidget(self.stack2)

@@ -3,7 +3,8 @@ from PyQt5.QtCore import QPointF
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsLineItem, QGraphicsPathItem
 from .base import _NNB1DLinearConnection, _NNB1DStackedLinConnection, \
     _NNB2DConvConnection, _NNBLFBConnection, _NNBRegConnection, \
-    _NNB2DFlattenConnection, _NNB2DPoolingConnection, _NNB1DStackedNeuron, _NNB2DNeuron, _NNBRegularizer
+    _NNB2DFlattenConnection, _NNB2DPoolingConnection, _NNB1DStackedNeuron, _NNB1DBiasNeuron, \
+    _NNB2DNeuron, _NNBRegularizer
 from .form import NNB1DLinearConnectionForm
 from .config import *
 
@@ -23,20 +24,11 @@ def findBlockLayout(block):
     return blockLayouts
 
 
-def find1DLinLineGeometry(xFrom, yFrom, xTo, yTo, isReverse=True, hasSYN=True, forStacked=False):
-    adjustedX = 0
-    if forStacked:
-        adjustedX = -NEURON_1D_SYN_LENGTH
-    if isReverse:
-        x1 = xFrom + NEURON_1D_DIAMETER + NEURON_1D_SYN_LENGTH if hasSYN else xFrom + NEURON_1D_DIAMETER
-        y1 = yFrom + NEURON_1D_RADIUS
-        x2 = xTo
-        y2 = yTo + NEURON_1D_RADIUS
-    else:
-        x1 = xTo
-        y1 = yTo + NEURON_1D_RADIUS
-        x2 = xFrom + adjustedX
-        y2 = yFrom + NEURON_1D_RADIUS
+def find1DLinLineGeometry(xFrom, yFrom, xTo, yTo, hasSYN=True):
+    x1 = xFrom + NEURON_1D_DIAMETER + NEURON_1D_SYN_LENGTH if hasSYN else xFrom + NEURON_1D_DIAMETER
+    y1 = yFrom + NEURON_1D_RADIUS
+    x2 = xTo
+    y2 = yTo + NEURON_1D_RADIUS
     return x1, y1, x2, y2
 
 
@@ -46,17 +38,19 @@ class NNB1DLinearConnection(_NNB1DLinearConnection, QGraphicsLineItem):
         QGraphicsLineItem.__init__(self)
         # note that since a connection line can only be created on connect mode, so set it to be unselectable
         self.setFlags(QGraphicsItem.ItemIsFocusable)
-        if blockFrom.layer.sceneBoundingRect().x() >= blockTo.layer.sceneBoundingRect().x():
-            blockFrom.layer.toRight = False
+        self.fromPts = []
+        self.toPts = []
 
-    def createForm(self, window):
-        return NNB1DLinearConnectionForm(self, window)
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
 
     def updateConnectionPos(self):
         rectFrom = self.blockFrom.sceneBoundingRect()
         rectTo = self.blockTo.sceneBoundingRect()
-        self.setLine(*find1DLinLineGeometry(rectFrom.x(), rectFrom.y(), rectTo.x(), rectTo.y(),
-                                            self.blockFrom.layer.toRight))
+        x1, y1, x2, y2 = find1DLinLineGeometry(rectFrom.x(), rectFrom.y(), rectTo.x(), rectTo.y())
+        self.setLine(x1, y1, x2, y2)
+        self.fromPts = [(x1, y1)]
+        self.toPts = [(x2, y2)]
 
     def paint(self, painter, option, widget=None):
         if self.isSelected():
@@ -79,8 +73,9 @@ class NNB1DStackedLinConnection(_NNB1DStackedLinConnection, QGraphicsPathItem):
         self.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
         self.fromPts = []
         self.toPts = []
-        if blockFrom.layer.sceneBoundingRect().x() >= blockTo.layer.sceneBoundingRect().x():
-            blockFrom.layer.toRight = False
+
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
 
     def updateConnectionPos(self):
         neuronFromLayouts = findBlockLayout(self.blockFrom)
@@ -88,10 +83,13 @@ class NNB1DStackedLinConnection(_NNB1DStackedLinConnection, QGraphicsPathItem):
         self.fromPts = []
         self.toPts = []
         for neuronFromLayout in neuronFromLayouts:
-            for neuronToLayout in neuronToLayouts:
-                x1, y1, x2, y2 = find1DLinLineGeometry(*neuronFromLayout, *neuronToLayout,
-                                                       self.blockFrom.layer.toRight,
-                                                       isinstance(self.blockFrom, _NNB1DStackedNeuron))
+            for i, neuronToLayout in enumerate(neuronToLayouts):
+                if i == len(neuronToLayouts) - 1:
+                    if isinstance(self.blockTo, _NNB1DStackedNeuron) and self.blockTo.layer.hasBias:
+                        continue
+                    elif isinstance(self.blockTo, _NNB1DBiasNeuron):
+                        continue
+                x1, y1, x2, y2 = find1DLinLineGeometry(*neuronFromLayout, *neuronToLayout)
                 self.fromPts.append((x1, y1))
                 self.toPts.append((x2, y2))
         self.setPath(self.makeLines())
@@ -127,6 +125,9 @@ class NNB2DConvConnection(_NNB2DConvConnection, QGraphicsPathItem):
         self.lkr, self.lkt, self.lkb = 0, 0, 0
         self.rmx, self.rmy = 0, 0
 
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
+
     def updateConnectionPos(self):
         kernelSize = self.blockFrom.kernelSize()
         leftSceneBRect = self.blockFrom.sceneBoundingRect()
@@ -158,7 +159,6 @@ class NNB2DConvConnection(_NNB2DConvConnection, QGraphicsPathItem):
             painter.setBrush(QColor(128, 128, 128, 128))
             path.lineTo(self.lkr, self.lkt)
             painter.drawPath(path)
-            # small rects also get highlightened
         painter.setBrush(NNB_BRUSH)
         painter.drawPath(path)
 
@@ -175,8 +175,8 @@ class NNBRegConnection(_NNBRegConnection, QGraphicsPathItem):
         # note that since a connection line can only be created on connect mode, so set it to be unselectable
         self.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsFocusable)
 
-    def createForm(self, window):
-        pass
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
         # return NNBRegConnectionForm(self, window)
 
     def paint(self, painter, option, widget=None):
@@ -191,44 +191,29 @@ class NNBRegConnection(_NNBRegConnection, QGraphicsPathItem):
     def updateConnectionPos(self):
         blockFromSBF = self.blockFrom.sceneBoundingRect()
         blockToSBF = self.blockTo.sceneBoundingRect()
-        adjustY = 0
         if isinstance(self.blockFrom, _NNBRegularizer):
-            blockFromSBF, blockToSBF = blockToSBF, blockFromSBF
+            x1 = blockFromSBF.x() + blockFromSBF.width()
+            y1 = blockFromSBF.y() + blockFromSBF.height() / 2
+            x2 = blockToSBF.x() + blockToSBF.width() / 2
+            y2 = blockToSBF.y() + blockToSBF.height()
+            c1, c2 = x2, y1
+            if blockToSBF.x() + blockToSBF.width() < x1:
+                x1 = blockFromSBF.x()
+            if y1 < blockToSBF.y() + blockToSBF.height() / 2:
+                y2 = blockToSBF.y()
         else:
-            adjustY = LAYER_HANDLE_SIZE + LAYER_HANDLE_SPACE
-            # x1 = blockFromSBF.x() + blockFromSBF.width()
-            # y1 = blockFromSBF.y() + blockFromSBF.height() / 2
-            # x2 = blockToSBF.x() + blockFromSBF.width() / 2
-            # y2 = blockToSBF.y() + blockToSBF.height()
-            # c1 = x2
-            # c2 = y1
-            # if y1 > blockToSBF.y() + blockToSBF.height() / 2:
-            #     y2 -= blockToSBF.height()
-        # else:
-        #     x1 = blockToSBF.x()
-        #     y1 = blockToSBF.y() + blockToSBF.height() / 2
-        #     x2 = blockFromSBF.x() + blockFromSBF.width() / 2
-        #     y2 = blockFromSBF.y() - LAYER_HANDLE_SIZE - LAYER_HANDLE_SPACE
-        #     c1, c2 = x2, y1
-        #     if blockToSBF.x() + blockToSBF.width() < x2:
-        #         x1 += blockToSBF.width()
-        #     if y1 > blockFromSBF.y() + blockFromSBF.height() / 2:
-        #         y2 += blockFromSBF.height()
-        #     if blockFromSBF.y() < y1 < blockFromSBF.bottom():
-        #         c1 = x1
-        #         c2 = y2
-        x1 = blockToSBF.x()
-        y1 = blockToSBF.y() + blockToSBF.height() / 2
-        x2 = blockFromSBF.x() + blockFromSBF.width() / 2
-        y2 = blockFromSBF.y() + adjustY
-        c1, c2 = x2, y1
-        if blockToSBF.x() + blockToSBF.width() < x2:
-            x1 += blockToSBF.width()
-        if y1 > blockFromSBF.y() + blockFromSBF.height() / 2:
-            y2 += blockFromSBF.height() - 2 * adjustY
-        if blockFromSBF.y() < y1 < blockFromSBF.bottom():
-            c1 = x1
-            c2 = y2
+            x1 = blockFromSBF.x() + blockFromSBF.width() / 2
+            y1 = blockFromSBF.y() + blockFromSBF.height() - (LAYER_HANDLE_SIZE + LAYER_HANDLE_SPACE)
+            x2 = blockToSBF.x()
+            y2 = blockToSBF.y() + blockToSBF.height() / 2
+            c1, c2 = x1, y2
+            if blockToSBF.x() + blockToSBF.width() < x1:
+                x2 = blockToSBF.x() + blockToSBF.width()
+            if y2 < blockFromSBF.y() + blockFromSBF.height() / 2:
+                y1 = blockFromSBF.y() + (LAYER_HANDLE_SIZE + LAYER_HANDLE_SPACE)
+            if blockFromSBF.y() < y2 < blockFromSBF.bottom():
+                c1 = x2
+                c2 = y1
 
         self.fromPt = QPointF(x1, y1)
         self.ctrlPt = QPointF(c1, c2)
@@ -252,17 +237,16 @@ class NNBRegConnection(_NNBRegConnection, QGraphicsPathItem):
 
 class NNBLFBConnection(_NNBLFBConnection, QGraphicsPathItem):
     def __init__(self, name, blockFrom, blockTo):
-        _NNB1DLinearConnection.__init__(self, name, blockFrom, blockTo)
+        _NNBLFBConnection.__init__(self, name, blockFrom, blockTo)
         QGraphicsPathItem.__init__(self)
         # note that since a connection line can only be created on connect mode, so set it to be unselectable
         self.fromPts = []
         self.toPts = []
         self.setFlags(QGraphicsItem.ItemIsFocusable)
-        if blockFrom.layer.sceneBoundingRect().x() >= blockTo.sceneBoundingRect().x():
-            blockFrom.layer.toRight = False
 
-    # def createForm(self, window):
-    #     return NNBLFBConnectionForm(self, window)
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
+        # return NNBLFBConnectionForm(self, window)
 
     def updateConnectionPos(self):
         neuronFromLayouts = findBlockLayout(self.blockFrom)
@@ -270,8 +254,7 @@ class NNBLFBConnection(_NNBLFBConnection, QGraphicsPathItem):
         self.fromPts = []
         self.toPts = []
         for neuronFromLayout in neuronFromLayouts:
-            x1, y1, x2, y2 = find1DLinLineGeometry(*neuronFromLayout, *lbfPos,
-                                                   isReverse=self.blockFrom.layer.toRight, hasSYN=False)
+            x1, y1, x2, y2 = find1DLinLineGeometry(*neuronFromLayout, *lbfPos, hasSYN=False)
             self.fromPts.append((x1, y1))
             self.toPts.append((x2, y2))
         self.setPath(self.makeLines())
@@ -312,8 +295,8 @@ class NNB2DFlattenConnection(_NNB2DFlattenConnection, QGraphicsPathItem):
         self.toPts = []
         self.updateConnectionPos()
 
-    def createForm(self, window):
-        return NNB1DLinearConnectionForm(self, window)
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())
 
     def updateConnectionPos(self):
         self.fromPts = []
@@ -368,3 +351,6 @@ class NNB2DPoolingConnection(_NNB2DPoolingConnection, QGraphicsLineItem):
         QGraphicsLineItem.__init__(self)
         # note that since a connection line can only be created on connect mode, so set it to be unselectable
         self.setFlags(QGraphicsItem.ItemIsFocusable)
+
+    def createForm(self):
+        return NNB1DLinearConnectionForm(self, self.scene().activeWindow())

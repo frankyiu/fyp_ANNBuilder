@@ -9,7 +9,7 @@ class BasicConceptsTab(QTabWidget):
 
         self.tab1 = QWidget()
 
-        self.addTab(self.tab1, 'Basic Concepts')
+        self.addTab(self.tab1, '')
         self.setStyleSheet("background-color: rgb(40, 44, 52);")
 
         self.tab1UI()
