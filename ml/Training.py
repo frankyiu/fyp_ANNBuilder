@@ -142,7 +142,6 @@ class Training():
         self.processed = (trainX, trainy, testX, testy)
         (self.trainX, self.trainy, self.testX, self.testy) = self.processed
 
-
     #HARDCODED for debugging
     def build_demo_model(self):
         input_length = self.dataset.getFeatureShape()   #shape of input will be (2) or (W,H,C)
@@ -181,7 +180,6 @@ class Training():
         else:
             loss = tf.keras.losses.CategoricalCrossentropy(from_logits=True) #or softmax at last layer
         self.loss = loss
-        self.bs = 10
         #self.optim = tf.keras.optimizers.Adam
 
     """
@@ -311,9 +309,9 @@ class Training():
     - start the timer invoke the training loop
     """
     def runMultithread(self):
-        self._preprocess()
+        # self._preprocess()
 
-        (self.trainX, self.trainy, self.testX, self.testy) = self.processed
+
         """
         Below depends on real implementation
         """

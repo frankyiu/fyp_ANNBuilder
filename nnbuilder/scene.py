@@ -793,8 +793,8 @@ class NNBScene(QGraphicsScene):
             self.compileIntoNNModel()
             self.makeTrainingAnimation()
             self.trainModel()
-            QApplication.activeWindow().builder.train.setModel(self.actModel)
             self.updateParams()
+            QApplication.activeWindow().builder.train.setModel(self.actModel)
         return True
 
     def keyPressEvent(self, event):

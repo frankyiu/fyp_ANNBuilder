@@ -43,6 +43,11 @@ class BuilderUI():
 
     def setupControl(self):
 
+        def trainRun(checked):
+            if self.scene.trainModeAct():
+                trainUIEvent(checked)
+                self.train.run()
+
         #train button ui effect
         def trainUIEvent(checked):
             icon = QIcon()
@@ -68,7 +73,7 @@ class BuilderUI():
         self.optimiBtns.addButton(self.ui.radio_sgd)
 
 
-        self.ui.btn_train.toggled.connect(trainUIEvent)
+        # self.ui.btn_train.toggled.connect(trainUIEvent)
         self.ui.btn_restart.clicked.connect(restartUIEvent)
 
         self.ui.spin_learningRate.valueChanged.connect(self.train.setLearningRate)
@@ -78,14 +83,16 @@ class BuilderUI():
         self.ui.radio_adam.click()
         self.ui.spin_learningRate.setValue(0.001)
         self.ui.spin_decayRate.setValue(1e-4)
+
         self.train.connectEpochWidget(self.ui.label_13)
 
-        self.ui.btn_train.clicked.connect(self.trainRun)
+        self.ui.btn_train.toggled.connect(trainRun)
         self.ui.btn_restart.clicked.connect(self.train.reset)
         # self.ui.btn_backprop.clicked.connect(self.train.backward)
         #convert the radio button states to a meaningful value (String, depends on real implementation)
         #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
-        self.train.setBatchSize()    #please add back a batch size spin box just like the learning rate
+        self.ui.spin_batchSize.valueChanged.connect(self.train.setBatchSize)    #please add back a batch size spin box just like the learning rate
+        self.train.setBatchSize(32)
         return
 
     def setupGuide(self):
@@ -148,6 +155,3 @@ class BuilderUI():
             self.popUpGuide.refreshUI()
         self.ui.message.refreshUi()
 
-    def trainRun(self):
-        if self.scene.trainModeAct():
-            self.train.run()

@@ -402,7 +402,7 @@ class _NNB1DAffineLayer(_NNBTrainableLayer):
                         ii += 1
         return W, b
 
-    def updateParams(self, layerParam, outputs):
+    def updateParams(self, layerParam):
         if isinstance(self.nextLayer, _NNBLossFuncBlock):
             return
         W_ = layerParam[0]
@@ -713,11 +713,7 @@ class _NNBTrainableConnection(_NNBConnection):
             self.blockTo.layer.prevLayer = None
 
     def initializeWeight(self, initMethod="zero"):
-        # TO-DO
-        if initMethod == "zero":
-            self.weight = 0.0
-        elif initMethod == "normal":
-            self.weight = np.random.normal()
+        self.weight = np.random.normal()
 
     def setWeight(self, weight):
         self.weight = weight
