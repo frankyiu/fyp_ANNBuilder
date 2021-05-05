@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project fyp_ui -->
-<!-- Saved: 2021-03-17, 15:44:09 -->
+<!-- Saved: 2021-05-05, 18:01:37 -->
 <!-- Copyright (C) 2021 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -14,7 +14,6 @@
   <Eol index="0"/>
   <Sources>
     <Source>__init__.py</Source>
-    <Source>builder.py</Source>
     <Source>files_rc.py</Source>
     <Source>main.py</Source>
     <Source>ui/DatasetIcon.py</Source>
@@ -52,6 +51,7 @@
     <Source>ui/optimizersTabs.py</Source>
     <Source>ui/perceptronTabs.py</Source>
     <Source>ui/poolingLayerTabs.py</Source>
+    <Source>ui/referencesTab.py</Source>
     <Source>ui/regularizationTabs.py</Source>
     <Source>ui/underfittingAndOverfittingTabs.py</Source>
   </Sources>

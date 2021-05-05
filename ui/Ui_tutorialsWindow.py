@@ -35,6 +35,7 @@ from .flatteningLayerTabs import FlatteningLayerTabs
 from .fullyconnectedLayerTabs import FullyconnectedLayerTabs
 from .cnnClassificationTab import CNNClassificationTab
 from .cnnRegressionTab import CNNRegressionTab
+from .referencesTab import ReferencesTab
 
 class Ui_tutorialsWindow(QWidget):
     def __init__(self, parent):
@@ -68,7 +69,8 @@ class Ui_tutorialsWindow(QWidget):
         self.leftlist.insertItem(21, '      Fully-connected Layer')
         self.leftlist.insertItem(22, '      CNN Classification')
         self.leftlist.insertItem(23, '      CNN Regression')
-
+        self.leftlist.insertItem(24, 'References')
+        
         self.stack1 = QWidget()
         self.stack2 = QWidget()
         self.stack3 = QWidget()
@@ -93,6 +95,7 @@ class Ui_tutorialsWindow(QWidget):
         self.stack22 = QWidget()
         self.stack23 = QWidget()
         self.stack24 = QWidget()
+        self.stack25 = QWidget()
 
         self.stack1UI()
         self.stack2UI()
@@ -118,7 +121,8 @@ class Ui_tutorialsWindow(QWidget):
         self.stack22UI()
         self.stack23UI()
         self.stack24UI()
-
+        self.stack25UI()
+        
         self.stack = QStackedWidget(self)
         self.stack.setStyleSheet('QTabWidget::pane {\
     background: transparent;\
@@ -152,6 +156,7 @@ QTabBar::tab {\
         self.stack.addWidget(self.stack22)
         self.stack.addWidget(self.stack23)
         self.stack.addWidget(self.stack24)
+        self.stack.addWidget(self.stack25)
 
         HBox = QHBoxLayout()
         HBox.addWidget(self.leftlist)
@@ -352,6 +357,14 @@ QTabBar::tab {\
         layout.addWidget(cnnRegressionTab)
         
         self.stack24.setLayout(layout)
+    
+    def stack25UI(self):
+        layout = QVBoxLayout()
+        
+        referencesTab = ReferencesTab()        
+        layout.addWidget(referencesTab)
+        
+        self.stack25.setLayout(layout)
         
     def display(self, i):
         self.stack.setCurrentIndex(i)
