@@ -46,7 +46,7 @@ class BuilderUI():
         def trainRun(checked):
             if self.scene.trainModeAct():
                 trainUIEvent(checked)
-                # self.train.run(runOnce=False)
+                self.train.run(runOnce=False)
 
         def StepOnce():
             if self.scene.ffonce:
