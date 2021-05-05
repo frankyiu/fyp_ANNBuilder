@@ -240,4 +240,4 @@ class NNBTransformer:
         for layer in kerasModel.layers[1:]:
             if layer.get_weights():
                 layerParams.append(layer.get_weights())
-        return layerParams
+        return layerParams, outputs

@@ -581,9 +581,6 @@ class NNBScene(QGraphicsScene):
         else:
             if self.currAnimationLayerIdx == 0:
                 self.ffFlowing = True
-                # ...
-                history = self.actModel.fit(fooXTrain, fooYTrain, batch_size=fooBatchSize, epochs=1,
-                                            validation_data=(fooXVal, fooYVal), )
                 self.updateParams()
             else:
                 if isinstance(self.layers[self.currAnimationLayerIdx-1], _NNBTrainableLayer):
@@ -624,9 +621,14 @@ class NNBScene(QGraphicsScene):
     # ------------------------------------------------- #
 
     def checkNNModelValid(self, dataset=None):
-        # TO-DO: make sure the dim fit the dataset
-        datasetInputDim = 2  # for 1D data, it should be a scalar; for 2D data, it should be in the triple of (C, H, W)
-        datasetOutputDim = 3
+        # for 1D data, it should be a scalar; for 2D data, it should be in the triple of (C, H, W)
+        QApplication.activeWindow().builder.train._preprocess()
+        datasetInputDim = QApplication.activeWindow().builder.train.testX.shape[1:]
+        datasetOutputDim = QApplication.activeWindow().builder.train.testy.shape[1:]
+        if len(datasetInputDim) == 1:
+            datasetInputDim = datasetInputDim[0]
+        if len(datasetOutputDim) == 1:
+            datasetOutputDim = datasetOutputDim[0]
         warningMessage = None
         layersInBuilder = []
         self.layers = None
@@ -785,21 +787,19 @@ class NNBScene(QGraphicsScene):
             message = self.checkNNModelValid()
             if message:
                 QApplication.activeWindow().builder.setupMessage(message=message)
-                QApplication.activeWindow().ui.message.show()
-                return
+                QApplication.activeWindow().ui.message.toggleEvent(True)
+                return False
             self.switchMode(SceneMode.TrainMode)
             self.compileIntoNNModel()
             self.makeTrainingAnimation()
             self.trainModel()
-            history = self.actModel.fit(fooXTrain, fooYTrain, batch_size=fooBatchSize, epochs=1,
-                                        validation_data=(fooXVal, fooYVal), )
+            QApplication.activeWindow().builder.train.setModel(self.actModel)
             self.updateParams()
+        return True
 
     def keyPressEvent(self, event):
         if event.key() == 16777219 or event.key() == Qt.Key_Delete:
             self.removeSelectedComponents()
-        elif event.key() == Qt.Key_Space:
-            self.trainModeAct()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.RightButton:
@@ -1018,8 +1018,8 @@ class NNBScene(QGraphicsScene):
             self.createRegularizer(x, y)
 
         if message:
-            QApplication.activeWindow().ui.message.setMessage(message=message)
-            QApplication.activeWindow().ui.message.show()
+            QApplication.activeWindow().builder.setupMessage(message=message)
+            QApplication.activeWindow().ui.message.toggleEvent(True)
 
         # upon finish and creation (if possible)
         self.sceneMode = SceneMode.SelectMode

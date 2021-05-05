@@ -140,6 +140,8 @@ class Training():
             testy = testy.reshape(-1, 1)
             self.testy_label = testy
         self.processed = (trainX, trainy, testX, testy)
+        (self.trainX, self.trainy, self.testX, self.testy) = self.processed
+
 
     #HARDCODED for debugging
     def build_demo_model(self):

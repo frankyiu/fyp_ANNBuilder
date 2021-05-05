@@ -126,7 +126,7 @@ class NNBCurveTrainArrowFlowAnimation(QObject):
         self.arrowhead = QGraphicsPolygonItem()
         self.arrowhead.setBrush(QBrush(Qt.black))
         self.fAnimation = QPropertyAnimation(self, b"p1",
-                                              parent = self,
+                                              # parent = self,
                                               startValue = self.x1,
                                               endValue = self.x2,
                                               duration = ANIMATION_DURATION)

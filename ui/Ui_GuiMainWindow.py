@@ -391,6 +391,7 @@ class Ui_MainWindow(object):
         self.frame_left_menu.setLayoutDirection(Qt.LeftToRight)
         self.frame_left_menu.setStyleSheet(u"QFrame {\n"
 "	background-color: rgb(27, 31, 38);\n"
+"	box-shadow: 2px 0px 2px red;\n"
 "}\n"
 "QPushButton {	\n"
 "	border: none;\n"
@@ -1227,7 +1228,7 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_7 = QHBoxLayout(self.frame_2)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.horizontalLayout_7.setContentsMargins(5, 0, 5, 0)
+        self.horizontalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.label_3 = QLabel(self.frame_2)
         self.label_3.setObjectName(u"label_3")
         sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
@@ -1235,6 +1236,16 @@ class Ui_MainWindow(object):
         self.label_3.setFont(font1)
 
         self.horizontalLayout_7.addWidget(self.label_3)
+
+        self.btn_message = QPushButton(self.frame_2)
+        self.btn_message.setObjectName(u"btn_message")
+        self.btn_message.setCursor(QCursor(Qt.PointingHandCursor))
+        icon8 = QIcon()
+        icon8.addFile(u":/basic/icons/basic/warning.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_message.setIcon(icon8)
+        self.btn_message.setCheckable(True)
+
+        self.horizontalLayout_7.addWidget(self.btn_message)
 
         self.widget_toolbar = QWidget(self.frame_2)
         self.widget_toolbar.setObjectName(u"widget_toolbar")
@@ -1291,9 +1302,9 @@ class Ui_MainWindow(object):
         self.btn_guide.setMinimumSize(QSize(0, 30))
         self.btn_guide.setMaximumSize(QSize(24, 16777215))
         self.btn_guide.setCursor(QCursor(Qt.PointingHandCursor))
-        icon8 = QIcon()
-        icon8.addFile(u":/basic/icons/basic/suggestion.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_guide.setIcon(icon8)
+        icon9 = QIcon()
+        icon9.addFile(u":/basic/icons/basic/suggestion.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_guide.setIcon(icon9)
         self.btn_guide.setIconSize(QSize(20, 20))
 
         self.verticalLayout_15.addWidget(self.btn_guide, 0, Qt.AlignRight)
@@ -1571,9 +1582,9 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton{border-radius: 20px;}\n"
 "")
-        icon9 = QIcon()
-        icon9.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_restart.setIcon(icon9)
+        icon10 = QIcon()
+        icon10.addFile(u":/basic/icons/basic/005-return.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_restart.setIcon(icon10)
         self.btn_restart.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_11.addWidget(self.btn_restart)
@@ -1594,9 +1605,9 @@ class Ui_MainWindow(object):
         self.btn_train.setMaximumSize(QSize(70, 16777215))
         self.btn_train.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_train.setMouseTracking(False)
-        icon10 = QIcon()
-        icon10.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_train.setIcon(icon10)
+        icon11 = QIcon()
+        icon11.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_train.setIcon(icon11)
         self.btn_train.setIconSize(QSize(60, 60))
         self.btn_train.setCheckable(True)
 
@@ -1620,9 +1631,9 @@ class Ui_MainWindow(object):
 "	background-color: rgb(52, 59, 72);\n"
 "}\n"
 "QPushButton{border-radius: 20px;}")
-        icon11 = QIcon()
-        icon11.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_feedfor.setIcon(icon11)
+        icon12 = QIcon()
+        icon12.addFile(u":/basic/icons/basic/008-next.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_feedfor.setIcon(icon12)
         self.btn_feedfor.setIconSize(QSize(20, 20))
 
         self.verticalLayout_3.addWidget(self.btn_feedfor)
@@ -1767,6 +1778,7 @@ class Ui_MainWindow(object):
         self.regularizer.setText("")
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"Regularizer", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Building Panel", None))
+        self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Warning", None))
 #if QT_CONFIG(tooltip)
         self.btn_guide.setToolTip(QCoreApplication.translate("MainWindow", u"Helper", None))
 #endif // QT_CONFIG(tooltip)

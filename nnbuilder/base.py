@@ -402,7 +402,7 @@ class _NNB1DAffineLayer(_NNBTrainableLayer):
                         ii += 1
         return W, b
 
-    def updateParams(self, layerParam):
+    def updateParams(self, layerParam, outputs):
         if isinstance(self.nextLayer, _NNBLossFuncBlock):
             return
         W_ = layerParam[0]

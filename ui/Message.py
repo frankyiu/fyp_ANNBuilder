@@ -118,3 +118,6 @@ border: none;\
     def toggleEvent(self, checked):
         self.refreshUi()
         self.hide() if self.isVisible() else self.show()
+
+    def mousePressEvent(self, event):
+        self.hide()

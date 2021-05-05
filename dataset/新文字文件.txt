@@ -1,7 +1,0 @@
-dataset object: boolean fun to test for cnn, gettrain, gettest, new function for cnn, branch for cnn data
-dataloader: branch for cnn data
-
-
-
-cnndataset icon: 
-popup widget: noise -> covered digits

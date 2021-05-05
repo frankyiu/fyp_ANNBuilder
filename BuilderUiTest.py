@@ -10,7 +10,10 @@ from PyQt5.QtWidgets import QApplication
 from pymouse import PyMouse
 
 from main import MainWindow
+from nnbuilder.block import *
 from nnbuilder.config import *
+from nnbuilder.layer import *
+from nnbuilder.neuron import NNB1DStackedNeuron
 from ui.DatasetPopup import DatasetPopup
 import numpy as np
 
@@ -67,7 +70,6 @@ class BuilderUITest(unittest.TestCase):
         self.assertEqual(self.form.ui.spin_decayRate.maximum(), 1)
 
     ## no built-in function for simulate drag and Drop
-    #TODO assert component
     def test_dragAndDrop(self):
         self.form.show()
         QTest.qWait(1000)
@@ -96,6 +98,16 @@ class BuilderUITest(unittest.TestCase):
             # cannot join, use non-blocking wait
             while dragThread.is_alive():
                 QTest.qWait(1000)
+        self.assertEqual(len(self.builder.scene.env[NNB1DAffineLayer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB1DStackedAffineLayer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB1DStackedNeuron]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB2DConvLayer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB2DPoolingLayer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB2DFlattenLayer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNBRegularizer]),1)
+        self.assertEqual(len(self.builder.scene.env[NNBLossFuncBlock]),1)
+        self.assertEqual(len(self.builder.scene.env[NNB1DStackedAffineLayer]),1)
+        self.assertEqual(len(self.builder.scene.env), 8)
 
     def test_message(self):
         #test popUp
@@ -103,9 +115,6 @@ class BuilderUITest(unittest.TestCase):
         self.assertEqual(self.form.ui.message.isVisible(), True)
         self.assertEqual(self.form.ui.message.textbrowser.toPlainText(), 'A')
 
-
-    def test_control(self):
-        return
 
     def test_toolbarsbutton(self):
         # toolbarbutton

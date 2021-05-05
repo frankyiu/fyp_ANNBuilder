@@ -19,7 +19,6 @@ class BuilderUI():
         self.ui = ui
         self.popUpGuide = PopUpGuideFactory(self.ui.page_draw, self.popCloseEvent)
         self.setupData()
-        self.setupViewer()
         self.train = Training()
         self.setupControl()
         self.setupBuilder()
@@ -81,9 +80,8 @@ class BuilderUI():
         self.ui.spin_decayRate.setValue(1e-4)
         self.train.connectEpochWidget(self.ui.label_13)
 
-        self.ui.btn_train.clicked.connect(self.train.run)
+        self.ui.btn_train.clicked.connect(self.trainRun)
         self.ui.btn_restart.clicked.connect(self.train.reset)
-        self.ui.btn_feedfor.clicked.connect(self.train.forward)
         # self.ui.btn_backprop.clicked.connect(self.train.backward)
         #convert the radio button states to a meaningful value (String, depends on real implementation)
         #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))
@@ -114,10 +112,11 @@ class BuilderUI():
         self.ui.btn_guide.clicked.connect(self.guideOnclickEvent)
         return
 
-    def setupMessage(self):
+    def setupMessage(self, message='This is a sample warnning message'):
         size = QPoint(391, 61)
-        self.ui.message = Message(self.ui.graphicsView, size, 'This is a sample warnning message', self.ui.page_draw)
-        # self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
+        self.ui.message = Message(self.ui.graphicsView, size, message, self.ui.page_draw)
+        self.ui.btn_message.disconnect()
+        self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
         return
 
 
@@ -149,21 +148,6 @@ class BuilderUI():
             self.popUpGuide.refreshUI()
         self.ui.message.refreshUi()
 
-    def setupViewer(self):
-        # self.ui.widget_dashboard.setMaximumWidth(180)
-        # size = QPoint(170, 500)
-        # self.ui.inspector = ScrollableResultDashBoard(self.ui.page_draw)
-        # self.ui.inspector.hide()
-        # def testEvent(checked):
-        #     pos = self.ui.btn_inspector.mapTo(self.ui.page_draw, QPoint(0, 0))
-        #     self.ui.inspector.setGeometry(pos.x() - size.x(), pos.y(), size.x(), size.y())
-        #     self.ui.inspector.setStyleSheet('background-color: rgb(0,0,0)')
-        #     if checked:
-        #         self.ui.inspector.show()
-        #     else:
-        #         self.ui.inspector.hide()
-        #
-        # self.ui.btn_inspector.toggled.connect(testEvent)
-        # self.ui.btn_inspector.setStyleSheet('background-color: rgb(0,0,0);')
-        # self.ui.btn_inspector.paintEvent = self.paintEvent
-        return
+    def trainRun(self):
+        if self.scene.trainModeAct():
+            self.train.run()
