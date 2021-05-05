@@ -2724,6 +2724,9 @@ border:None;
                                 </property>
                                 <item>
                                  <widget class="QGraphicsView" name="graphicsView">
+                                  <property name="cursor" stdset="0">
+                                   <cursorShape>ArrowCursor</cursorShape>
+                                  </property>
                                   <property name="toolTipDuration">
                                    <number>8</number>
                                   </property>
@@ -3065,7 +3068,7 @@ background-color: rgb(35, 36, 40);
                                  </widget>
                                 </item>
                                 <item>
-                                 <widget class="QDoubleSpinBox" name="spin_batchSize">
+                                 <widget class="QSpinBox" name="spin_batchSize">
                                   <property name="minimumSize">
                                    <size>
                                     <width>0</width>
@@ -3092,20 +3095,14 @@ border:None
                                   <property name="buttonSymbols">
                                    <enum>QAbstractSpinBox::PlusMinus</enum>
                                   </property>
-                                  <property name="decimals">
-                                   <number>0</number>
-                                  </property>
                                   <property name="minimum">
-                                   <double>1.000000000000000</double>
+                                   <number>1</number>
                                   </property>
                                   <property name="maximum">
-                                   <double>1000.000000000000000</double>
-                                  </property>
-                                  <property name="singleStep">
-                                   <double>1.000000000000000</double>
+                                   <number>100</number>
                                   </property>
                                   <property name="value">
-                                   <double>32.000000000000000</double>
+                                   <number>32</number>
                                   </property>
                                  </widget>
                                 </item>

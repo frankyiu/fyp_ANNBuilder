@@ -13,7 +13,7 @@ class ReferencesTab(QTabWidget):
         
         self.tabBar().setAutoHide(True)
         
-        self.setStyleSheet("background-color: rgb(40, 44, 52); font-size: 10pt;")
+        self.setStyleSheet("background-color: rgb(40, 44, 52); font-size: 8pt;")
 
         self.tab1UI()
 

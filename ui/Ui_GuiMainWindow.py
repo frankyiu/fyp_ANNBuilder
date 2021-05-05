@@ -1268,6 +1268,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_20.setContentsMargins(0, 0, 0, 0)
         self.graphicsView = QGraphicsView(self.frame)
         self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.viewport().setProperty("cursor", QCursor(Qt.ArrowCursor))
         self.graphicsView.setToolTipDuration(8)
         self.graphicsView.setStyleSheet(u"QGraphicsView{\n"
 "border: 2px solid;\n"
@@ -1427,7 +1428,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_23.addWidget(self.label_28)
 
-        self.spin_batchSize = QDoubleSpinBox(self.frame_22)
+        self.spin_batchSize = QSpinBox(self.frame_22)
         self.spin_batchSize.setObjectName(u"spin_batchSize")
         self.spin_batchSize.setMinimumSize(QSize(0, 25))
         self.spin_batchSize.setMaximumSize(QSize(100, 16777215))
@@ -1436,11 +1437,9 @@ class Ui_MainWindow(object):
 "border:None\n"
 "")
         self.spin_batchSize.setButtonSymbols(QAbstractSpinBox.PlusMinus)
-        self.spin_batchSize.setDecimals(0)
-        self.spin_batchSize.setMinimum(1.000000000000000)
-        self.spin_batchSize.setMaximum(1000.000000000000000)
-        self.spin_batchSize.setSingleStep(1.000000000000000)
-        self.spin_batchSize.setValue(32.000000000000000)
+        self.spin_batchSize.setMinimum(1)
+        self.spin_batchSize.setMaximum(100)
+        self.spin_batchSize.setValue(32)
 
         self.horizontalLayout_23.addWidget(self.spin_batchSize)
 

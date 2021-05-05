@@ -46,7 +46,14 @@ class BuilderUI():
         def trainRun(checked):
             if self.scene.trainModeAct():
                 trainUIEvent(checked)
-                self.train.run()
+                # self.train.run(runOnce=False)
+
+        def StepOnce():
+            if self.scene.ffonce:
+                return
+            self.scene.ffonce = True
+            if self.scene.trainModeAct():
+                self.train.run(runOnce=True)
 
         #train button ui effect
         def trainUIEvent(checked):
@@ -88,6 +95,7 @@ class BuilderUI():
 
         self.ui.btn_train.toggled.connect(trainRun)
         self.ui.btn_restart.clicked.connect(self.train.reset)
+        self.ui.btn_feedfor.clicked.connect(StepOnce)
         # self.ui.btn_backprop.clicked.connect(self.train.backward)
         #convert the radio button states to a meaningful value (String, depends on real implementation)
         #self.optimzer.valueChanged.connect(lambda: train.setOptimizer(self.radioButton))

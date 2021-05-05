@@ -59,7 +59,7 @@ class BuilderUITest(unittest.TestCase):
         self.assertEqual(self.form.ui.radio_adam.isChecked(), True)
         self.assertEqual(self.form.ui.spin_batchSize.value(), 32)
         self.assertEqual(self.form.ui.spin_batchSize.minimum(), 1)
-        self.assertEqual(self.form.ui.spin_batchSize.maximum(), 1000)
+        self.assertEqual(self.form.ui.spin_batchSize.maximum(), 100)
 
         self.assertEqual(self.form.ui.spin_learningRate.value(), 0.001)
         self.assertEqual(self.form.ui.spin_learningRate.minimum(), 0.000010)

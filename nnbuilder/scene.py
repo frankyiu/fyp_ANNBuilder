@@ -7,6 +7,7 @@ Reference:
 http://www.windel.nl/?section=pyqtdiagrameditor
 
 """
+import threading
 import re
 from PyQt5.QtGui import QTransform
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsItem, QGraphicsLineItem, \
@@ -123,6 +124,8 @@ class NNBScene(QGraphicsScene):
         self.inTrainingAnimation = False
         self.currAnimationLayerIdx = 0
         self.ffFlowing = True
+
+        self.ffonce = False
 
     def switchMode(self, mode):
         if self.sceneMode == SceneMode.TrainMode and mode != SceneMode.SelectMode:
@@ -582,6 +585,8 @@ class NNBScene(QGraphicsScene):
             if self.currAnimationLayerIdx == 0:
                 self.ffFlowing = True
                 self.updateParams()
+                if self.ffonce == True:
+                    return self.trainModeAct()
             else:
                 if isinstance(self.layers[self.currAnimationLayerIdx-1], _NNBTrainableLayer):
                     self.layers[self.currAnimationLayerIdx - 1].updateParams(
@@ -783,11 +788,14 @@ class NNBScene(QGraphicsScene):
             self.switchMode(SceneMode.SelectMode)
             self.stopAnimations()
             self.inTrainingAnimation = False
+            if self.ffonce:
+                self.ffonce = False
         else:
             message = self.checkNNModelValid()
             if message:
                 QApplication.activeWindow().builder.setupMessage(message=message)
                 QApplication.activeWindow().ui.message.toggleEvent(True)
+                self.ffonce = False
                 return False
             self.switchMode(SceneMode.TrainMode)
             self.compileIntoNNModel()

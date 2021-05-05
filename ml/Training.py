@@ -191,13 +191,13 @@ class Training():
     3. At RUN state, run() stop the training and reset the training state
        e.g. loss history, refernces used in drawing the graph, processed data
     """
-    def run(self):
+    def run(self, runOnce):
         if Training.timer.isActive():
             Training.timer.stop()
             self.resetTraining(True)
             DatasetLoader.setTrainingSignal(False)
         else:
-            self.runMultithread()
+            self.runMultithread(runOnce)
             DatasetLoader.setTrainingSignal(True)
 
     """
@@ -250,7 +250,7 @@ class Training():
     - evaluate the model using test set data
     - update the evaluation result (metrics, contour/regression line) in GUI
     """
-    def doTrainingStep(self):
+    def doTrainingStep(self, runOnce):
         """
         depends on real implementation
         """
@@ -298,6 +298,8 @@ class Training():
         #"""
         self.curEpoch += 1      #next slice of data
         self.updateEpochGUI()
+        if runOnce:
+            return self.run(runOnce)
         Training.timer.start(1)     #continue
 
     """
@@ -308,7 +310,7 @@ class Training():
     - connect to the dashboard (pass the references)
     - start the timer invoke the training loop
     """
-    def runMultithread(self):
+    def runMultithread(self,runOnce):
         # self._preprocess()
 
 
@@ -361,7 +363,7 @@ class Training():
 
         #update the dash board
         self._connectDashboard()
-        Training.timer.timeout.connect(self.doTrainingStep)
+        Training.timer.timeout.connect(lambda : self.doTrainingStep(runOnce))
         Training.timer.start(0)
 
     """
