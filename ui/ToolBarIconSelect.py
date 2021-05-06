@@ -22,3 +22,8 @@ class ToolBarIconSelect(ToolBarIcon):
 
     def getToolTipString(self):
         return "Select Object"
+
+    def setLock(self, islocked):
+        if not islocked:
+            self.parent().setTool(self)
+        self.isLocked = islocked

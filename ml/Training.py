@@ -36,6 +36,7 @@ handles the training of the model
 """
 class Training():
     timer = pg.QtCore.QTimer()
+    hasReset = False
     def __init__(self):
         #keep a reference to the dataset object, which is a wrapper of the real dataset
         self.dataset = DatasetLoader.getDatasetObject()
@@ -67,6 +68,7 @@ class Training():
         self.train_losses = []
         self.test_losses = []
         self.processed = None
+        Training.hasReset = not pause
         Training.timer = pg.QtCore.QTimer()     #create a new timer, clear previously connected singals
         if not pause:
             self.model = None

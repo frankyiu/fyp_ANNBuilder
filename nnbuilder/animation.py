@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QPolygonF
-from PyQt5.QtCore import QObject, QPointF, QLineF, QPropertyAnimation, pyqtProperty
+from PyQt5.QtCore import QObject, QPointF, QLineF, QPropertyAnimation, pyqtProperty, QAbstractAnimation
 from PyQt5.QtWidgets import QGraphicsPolygonItem
 from .config import *
 from .utils import *
@@ -46,8 +46,9 @@ class NNBLineTrainArrowFlowAnimation(QObject):
         self.fAnimation.finished.connect(self.onAnimationFinished)
 
     def start(self):
-        self.connection.scene().addItem(self.arrowhead)
-        self.fAnimation.start()
+        if self.fAnimation.state() != QAbstractAnimation.Running:
+            self.connection.scene().addItem(self.arrowhead)
+            self.fAnimation.start()
 
     def stop(self):
         self.fAnimation.stop()
@@ -190,4 +191,3 @@ class NNBCurveTrainArrowFlowAnimation(QObject):
         self.arrowhead.setPolygon(self.findArrowhead())
 
     p1 = pyqtProperty(float, fget=p1, fset=setP1)
-

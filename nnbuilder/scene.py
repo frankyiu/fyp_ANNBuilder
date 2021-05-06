@@ -12,6 +12,8 @@ import re
 from PyQt5.QtGui import QTransform
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsItem, QGraphicsLineItem, \
     QGraphicsRectItem, QGraphicsEllipseItem
+from PyQt5.QtCore import QTimer
+import tensorflow as tf
 
 from ml import Training
 from .layer import NNB1DAffineLayer, NNB1DStackedAffineLayer, NNB2DConvLayer, \
@@ -97,6 +99,7 @@ class NNBMetadata:
 
 
 class NNBScene(QGraphicsScene):
+    timer = QTimer()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.sceneMode = SceneMode.SelectMode
@@ -565,10 +568,14 @@ class NNBScene(QGraphicsScene):
         self.inTrainingAnimation = True
         self.ffFlowing = True
         self.currAnimationLayerIdx = 0
-        self.startOneLayerFlowAnimation()
+        NNBScene.timer = QTimer()
+        NNBScene.timer.timeout.connect(self.startOneLayerFlowAnimation)
+        NNBScene.timer.start(1)
+        #self.startOneLayerFlowAnimation()
 
     # TO-DO Animation
     def finishOneLayerFlowAnimation(self):
+        NNBScene.timer.stop()
         # stop animation
         for layerAnimations in self.animations[self.ffFlowing][self.currAnimationLayerIdx]:
             for animation in layerAnimations:
@@ -592,8 +599,8 @@ class NNBScene(QGraphicsScene):
                     self.layers[self.currAnimationLayerIdx - 1].updateParams(
                         self.layerNewParams[self.currAnimationLayerIdx - 1])
                 self.currAnimationLayerIdx = self.currAnimationLayerIdx - 1
-
-        self.startOneLayerFlowAnimation()
+        NNBScene.timer.start(1)
+        #self.startOneLayerFlowAnimation()
 
     def startOneLayerFlowAnimation(self):
         for layerAnimations in self.animations[self.ffFlowing][self.currAnimationLayerIdx]:
@@ -602,8 +609,10 @@ class NNBScene(QGraphicsScene):
         for neuron in self.layers[self.currAnimationLayerIdx].neurons:
             for connection in neuron.connectionsTo.values():
                 connection.onWeightChangedOnTrainMode()
+        NNBScene.timer.stop()
 
     def stopAnimations(self):
+        NNBScene.timer.stop()
         for layerAnimations in self.animations[self.ffFlowing][self.currAnimationLayerIdx]:
             for animation in layerAnimations:
                 animation.vanish()
@@ -801,9 +810,18 @@ class NNBScene(QGraphicsScene):
             self.compileIntoNNModel()
             self.makeTrainingAnimation()
             self.trainModel()
+            if QApplication.activeWindow().builder.train.hasReset:
+                self.reinitializeKerasModelWeights()
             self.updateParams()
             QApplication.activeWindow().builder.train.setModel(self.actModel)
         return True
+
+    def reinitializeKerasModelWeights(self):
+        weight = self.actModel.get_weights()
+        new_weight = [tf.initializers.GlorotUniform()
+                        (shape=w.shape, dtype=tf.float32) for w in weight]
+        self.actModel.set_weights(new_weight)
+        self.updateParams()
 
     def keyPressEvent(self, event):
         if event.key() == 16777219 or event.key() == Qt.Key_Delete:

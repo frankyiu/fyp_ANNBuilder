@@ -62,3 +62,8 @@ class ToolBarWidget(QWidget):
         TrainTool.setObjectName("ToolBarTrainTool")
         self.horizontalLayout.addWidget(TrainTool)
         self.toolbar_dict["train"] = TrainTool
+
+    def setLock(self, isLock):
+        self.toolbar_dict["select"].setLock(isLock)
+        self.toolbar_dict["connect"].setLock(isLock)
+        self.toolbar_dict["train"].setLock(isLock)

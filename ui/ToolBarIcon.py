@@ -17,6 +17,7 @@ class ToolBarIcon(QLabelEffect):
 
     def __init__(self, parent, api):
         super().__init__(parent)
+        self.isLocked = False
         self.press = False      #for press effect
         self.api = api
         self.configureIcon()
@@ -25,24 +26,28 @@ class ToolBarIcon(QLabelEffect):
 
     #shows the hovering effect
     def enterEvent(self, event):
-        self.showImage(hover=True)
+        if not self.isLocked:
+            self.showImage(hover=True)
 
     #revert the hovering effect
     def leaveEvent(self, event):
-        self.showImage(hover=False)
+        if not self.isLocked:
+            self.showImage(hover=False)
 
     #When user press the icon, the icon shows a pressing effect
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.press = True
-            self.showImage()
+        if not self.isLocked:
+            if event.button() == Qt.LeftButton :
+                self.press = True
+                self.showImage()
 
     """
     Call the Parent (the widget that contains all Icon)
     setTool method to set the selected tool as self
     """
     def mouseReleaseEvent(self, event):
-        self.parent().setTool(self)
+        if not self.isLocked:
+            self.parent().setTool(self)
 
     #handles the tool tips text
     def setToolTips(self):
@@ -60,3 +65,6 @@ class ToolBarIcon(QLabelEffect):
         self.tool_piximg = QPixmap(ToolBarIcon.img_directory+self.getToolName()+'.png')
         self.setQPixmapDrawn(self.tool_piximg)
         self.showImage()
+
+    def setLock(self, islocked):
+        self.isLocked = islocked

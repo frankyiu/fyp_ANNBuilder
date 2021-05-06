@@ -22,7 +22,7 @@ class BuilderUI():
         self.train = Training()
         self.setupControl()
         self.setupBuilder()
-        self.setupMessage()
+        self.setupMessagePanel()
         self.setupGuide()
         self.firstTimeGuide = True
 
@@ -43,10 +43,11 @@ class BuilderUI():
 
     def setupControl(self):
 
-        def trainRun(checked):
+        def trainRun():
             if self.scene.trainModeAct():
-                trainUIEvent(checked)
+                trainUIEvent(self.scene.sceneMode == SceneMode.TrainMode)
                 self.train.run(runOnce=False)
+                self.ui.widget_toolbar.setLock(self.scene.sceneMode == SceneMode.TrainMode)
 
         def StepOnce():
             if self.scene.ffonce:
@@ -55,20 +56,24 @@ class BuilderUI():
             if self.scene.trainModeAct():
                 self.train.run(runOnce=True)
 
+
         #train button ui effect
-        def trainUIEvent(checked):
+        def trainUIEvent(isTrainMode):
             icon = QIcon()
-            if not checked:
+            if not isTrainMode:
                 icon.addFile(u":/basic/icons/basic/001-play-button.png", QSize(), QIcon.Normal, QIcon.Off)
             else:
                 icon.addFile(u":/basic/icons/basic/011-pause.png", QSize(), QIcon.Normal, QIcon.Off)
             self.ui.btn_train.setIcon(icon)
 
-        #restart button ui efffect
-        def restartUIEvent():
-            if self.ui.btn_train.isChecked():
-                self.ui.btn_train.setChecked(False)
+        def restart():
+            self.train.reset()
+            self.scene.reinitializeKerasModelWeights()
+            if self.scene.sceneMode != SceneMode.TrainMode:
+                return
+            if self.scene.trainModeAct():
                 trainUIEvent(False)
+            self.ui.widget_toolbar.setLock(self.scene.sceneMode == SceneMode.TrainMode)
 
         #
         self.optimiBtns = QButtonGroup()
@@ -81,7 +86,6 @@ class BuilderUI():
 
 
         # self.ui.btn_train.toggled.connect(trainUIEvent)
-        self.ui.btn_restart.clicked.connect(restartUIEvent)
 
         self.ui.spin_learningRate.valueChanged.connect(self.train.setLearningRate)
         self.ui.spin_decayRate.valueChanged.connect(self.train.setLearningRateDecay)
@@ -93,8 +97,8 @@ class BuilderUI():
 
         self.train.connectEpochWidget(self.ui.label_13)
 
-        self.ui.btn_train.toggled.connect(trainRun)
-        self.ui.btn_restart.clicked.connect(self.train.reset)
+        self.ui.btn_train.clicked.connect(trainRun)
+        self.ui.btn_restart.clicked.connect(restart)
         self.ui.btn_feedfor.clicked.connect(StepOnce)
         # self.ui.btn_backprop.clicked.connect(self.train.backward)
         #convert the radio button states to a meaningful value (String, depends on real implementation)
@@ -127,13 +131,17 @@ class BuilderUI():
         self.ui.btn_guide.clicked.connect(self.guideOnclickEvent)
         return
 
-    def setupMessage(self, message='This is a sample warnning message'):
+    def setupMessagePanel(self, message='This is a sample warnning message'):
         size = QPoint(391, 61)
         self.ui.message = Message(self.ui.graphicsView, size, message, self.ui.page_draw)
         self.ui.btn_message.disconnect()
         self.ui.btn_message.toggled.connect(self.ui.message.toggleEvent)
         return
 
+    def setupMessage(self, message='This is a sample warnning message'):
+        self.ui.message.setMessage(message)
+        self.ui.message.hide()
+        return
 
 
     def menuclicked(self):
