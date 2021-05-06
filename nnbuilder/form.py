@@ -373,7 +373,7 @@ class NNBLFBForm(NNBForm):
 class NNBRegularizerForm(NNBForm):
     def __init__(self, regularizer, parent=None):
         super().__init__(regularizer, parent)
-        self.prevReg = regularizer.regularization
+        self.prevReg = regularizer.regType
 
         layout = QVBoxLayout()
         regHLayout = QHBoxLayout()
