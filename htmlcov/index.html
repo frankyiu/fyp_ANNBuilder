@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="icon" sizes="32x32" href="favicon_32.png">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">67%</span>
+        </h1>
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+<div id="index">
+    <table class="index">
+        <thead>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>8132</td>
+                <td>2705</td>
+                <td>0</td>
+                <td class="right" data-ratio="5427 8132">67%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="file">
+                <td class="name left"><a href="MainWindowTest_py.html">MainWindowTest.py</a></td>
+                <td>53</td>
+                <td>2</td>
+                <td>0</td>
+                <td class="right" data-ratio="51 53">96%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="builderui_py.html">builderui.py</a></td>
+                <td>105</td>
+                <td>13</td>
+                <td>0</td>
+                <td class="right" data-ratio="92 105">88%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="dataset_CNNDataset_py.html">dataset\CNNDataset.py</a></td>
+                <td>137</td>
+                <td>100</td>
+                <td>0</td>
+                <td class="right" data-ratio="37 137">27%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="dataset_DatasetMeta_py.html">dataset\DatasetMeta.py</a></td>
+                <td>81</td>
+                <td>12</td>
+                <td>0</td>
+                <td class="right" data-ratio="69 81">85%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="dataset_DatasetObject_py.html">dataset\DatasetObject.py</a></td>
+                <td>66</td>
+                <td>24</td>
+                <td>0</td>
+                <td class="right" data-ratio="42 66">64%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="dataset_MathDataset_py.html">dataset\MathDataset.py</a></td>
+                <td>66</td>
+                <td>20</td>
+                <td>0</td>
+                <td class="right" data-ratio="46 66">70%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="dataset_generator_py.html">dataset\generator.py</a></td>
+                <td>158</td>
+                <td>139</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 158">12%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="files_rc_py.html">files_rc.py</a></td>
+                <td>16</td>
+                <td>3</td>
+                <td>0</td>
+                <td class="right" data-ratio="13 16">81%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="main_py.html">main.py</a></td>
+                <td>168</td>
+                <td>66</td>
+                <td>0</td>
+                <td class="right" data-ratio="102 168">61%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ml_Optimizer_py.html">ml\Optimizer.py</a></td>
+                <td>26</td>
+                <td>22</td>
+                <td>0</td>
+                <td class="right" data-ratio="4 26">15%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ml_Training_py.html">ml\Training.py</a></td>
+                <td>217</td>
+                <td>148</td>
+                <td>0</td>
+                <td class="right" data-ratio="69 217">32%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ml_UpdateDashBoard_py.html">ml\UpdateDashBoard.py</a></td>
+                <td>118</td>
+                <td>70</td>
+                <td>0</td>
+                <td class="right" data-ratio="48 118">41%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ml_Utility_py.html">ml\Utility.py</a></td>
+                <td>16</td>
+                <td>10</td>
+                <td>0</td>
+                <td class="right" data-ratio="6 16">38%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder___init___py.html">nnbuilder\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_animation_py.html">nnbuilder\animation.py</a></td>
+                <td>55</td>
+                <td>39</td>
+                <td>0</td>
+                <td class="right" data-ratio="16 55">29%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_base_py.html">nnbuilder\base.py</a></td>
+                <td>363</td>
+                <td>249</td>
+                <td>0</td>
+                <td class="right" data-ratio="114 363">31%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_block_py.html">nnbuilder\block.py</a></td>
+                <td>56</td>
+                <td>38</td>
+                <td>0</td>
+                <td class="right" data-ratio="18 56">32%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_config_py.html">nnbuilder\config.py</a></td>
+                <td>95</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="95 95">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_connection_py.html">nnbuilder\connection.py</a></td>
+                <td>275</td>
+                <td>226</td>
+                <td>0</td>
+                <td class="right" data-ratio="49 275">18%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_form_py.html">nnbuilder\form.py</a></td>
+                <td>287</td>
+                <td>248</td>
+                <td>0</td>
+                <td class="right" data-ratio="39 287">14%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_layer_py.html">nnbuilder\layer.py</a></td>
+                <td>332</td>
+                <td>271</td>
+                <td>0</td>
+                <td class="right" data-ratio="61 332">18%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_neuron_py.html">nnbuilder\neuron.py</a></td>
+                <td>175</td>
+                <td>139</td>
+                <td>0</td>
+                <td class="right" data-ratio="36 175">21%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="nnbuilder_scene_py.html">nnbuilder\scene.py</a></td>
+                <td>630</td>
+                <td>553</td>
+                <td>0</td>
+                <td class="right" data-ratio="77 630">12%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_DatasetIcon_py.html">ui\DatasetIcon.py</a></td>
+                <td>78</td>
+                <td>26</td>
+                <td>0</td>
+                <td class="right" data-ratio="52 78">67%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_DatasetLoader_py.html">ui\DatasetLoader.py</a></td>
+                <td>115</td>
+                <td>40</td>
+                <td>0</td>
+                <td class="right" data-ratio="75 115">65%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_DatasetLoaderImage_py.html">ui\DatasetLoaderImage.py</a></td>
+                <td>25</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="25 25">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_DatasetPopup_py.html">ui\DatasetPopup.py</a></td>
+                <td>268</td>
+                <td>15</td>
+                <td>0</td>
+                <td class="right" data-ratio="253 268">94%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_DraggableLabel_py.html">ui\DraggableLabel.py</a></td>
+                <td>165</td>
+                <td>94</td>
+                <td>0</td>
+                <td class="right" data-ratio="71 165">43%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_Message_py.html">ui\Message.py</a></td>
+                <td>74</td>
+                <td>3</td>
+                <td>0</td>
+                <td class="right" data-ratio="71 74">96%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_PopUpGuide_py.html">ui\PopUpGuide.py</a></td>
+                <td>87</td>
+                <td>7</td>
+                <td>0</td>
+                <td class="right" data-ratio="80 87">92%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_PopUpGuideFactory_py.html">ui\PopUpGuideFactory.py</a></td>
+                <td>32</td>
+                <td>13</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 32">59%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_QLabelEffect_py.html">ui\QLabelEffect.py</a></td>
+                <td>47</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="43 47">91%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultDashBoard_py.html">ui\ResultDashBoard.py</a></td>
+                <td>48</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="48 48">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultDashBoardConstant_py.html">ui\ResultDashBoardConstant.py</a></td>
+                <td>16</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="16 16">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultHeatmap_py.html">ui\ResultHeatmap.py</a></td>
+                <td>100</td>
+                <td>49</td>
+                <td>0</td>
+                <td class="right" data-ratio="51 100">51%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultLabels_py.html">ui\ResultLabels.py</a></td>
+                <td>26</td>
+                <td>2</td>
+                <td>0</td>
+                <td class="right" data-ratio="24 26">92%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultLossGraph_py.html">ui\ResultLossGraph.py</a></td>
+                <td>62</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="58 62">94%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultLosses_py.html">ui\ResultLosses.py</a></td>
+                <td>6</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="6 6">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultMetric_py.html">ui\ResultMetric.py</a></td>
+                <td>20</td>
+                <td>1</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 20">95%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ResultMetrics_py.html">ui\ResultMetrics.py</a></td>
+                <td>30</td>
+                <td>1</td>
+                <td>0</td>
+                <td class="right" data-ratio="29 30">97%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ToolBarIcon_py.html">ui\ToolBarIcon.py</a></td>
+                <td>38</td>
+                <td>6</td>
+                <td>0</td>
+                <td class="right" data-ratio="32 38">84%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ToolBarIconConnect_py.html">ui\ToolBarIconConnect.py</a></td>
+                <td>15</td>
+                <td>5</td>
+                <td>0</td>
+                <td class="right" data-ratio="10 15">67%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ToolBarIconSelect_py.html">ui\ToolBarIconSelect.py</a></td>
+                <td>15</td>
+                <td>3</td>
+                <td>0</td>
+                <td class="right" data-ratio="12 15">80%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ToolBarIconTrain_py.html">ui\ToolBarIconTrain.py</a></td>
+                <td>15</td>
+                <td>5</td>
+                <td>0</td>
+                <td class="right" data-ratio="10 15">67%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_ToolBarWidget_py.html">ui\ToolBarWidget.py</a></td>
+                <td>48</td>
+                <td>1</td>
+                <td>0</td>
+                <td class="right" data-ratio="47 48">98%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_Ui_GuiMainWindow_py.html">ui\Ui_GuiMainWindow.py</a></td>
+                <td>1284</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="1284 1284">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_Ui_tutorialsWindow_py.html">ui\Ui_tutorialsWindow.py</a></td>
+                <td>264</td>
+                <td>5</td>
+                <td>0</td>
+                <td class="right" data-ratio="259 264">98%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui___init___py.html">ui\__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="0 0">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_activationFunctionsTabs_py.html">ui\activationFunctionsTabs.py</a></td>
+                <td>171</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="171 171">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_adalineTabs_py.html">ui\adalineTabs.py</a></td>
+                <td>42</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="42 42">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_artificialNeuronTabs_py.html">ui\artificialNeuronTabs.py</a></td>
+                <td>94</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="94 94">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_basicConceptsTab_py.html">ui\basicConceptsTab.py</a></td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 19">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_cnnApplicationTab_py.html">ui\cnnApplicationTab.py</a></td>
+                <td>24</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="24 24">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_cnnArchitectureTab_py.html">ui\cnnArchitectureTab.py</a></td>
+                <td>68</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="68 68">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_cnnClassificationTab_py.html">ui\cnnClassificationTab.py</a></td>
+                <td>30</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="30 30">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_cnnRegressionTab_py.html">ui\cnnRegressionTab.py</a></td>
+                <td>36</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="36 36">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_cnnTabs_py.html">ui\cnnTabs.py</a></td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 19">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_convolutionalLayerTabs_py.html">ui\convolutionalLayerTabs.py</a></td>
+                <td>202</td>
+                <td>6</td>
+                <td>0</td>
+                <td class="right" data-ratio="196 202">97%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_feedforwardAndBackpropagationTabs_py.html">ui\feedforwardAndBackpropagationTabs.py</a></td>
+                <td>121</td>
+                <td>5</td>
+                <td>0</td>
+                <td class="right" data-ratio="116 121">96%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_flatteningLayerTabs_py.html">ui\flatteningLayerTabs.py</a></td>
+                <td>34</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="34 34">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_fullyconnectedLayerTabs_py.html">ui\fullyconnectedLayerTabs.py</a></td>
+                <td>40</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="40 40">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_lossFunctionsTabs_py.html">ui\lossFunctionsTabs.py</a></td>
+                <td>66</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="66 66">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_mlpApplicationTab_py.html">ui\mlpApplicationTab.py</a></td>
+                <td>24</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="24 24">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_mlpArchitectureTab_py.html">ui\mlpArchitectureTab.py</a></td>
+                <td>25</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="25 25">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_mlpClassificationTab_py.html">ui\mlpClassificationTab.py</a></td>
+                <td>26</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="26 26">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_mlpRegressionTab_py.html">ui\mlpRegressionTab.py</a></td>
+                <td>27</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="27 27">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_mlpTabs_py.html">ui\mlpTabs.py</a></td>
+                <td>19</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="19 19">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_optimizersTabs_py.html">ui\optimizersTabs.py</a></td>
+                <td>132</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="132 132">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_perceptronTabs_py.html">ui\perceptronTabs.py</a></td>
+                <td>160</td>
+                <td>15</td>
+                <td>0</td>
+                <td class="right" data-ratio="145 160">91%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_poolingLayerTabs_py.html">ui\poolingLayerTabs.py</a></td>
+                <td>94</td>
+                <td>3</td>
+                <td>0</td>
+                <td class="right" data-ratio="91 94">97%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_regularizationTabs_py.html">ui\regularizationTabs.py</a></td>
+                <td>171</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="171 171">100%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="ui_underfittingAndOverfittingTabs_py.html">ui\underfittingAndOverfittingTabs.py</a></td>
+                <td>115</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="115 115">100%</td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
+            created at 2021-04-09 16:22 +0800
+        </p>
+    </div>
+</div>
+</body>
+</html>

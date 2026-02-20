@@ -1,0 +1,17 @@
+.eric6project/
+.ropeproject/
+.directory/
+.idea/
+dist/
+build/
+cur/
+tmp/
+*.pyc
+*.pyo
+*.orig
+*.bak
+*.rej
+*~
+*.spec
+__pycache__/
+*.DS_Store
